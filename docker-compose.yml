@@ -1,0 +1,274 @@
+version: '3.9'
+
+services:
+  # ============================================================================
+  # Traefik - Reverse Proxy & TLS Management
+  # ============================================================================
+  traefik:
+    image: traefik:v3.0
+    container_name: aviano_traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./infra/docker/traefik:/etc/traefik
+    networks:
+      - aviano_network
+
+  # ============================================================================
+  # PostgreSQL 16 + PostGIS - Main Database
+  # ============================================================================
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: aviano_postgres
+    environment:
+      POSTGRES_DB: aviano_housing
+      POSTGRES_USER: aviano
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/docker/postgres/init:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aviano -d aviano_housing"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - aviano_network
+
+  # ============================================================================
+  # Redis - Cache & Queue
+  # ============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: aviano_redis
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-secret}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - aviano_network
+
+  # ============================================================================
+  # MinIO - S3-Compatible Object Storage
+  # ============================================================================
+  minio:
+    image: minio/minio:latest
+    container_name: aviano_minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-aviano}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-avianoSecret123}
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - aviano_network
+
+  # ============================================================================
+  # Typesense - Search Engine
+  # ============================================================================
+  typesense:
+    image: typesense/typesense:26.0
+    container_name: aviano_typesense
+    environment:
+      TYPESENSE_DATA_DIR: /data
+      TYPESENSE_API_KEY: ${TYPESENSE_API_KEY:-avianoSearchKey123}
+      TYPESENSE_ENABLE_CORS: "true"
+    volumes:
+      - typesense_data:/data
+    ports:
+      - "8108:8108"
+    networks:
+      - aviano_network
+
+  # ============================================================================
+  # MailHog - Email Testing
+  # ============================================================================
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: aviano_mailhog
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
+    networks:
+      - aviano_network
+
+  # ============================================================================
+  # Laravel Backend - API
+  # ============================================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: development
+    container_name: aviano_backend
+    working_dir: /var/www
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_KEY: ${APP_KEY:-}
+      APP_URL: http://localhost:8000
+
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: aviano_housing
+      DB_USERNAME: aviano
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+
+      REDIS_HOST: redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-secret}
+      REDIS_PORT: 6379
+
+      CACHE_DRIVER: redis
+      QUEUE_CONNECTION: redis
+      SESSION_DRIVER: redis
+
+      MAIL_MAILER: smtp
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
+      MAIL_USERNAME: null
+      MAIL_PASSWORD: null
+      MAIL_ENCRYPTION: null
+
+      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-aviano}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:-avianoSecret123}
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_BUCKET: aviano-housing
+      AWS_ENDPOINT: http://minio:9000
+      AWS_USE_PATH_STYLE_ENDPOINT: "true"
+
+      TYPESENSE_API_KEY: ${TYPESENSE_API_KEY:-avianoSearchKey123}
+      TYPESENSE_HOST: typesense
+      TYPESENSE_PORT: 8108
+      TYPESENSE_PROTOCOL: http
+    volumes:
+      - ./backend:/var/www
+      - backend_vendor:/var/www/vendor
+      - backend_storage:/var/www/storage
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    networks:
+      - aviano_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`api.aviano.local`)"
+      - "traefik.http.services.backend.loadbalancer.server.port=8000"
+
+  # ============================================================================
+  # Laravel Horizon - Queue Worker
+  # ============================================================================
+  horizon:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: development
+    container_name: aviano_horizon
+    working_dir: /var/www
+    command: php artisan horizon
+    environment:
+      APP_ENV: local
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: aviano_housing
+      DB_USERNAME: aviano
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+      REDIS_HOST: redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-secret}
+      QUEUE_CONNECTION: redis
+    volumes:
+      - ./backend:/var/www
+      - backend_vendor:/var/www/vendor
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - aviano_network
+    restart: unless-stopped
+
+  # ============================================================================
+  # Nuxt Frontend - SPA
+  # ============================================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    container_name: aviano_frontend
+    working_dir: /app
+    environment:
+      NODE_ENV: development
+      NUXT_PUBLIC_API_BASE: http://localhost:8000/api
+      NUXT_PUBLIC_APP_URL: http://localhost:3000
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+      - frontend_nuxt:/app/.nuxt
+    ports:
+      - "3000:3000"
+      - "24678:24678" # HMR
+    depends_on:
+      - backend
+    networks:
+      - aviano_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`aviano.local`)"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+
+networks:
+  aviano_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  minio_data:
+    driver: local
+  typesense_data:
+    driver: local
+  backend_vendor:
+    driver: local
+  backend_storage:
+    driver: local
+  frontend_node_modules:
+    driver: local
+  frontend_nuxt:
+    driver: local
