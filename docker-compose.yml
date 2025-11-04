@@ -123,8 +123,8 @@ services:
   # ============================================================================
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./backend/Dockerfile
       target: development
     container_name: aviano_backend
     working_dir: /var/www
@@ -192,8 +192,8 @@ services:
   # ============================================================================
   horizon:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./backend/Dockerfile
       target: development
     container_name: aviano_horizon
     working_dir: /var/www

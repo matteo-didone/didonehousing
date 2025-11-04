@@ -89,7 +89,7 @@ CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
 FROM base AS builder
 
 # Copy application files
-COPY --chown=www-data:www-data . /var/www
+COPY --chown=www-data:www-data ./backend /var/www
 
 # Install production dependencies only
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
