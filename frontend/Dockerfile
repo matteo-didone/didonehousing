@@ -20,7 +20,7 @@ FROM base AS development
 COPY package*.json ./
 
 # Install all dependencies (including devDependencies)
-RUN npm ci --legacy-peer-deps
+RUN npm install --legacy-peer-deps
 
 # Copy application files
 COPY . .
@@ -40,7 +40,7 @@ FROM base AS builder
 COPY package*.json ./
 
 # Install all dependencies
-RUN npm ci --legacy-peer-deps
+RUN npm install --legacy-peer-deps
 
 # Copy application files
 COPY . .

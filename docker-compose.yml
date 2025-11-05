@@ -121,13 +121,8 @@ services:
   # ============================================================================
   backend:
     build:
-<<<<<<< HEAD
       context: .
       dockerfile: ./backend/Dockerfile
-=======
-      context: .  # Changed from ./backend to project root
-      dockerfile: backend/Dockerfile
->>>>>>> 559a321 (Fixed frontend Dockerfile and docker-compose.yml)
       target: development
     container_name: aviano_backend
     working_dir: /var/www
@@ -195,13 +190,8 @@ services:
   # ============================================================================
   horizon:
     build:
-<<<<<<< HEAD
       context: .
       dockerfile: ./backend/Dockerfile
-=======
-      context: .  # Changed from ./backend to project root
-      dockerfile: backend/Dockerfile
->>>>>>> 559a321 (Fixed frontend Dockerfile and docker-compose.yml)
       target: development
     container_name: aviano_horizon
     working_dir: /var/www
