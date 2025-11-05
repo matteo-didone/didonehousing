@@ -76,8 +76,8 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 # Copy composer files first for better caching
 COPY backend/composer.json backend/composer.lock ./
 
-# Install dependencies during build
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+# Install dependencies during build (without scripts since artisan is not available yet)
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts
 
 # Copy the rest of the application
 COPY backend/ ./
