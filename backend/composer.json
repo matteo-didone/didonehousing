@@ -13,6 +13,8 @@
         "laravel/passport": "*",
         "laravel/sanctum": "*",
         "laravel/tinker": "^2.9",
+        "setasign/fpdf": "^1.8",
+        "setasign/fpdi": "^2.6",
         "spatie/laravel-activitylog": "*",
         "spatie/laravel-data": "*",
         "spatie/laravel-medialibrary": "*",

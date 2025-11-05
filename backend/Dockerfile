@@ -69,7 +69,6 @@ RUN apk add --no-cache \
     harfbuzz \
     ca-certificates \
     ttf-freefont
-RUN apk add --no-cache openjdk11-jre pdftk
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
@@ -120,7 +119,6 @@ RUN apk add --no-cache \
     harfbuzz \
     ca-certificates \
     ttf-freefont
-RUN apk add --no-cache openjdk11-jre pdftk
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
