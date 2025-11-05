@@ -26,6 +26,7 @@ services:
   # ============================================================================
   postgres:
     image: postgis/postgis:16-3.4
+    platform: linux/amd64
     container_name: aviano_postgres
     environment:
       POSTGRES_DB: aviano_housing
@@ -38,7 +39,7 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U aviano -d aviano_housing"]
+      test: [ "CMD-SHELL", "pg_isready -U aviano -d aviano_housing" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -57,7 +58,7 @@ services:
     ports:
       - "6379:6379"
     healthcheck:
-      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
       interval: 10s
       timeout: 3s
       retries: 5
@@ -80,7 +81,7 @@ services:
       - "9000:9000"
       - "9001:9001"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
       interval: 30s
       timeout: 20s
       retries: 3
@@ -167,7 +168,6 @@ services:
       TYPESENSE_PROTOCOL: http
     volumes:
       - ./backend:/var/www
-      - backend_vendor:/var/www/vendor
       - backend_storage:/var/www/storage
     ports:
       - "8000:8000"
@@ -209,7 +209,6 @@ services:
       QUEUE_CONNECTION: redis
     volumes:
       - ./backend:/var/www
-      - backend_vendor:/var/www/vendor
     depends_on:
       postgres:
         condition: service_healthy
@@ -261,8 +260,6 @@ volumes:
   minio_data:
     driver: local
   typesense_data:
-    driver: local
-  backend_vendor:
     driver: local
   backend_storage:
     driver: local

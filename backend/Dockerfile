@@ -25,18 +25,18 @@ RUN apk add --no-cache \
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
-        pdo \
-        pdo_pgsql \
-        pgsql \
-        gd \
-        zip \
-        intl \
-        mbstring \
-        xml \
-        opcache \
-        pcntl \
-        bcmath \
-        exif
+    pdo \
+    pdo_pgsql \
+    pgsql \
+    gd \
+    zip \
+    intl \
+    mbstring \
+    xml \
+    opcache \
+    pcntl \
+    bcmath \
+    exif
 
 # Install Redis extension
 RUN pecl install redis && docker-php-ext-enable redis
@@ -72,6 +72,15 @@ RUN apk add --no-cache \
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+# Copy composer files first for better caching
+COPY backend/composer.json backend/composer.lock ./
+
+# Install dependencies during build
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+
+# Copy the rest of the application
+COPY backend/ ./
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www
