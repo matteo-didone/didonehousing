@@ -48,7 +48,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxt/image',
     '@nuxtjs/color-mode',
-    'nuxt-icon',
+    '@nuxt/icon',
     'dayjs-nuxt',
   ],
 
