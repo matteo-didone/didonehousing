@@ -35,7 +35,7 @@ export default defineNuxtConfig({
 
   // CSS Configuration
   css: [
-    // '~/assets/css/main.css',  // Temporaneamente commentato
+    "~/assets/css/main.css",
     "maplibre-gl/dist/maplibre-gl.css",
   ],
 
@@ -47,7 +47,7 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@nuxt/image",
     "@nuxtjs/color-mode",
-    // '@nuxt/icon',  // Temporarily disabled - installation issue
+    "@nuxt/icon",
     "dayjs-nuxt",
   ],
 
