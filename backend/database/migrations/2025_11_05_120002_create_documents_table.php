@@ -34,8 +34,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            // Indexes
-            $table->index(['documentable_type', 'documentable_id']);
+            // Indexes (morphs già crea l'indice automaticamente)
             $table->index('type');
             $table->index('status');
             $table->index('locale');
