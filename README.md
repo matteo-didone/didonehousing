@@ -68,36 +68,33 @@ Enterprise-grade rental management platform for US military housing at Aviano AB
 
 ## 🛠️ Quick Start
 
+**⚠️ IMPORTANT**: Use Docker for development! Don't run `npm install` on macOS - it will cause oxc-parser errors. See [QUICK_START_DOCKER.md](QUICK_START_DOCKER.md) for details.
+
 ### 1. Clone and Setup
 
 ```bash
 git clone <repository-url>
 cd didonehousing
-```
 
-### 2. Environment Configuration
-
-```bash
 # Copy environment files
 cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
-
-# Generate application keys
-docker-compose run --rm backend php artisan key:generate
 ```
 
-### 3. Start Services
+### 2. Start All Services (Docker)
 
 ```bash
-# Start all services
-docker-compose up -d
+# Start all services (automatically installs dependencies)
+docker compose up -d
 
-# Install dependencies
-docker-compose exec backend composer install
-docker-compose exec frontend npm install
+# Watch logs
+docker compose logs -f
+```
 
-# Run migrations
-docker-compose exec backend php artisan migrate --seed
+### 3. Setup Database
+
+```bash
+# Run migrations and seeders
+docker compose exec backend php artisan migrate:fresh --seed
 ```
 
 ### 4. Access Applications
@@ -106,60 +103,78 @@ docker-compose exec backend php artisan migrate --seed
 - **Backend API**: http://localhost:8000
 - **API Docs**: http://localhost:8000/docs
 - **Horizon**: http://localhost:8000/horizon
-- **MinIO Console**: http://localhost:9001
+- **MinIO Console**: http://localhost:9001 (aviano / avianoSecret123)
 - **MailHog**: http://localhost:8025
+- **Traefik Dashboard**: http://localhost:8080
 
-### Default Credentials (Dev)
+### Default Credentials (After Seeding)
 
 ```
-Admin:    admin@aviano.local / password
-Landlord: landlord@test.local / password
-Tenant:   tenant@test.local / password
-HO:       ho@aviano.local / password
+Admin:           admin@avianohousing.local / password
+Landlord:        landlord@avianohousing.local / password
+Tenant:          tenant@avianohousing.local / password
+Housing Office:  ho@avianohousing.local / password
+Vendor:          vendor@avianohousing.local / password
 ```
+
+### 📖 Full Docker Guide
+
+See **[QUICK_START_DOCKER.md](QUICK_START_DOCKER.md)** for:
+- Why Docker (avoids macOS npm bugs)
+- Complete development workflow
+- Adding packages, running commands
+- Troubleshooting guide
 
 ## 🏃 Development
+
+**⚠️ Always use Docker commands!** Don't run `npm install` or `composer install` on your Mac.
 
 ### Backend (Laravel)
 
 ```bash
-# Enter backend container
-docker-compose exec backend bash
-
 # Run migrations
-php artisan migrate
+docker compose exec backend php artisan migrate
 
 # Run tests
-php artisan test
+docker compose exec backend php artisan test
 
 # Run code style fixer
-./vendor/bin/pint
+docker compose exec backend ./vendor/bin/pint
 
 # Generate OpenAPI docs
-php artisan l5-swagger:generate
+docker compose exec backend php artisan l5-swagger:generate
+
+# Access shell (if needed)
+docker compose exec backend bash
 ```
 
 ### Frontend (Nuxt)
 
 ```bash
-# Enter frontend container
-docker-compose exec frontend sh
+# Add a package (updates package.json, then rebuild)
+docker compose up -d --build frontend
 
-# Run dev server
-npm run dev
+# Or install directly in container
+docker compose exec frontend npm install <package-name>
 
 # Build for production
-npm run build
+docker compose exec frontend npm run build
 
-# Run tests
-npm run test
+# Clear cache
+docker compose exec frontend rm -rf .nuxt .output
+docker compose restart frontend
 
-# Type check
-npm run typecheck
-
-# Lint
-npm run lint
+# Access shell (if needed)
+docker compose exec frontend sh
 ```
+
+**Development workflow:**
+1. Edit code in `frontend/` or `backend/` on your Mac
+2. Changes auto-reload via HMR (no restart needed)
+3. To add packages, edit `package.json` then `docker compose up -d --build frontend`
+4. Never run `npm install` on Mac - always use Docker!
+
+See [QUICK_START_DOCKER.md](QUICK_START_DOCKER.md) for complete workflow.
 
 ## 🗄️ Database Schema
 

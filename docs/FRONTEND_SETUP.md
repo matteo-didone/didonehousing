@@ -50,12 +50,23 @@ The Nuxt 3 frontend with full authentication system, layouts, and base UI has be
 
 ## 🧪 How to Test the Frontend
 
-### 1. Make Sure Backend is Running
+### ⚠️ Important: Use Docker!
+
+**Don't run `npm install` on macOS!** Use Docker to avoid oxc-parser errors.
+
+See **[QUICK_START_DOCKER.md](../QUICK_START_DOCKER.md)** for full guide.
+
+### 1. Start Backend & Frontend with Docker
 
 ```bash
 # In the root directory
-docker-compose up -d
-docker-compose exec backend php artisan migrate:fresh --seed
+docker compose up -d
+
+# Setup database
+docker compose exec backend php artisan migrate:fresh --seed
+
+# Watch frontend logs
+docker compose logs -f frontend
 ```
 
 Verify backend is accessible:
@@ -63,15 +74,27 @@ Verify backend is accessible:
 curl http://localhost:8000/api/health
 ```
 
-### 2. Start the Frontend Dev Server
+### 2. Access the Frontend
+
+The frontend should now be available at: **http://localhost:3000**
+
+**Why Docker?**
+- ✅ No oxc-parser native binding errors (npm bug #4828 on macOS)
+- ✅ Frontend runs in Linux container with correct bindings
+- ✅ Same environment as production
+- ✅ No need to install Node.js packages on Mac
+
+<details>
+<summary>Old approach (run locally on Mac) - May fail with oxc-parser errors</summary>
 
 ```bash
 cd frontend
-npm install  # If not already done
+npm install  # ⚠️ May fail on macOS with oxc-parser error
 npm run dev
 ```
 
-The frontend should now be available at: **http://localhost:3000**
+If you get oxc-parser errors, use Docker instead!
+</details>
 
 ---
 
