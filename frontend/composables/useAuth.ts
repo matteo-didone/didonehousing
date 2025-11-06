@@ -3,35 +3,6 @@ import type { LoginCredentials, RegisterData } from '~/types/auth'
 
 export const useAuth = () => {
   const authStore = useAuthStore()
-  const router = useRouter()
-
-  const login = async (credentials: LoginCredentials) => {
-    const result = await authStore.login(credentials)
-
-    if (result.success) {
-      // Redirect based on role
-      const redirectPath = getDefaultRoute()
-      await router.push(redirectPath)
-    }
-
-    return result
-  }
-
-  const register = async (data: RegisterData) => {
-    const result = await authStore.register(data)
-
-    if (result.success) {
-      // Redirect based on role
-      const redirectPath = getDefaultRoute()
-      await router.push(redirectPath)
-    }
-
-    return result
-  }
-
-  const logout = async () => {
-    await authStore.logout()
-  }
 
   const getDefaultRoute = () => {
     const { user } = authStore
@@ -46,6 +17,35 @@ export const useAuth = () => {
     if (user.roles.includes('vendor')) return '/vendor/dashboard'
 
     return '/dashboard'
+  }
+
+  const login = async (credentials: LoginCredentials) => {
+    const result = await authStore.login(credentials)
+
+    if (result.success) {
+      // Redirect based on role
+      const redirectPath = getDefaultRoute()
+      await navigateTo(redirectPath)
+    }
+
+    return result
+  }
+
+  const register = async (data: RegisterData) => {
+    const result = await authStore.register(data)
+
+    if (result.success) {
+      // Redirect based on role
+      const redirectPath = getDefaultRoute()
+      await navigateTo(redirectPath)
+    }
+
+    return result
+  }
+
+  const logout = async () => {
+    await authStore.logout()
+    await navigateTo('/login')
   }
 
   const can = (permission: string): boolean => {

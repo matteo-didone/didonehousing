@@ -124,9 +124,6 @@ export const useAuthStore = defineStore('auth', {
       } finally {
         this.clearAuth()
         this.loading = false
-
-        // Redirect to login
-        navigateTo('/login')
       }
     },
 
