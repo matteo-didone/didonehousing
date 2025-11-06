@@ -47,9 +47,16 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@nuxt/image",
     "@nuxtjs/color-mode",
+    "shadcn-nuxt",
     // '@nuxt/icon',  // Temporarily disabled - installation issue
     "dayjs-nuxt",
   ],
+
+  // Shadcn Configuration
+  shadcn: {
+    prefix: '',
+    componentDir: './components/ui'
+  },
 
   // Pinia Configuration
   pinia: {
