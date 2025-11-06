@@ -35,7 +35,7 @@ export default defineNuxtConfig({
 
   // CSS Configuration
   css: [
-    // '~/assets/css/main.css',  // Temporaneamente commentato
+    "~/assets/css/main.css",
     "maplibre-gl/dist/maplibre-gl.css",
   ],
 
