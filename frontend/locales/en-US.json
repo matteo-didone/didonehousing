@@ -211,6 +211,25 @@
       "other": "Other"
     }
   },
+  "messages": {
+    "title": "Messages",
+    "newMessage": "New Message",
+    "searchConversations": "Search conversations",
+    "typeMessage": "Type a message...",
+    "send": "Send",
+    "sending": "Sending...",
+    "noConversations": "No conversations yet",
+    "noConversationsDesc": "Start a new conversation to communicate with landlords, tenants, or the housing office.",
+    "noMessagesSelected": "No conversation selected",
+    "noMessagesSelectedDesc": "Select a conversation from the list to view messages.",
+    "markAsRead": "Mark as read",
+    "markAsUnread": "Mark as unread",
+    "delete": "Delete",
+    "yesterday": "Yesterday",
+    "today": "Today",
+    "online": "Online",
+    "offline": "Offline"
+  },
   "navigation": {
     "home": "Home",
     "dashboard": "Dashboard",

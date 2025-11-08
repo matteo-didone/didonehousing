@@ -211,6 +211,25 @@
       "other": "Altro"
     }
   },
+  "messages": {
+    "title": "Messaggi",
+    "newMessage": "Nuovo Messaggio",
+    "searchConversations": "Cerca conversazioni",
+    "typeMessage": "Scrivi un messaggio...",
+    "send": "Invia",
+    "sending": "Invio in corso...",
+    "noConversations": "Nessuna conversazione",
+    "noConversationsDesc": "Inizia una nuova conversazione per comunicare con proprietari, inquilini o l'ufficio alloggi.",
+    "noMessagesSelected": "Nessuna conversazione selezionata",
+    "noMessagesSelectedDesc": "Seleziona una conversazione dall'elenco per visualizzare i messaggi.",
+    "markAsRead": "Segna come letto",
+    "markAsUnread": "Segna come non letto",
+    "delete": "Elimina",
+    "yesterday": "Ieri",
+    "today": "Oggi",
+    "online": "Online",
+    "offline": "Offline"
+  },
   "navigation": {
     "home": "Home",
     "dashboard": "Pannello",
