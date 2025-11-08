@@ -121,6 +121,44 @@
     "toggleSidebar": "Toggle sidebar",
     "userMenu": "User menu"
   },
+  "dashboard": {
+    "landlord": {
+      "title": "Landlord Dashboard",
+      "welcome": "Welcome back, {name}!",
+      "subtitle": "Manage your properties and track your rental business",
+      "stats": {
+        "totalProperties": "Total Properties",
+        "activeListings": "Active Listings",
+        "pendingReview": "Pending Review",
+        "monthlyRevenue": "Monthly Revenue",
+        "occupancyRate": "Occupancy Rate"
+      },
+      "quickActions": "Quick Actions",
+      "addProperty": "Add New Property",
+      "addPropertyDesc": "List a new property for rental",
+      "viewProperties": "My Properties",
+      "viewPropertiesDesc": "View and manage all properties",
+      "viewInquiries": "View Inquiries",
+      "viewInquiriesDesc": "Check tenant inquiries",
+      "recentActivity": "Recent Activity",
+      "noActivity": "No recent activity",
+      "propertyStatus": "Property Status Distribution",
+      "revenueOverview": "Revenue Overview",
+      "thisMonth": "This Month",
+      "lastMonth": "Last Month",
+      "viewAll": "View All"
+    },
+    "tenant": {
+      "title": "Tenant Dashboard",
+      "welcome": "Welcome, {name}!",
+      "subtitle": "Find your perfect home near Aviano Air Base"
+    },
+    "ho": {
+      "title": "Housing Office Dashboard",
+      "welcome": "Housing Office",
+      "subtitle": "Manage property approvals and support military personnel"
+    }
+  },
   "property": {
     "title": "Properties",
     "search": "Search properties",

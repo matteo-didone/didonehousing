@@ -121,6 +121,44 @@
     "toggleSidebar": "Attiva/disattiva barra laterale",
     "userMenu": "Menu utente"
   },
+  "dashboard": {
+    "landlord": {
+      "title": "Pannello Proprietario",
+      "welcome": "Bentornato, {name}!",
+      "subtitle": "Gestisci le tue proprietà e monitora la tua attività di locazione",
+      "stats": {
+        "totalProperties": "Proprietà Totali",
+        "activeListings": "Annunci Attivi",
+        "pendingReview": "In Attesa di Revisione",
+        "monthlyRevenue": "Entrate Mensili",
+        "occupancyRate": "Tasso di Occupazione"
+      },
+      "quickActions": "Azioni Rapide",
+      "addProperty": "Aggiungi Nuova Proprietà",
+      "addPropertyDesc": "Crea un nuovo annuncio di locazione",
+      "viewProperties": "Le Mie Proprietà",
+      "viewPropertiesDesc": "Visualizza e gestisci tutte le proprietà",
+      "viewInquiries": "Visualizza Richieste",
+      "viewInquiriesDesc": "Controlla le richieste degli inquilini",
+      "recentActivity": "Attività Recenti",
+      "noActivity": "Nessuna attività recente",
+      "propertyStatus": "Distribuzione Stato Proprietà",
+      "revenueOverview": "Panoramica Entrate",
+      "thisMonth": "Questo Mese",
+      "lastMonth": "Mese Scorso",
+      "viewAll": "Visualizza Tutto"
+    },
+    "tenant": {
+      "title": "Pannello Inquilino",
+      "welcome": "Benvenuto, {name}!",
+      "subtitle": "Trova la tua casa perfetta vicino alla Base di Aviano"
+    },
+    "ho": {
+      "title": "Pannello Housing Office",
+      "welcome": "Housing Office",
+      "subtitle": "Gestisci le approvazioni immobiliari e supporta il personale militare"
+    }
+  },
   "property": {
     "title": "Proprietà",
     "search": "Cerca proprietà",
