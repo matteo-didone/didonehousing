@@ -126,23 +126,58 @@ definePageMeta({
 })
 
 const { login } = useAuth()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
-// Pre-compute translations to avoid SSR hydration mismatches
-const translations = computed(() => ({
-  loginTitle: t('auth.loginTitle'),
-  loginSubtitle: t('auth.loginSubtitle'),
-  email: t('auth.email'),
-  emailPlaceholder: t('auth.emailPlaceholder'),
-  password: t('auth.password'),
-  passwordPlaceholder: t('auth.passwordPlaceholder'),
-  forgotPassword: t('auth.forgotPassword'),
-  rememberMe: t('auth.rememberMe'),
-  login: t('auth.login'),
-  signingIn: t('auth.signingIn'),
-  noAccount: t('auth.noAccount'),
-  createAccount: t('auth.createAccount'),
-}))
+// Use onMounted to ensure translations are loaded client-side
+const translations = ref({
+  loginTitle: '',
+  loginSubtitle: '',
+  email: '',
+  emailPlaceholder: '',
+  password: '',
+  passwordPlaceholder: '',
+  forgotPassword: '',
+  rememberMe: '',
+  login: '',
+  signingIn: '',
+  noAccount: '',
+  createAccount: '',
+})
+
+onMounted(() => {
+  translations.value = {
+    loginTitle: t('auth.loginTitle'),
+    loginSubtitle: t('auth.loginSubtitle'),
+    email: t('auth.email'),
+    emailPlaceholder: t('auth.emailPlaceholder'),
+    password: t('auth.password'),
+    passwordPlaceholder: t('auth.passwordPlaceholder'),
+    forgotPassword: t('auth.forgotPassword'),
+    rememberMe: t('auth.rememberMe'),
+    login: t('auth.login'),
+    signingIn: t('auth.signingIn'),
+    noAccount: t('auth.noAccount'),
+    createAccount: t('auth.createAccount'),
+  }
+})
+
+// Watch for locale changes
+watch(locale, () => {
+  translations.value = {
+    loginTitle: t('auth.loginTitle'),
+    loginSubtitle: t('auth.loginSubtitle'),
+    email: t('auth.email'),
+    emailPlaceholder: t('auth.emailPlaceholder'),
+    password: t('auth.password'),
+    passwordPlaceholder: t('auth.passwordPlaceholder'),
+    forgotPassword: t('auth.forgotPassword'),
+    rememberMe: t('auth.rememberMe'),
+    login: t('auth.login'),
+    signingIn: t('auth.signingIn'),
+    noAccount: t('auth.noAccount'),
+    createAccount: t('auth.createAccount'),
+  }
+})
 
 const form = ref({
   email: '',
