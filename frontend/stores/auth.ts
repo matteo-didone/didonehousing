@@ -199,10 +199,7 @@ export const useAuthStore = defineStore('auth', {
   // Only persist token (not user object) to avoid 4KB cookie size limit
   // User will be fetched from server on app init using the token
   persist: {
-    storage: cookiesWithOptions({
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-    }),
-    pick: ['token'], // Only persist token, not user object
+    storage: 'cookies',
+    paths: ['token'], // Only persist token, not user object
   },
 })
