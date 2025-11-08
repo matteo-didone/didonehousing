@@ -366,6 +366,8 @@
       "viewReports": "View Reports",
       "viewReportsDesc": "Access housing statistics and reports",
       "pendingApprovalsList": "Pending Property Approvals",
+      "pendingReview": "Pending Review",
+      "totalPendingReview": "Properties Pending Review",
       "viewAll": "View All",
       "recentApprovals": "Recent Approvals",
       "noRecentApprovals": "No recent approvals",
@@ -551,6 +553,11 @@
       "rejecting": "Rejecting...",
       "confirmReject": "Confirm Rejection",
       "confirmDelete": "Are you sure you want to delete this property? This action cannot be undone."
+    },
+    "ho": {
+      "noPendingReview": "All Caught Up!",
+      "noPendingReviewDesc": "There are no properties pending review at the moment.",
+      "submittedOn": "Submitted on"
     }
   },
   "lease": {

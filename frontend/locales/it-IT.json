@@ -366,6 +366,8 @@
       "viewReports": "Visualizza Report",
       "viewReportsDesc": "Accedi a statistiche e report sugli alloggi",
       "pendingApprovalsList": "Proprietà in Attesa di Approvazione",
+      "pendingReview": "In Attesa di Revisione",
+      "totalPendingReview": "Proprietà in Attesa di Revisione",
       "viewAll": "Visualizza Tutto",
       "recentApprovals": "Approvazioni Recenti",
       "noRecentApprovals": "Nessuna approvazione recente",
@@ -551,6 +553,11 @@
       "rejecting": "Rifiuto in corso...",
       "confirmReject": "Conferma Rifiuto",
       "confirmDelete": "Sei sicuro di voler eliminare questa proprietà? Questa azione non può essere annullata."
+    },
+    "ho": {
+      "noPendingReview": "Tutto Fatto!",
+      "noPendingReviewDesc": "Non ci sono proprietà in attesa di revisione al momento.",
+      "submittedOn": "Inviato il"
     }
   },
   "lease": {
