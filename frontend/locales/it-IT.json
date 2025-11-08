@@ -29,7 +29,33 @@
     "clear": "Cancella",
     "noData": "Nessun dato disponibile",
     "error": "Si è verificato un errore",
-    "success": "Operazione completata con successo"
+    "success": "Operazione completata con successo",
+    "any": "Qualsiasi",
+    "allTypes": "Tutti i Tipi",
+    "allStatuses": "Tutti gli Stati"
+  },
+  "branding": {
+    "appName": "Aviano Housing",
+    "platformName": "Aviano Housing Platform",
+    "copyright": "Tutti i diritti riservati"
+  },
+  "accessibility": {
+    "switchToLightMode": "Passa alla modalità chiara",
+    "switchToDarkMode": "Passa alla modalità scura",
+    "toggleSidebar": "Attiva/disattiva barra laterale",
+    "userMenu": "Menu utente"
+  },
+  "language": {
+    "english": "English",
+    "italian": "Italiano",
+    "englishUS": "English (US)",
+    "italiano": "Italiano"
+  },
+  "units": {
+    "squareMeters": "m²",
+    "kilometers": "km",
+    "perMonthShort": "/mese",
+    "bedroomsShort": "cam"
   },
   "home": {
     "heroTitle": "Benvenuto nella Piattaforma Aviano Housing",
@@ -218,6 +244,12 @@
     "typeMessage": "Scrivi un messaggio...",
     "send": "Invia",
     "sending": "Invio in corso...",
+    "recipient": "Destinatario",
+    "message": "Messaggio",
+    "selectRecipient": "Seleziona destinatario...",
+    "landlord": "Proprietario",
+    "tenant": "Inquilino",
+    "housingOffice": "Housing Office",
     "noConversations": "Nessuna conversazione",
     "noConversationsDesc": "Inizia una nuova conversazione per comunicare con proprietari, inquilini o l'ufficio alloggi.",
     "noMessagesSelected": "Nessuna conversazione selezionata",
@@ -337,6 +369,10 @@
   },
   "property": {
     "title": "Proprietà",
+    "subtitle": {
+      "landlord": "Gestisci i tuoi annunci immobiliari",
+      "tenant": "Trova la tua casa perfetta vicino alla Base di Aviano"
+    },
     "search": "Cerca proprietà",
     "searchPlaceholder": "Cerca per indirizzo, città o zona...",
     "addNew": "Aggiungi Proprietà",

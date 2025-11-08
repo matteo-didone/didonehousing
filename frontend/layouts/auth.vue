@@ -6,7 +6,7 @@
       <button
         @click="toggleColorMode"
         class="p-2 rounded-md bg-card border border-border hover:bg-accent transition-colors"
-        :aria-label="colorMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+        :aria-label="colorMode === 'dark' ? t('accessibility.switchToLightMode') : t('accessibility.switchToDarkMode')"
       >
         <!-- Sun Icon (Light Mode) -->
         <svg
@@ -57,7 +57,7 @@
         class="px-3 py-2 rounded-md bg-card border border-border hover:bg-accent transition-colors text-sm font-medium flex items-center gap-2"
       >
         <span>{{ locale === 'en' ? '🇺🇸' : '🇮🇹' }}</span>
-        <span class="text-foreground">{{ locale === 'en' ? 'English' : 'Italiano' }}</span>
+        <span class="text-foreground">{{ locale === 'en' ? t('language.english') : t('language.italian') }}</span>
       </button>
     </div>
 
@@ -67,7 +67,7 @@
       <div class="sm:mx-auto sm:w-full sm:max-w-md mb-8">
         <NuxtLink to="/" class="flex justify-center">
           <h1 class="text-3xl font-bold text-primary">
-            Aviano Housing
+            {{ t('branding.appName') }}
           </h1>
         </NuxtLink>
       </div>

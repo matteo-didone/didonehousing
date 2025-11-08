@@ -176,8 +176,8 @@
                     <h3 class="font-semibold line-clamp-1">{{ property.address }}</h3>
                     <p class="text-sm text-muted-foreground">{{ property.city }}</p>
                     <div class="mt-2 flex items-center justify-between">
-                      <p class="text-lg font-bold text-primary">€{{ property.rent.toLocaleString() }}/mo</p>
-                      <Badge variant="success">{{ property.bedrooms }} bd</Badge>
+                      <p class="text-lg font-bold text-primary">€{{ property.rent.toLocaleString() }}{{ t('units.perMonthShort') }}</p>
+                      <Badge variant="success">{{ property.bedrooms }} {{ t('units.bedroomsShort') }}</Badge>
                     </div>
                   </div>
                 </div>

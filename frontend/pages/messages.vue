@@ -191,17 +191,17 @@
         <CardContent>
           <form @submit.prevent="handleNewMessage" class="space-y-4">
             <div class="space-y-2">
-              <Label for="recipient">Recipient</Label>
+              <Label for="recipient">{{ translations.recipient }}</Label>
               <Select id="recipient" v-model="newMessageForm.recipient" required>
-                <option value="">Select recipient...</option>
-                <option value="landlord">Landlord - Maria Rossi</option>
-                <option value="tenant">Tenant - John Doe</option>
-                <option value="ho">Housing Office</option>
+                <option value="">{{ translations.selectRecipient }}</option>
+                <option value="landlord">{{ translations.landlord }} - Maria Rossi</option>
+                <option value="tenant">{{ translations.tenant }} - John Doe</option>
+                <option value="ho">{{ translations.housingOffice }}</option>
               </Select>
             </div>
 
             <div class="space-y-2">
-              <Label for="message">Message</Label>
+              <Label for="message">{{ translations.message }}</Label>
               <Textarea
                 id="message"
                 v-model="newMessageForm.message"
@@ -255,6 +255,12 @@ const translations = ref({
   typeMessage: '',
   send: '',
   sending: '',
+  recipient: '',
+  message: '',
+  selectRecipient: '',
+  landlord: '',
+  tenant: '',
+  housingOffice: '',
   noConversations: '',
   noConversationsDesc: '',
   noMessagesSelected: '',
@@ -273,6 +279,12 @@ onMounted(() => {
     typeMessage: t('messages.typeMessage'),
     send: t('messages.send'),
     sending: t('messages.sending'),
+    recipient: t('messages.recipient'),
+    message: t('messages.message'),
+    selectRecipient: t('messages.selectRecipient'),
+    landlord: t('messages.landlord'),
+    tenant: t('messages.tenant'),
+    housingOffice: t('messages.housingOffice'),
     noConversations: t('messages.noConversations'),
     noConversationsDesc: t('messages.noConversationsDesc'),
     noMessagesSelected: t('messages.noMessagesSelected'),

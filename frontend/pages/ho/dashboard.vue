@@ -190,7 +190,7 @@
                     </Button>
                   </div>
                 </div>
-                <Badge variant="warning">Pending</Badge>
+                <Badge variant="warning">{{ t('property.statuses.pending') }}</Badge>
               </div>
             </div>
           </CardContent>
@@ -238,7 +238,7 @@
               <div class="space-y-2">
                 <div>
                   <div class="mb-1 flex items-center justify-between text-sm">
-                    <span>Available</span>
+                    <span>{{ t('property.statuses.available') }}</span>
                     <span class="font-medium">45</span>
                   </div>
                   <div class="h-2 w-full rounded-full bg-muted">
@@ -247,7 +247,7 @@
                 </div>
                 <div>
                   <div class="mb-1 flex items-center justify-between text-sm">
-                    <span>Rented</span>
+                    <span>{{ t('property.statuses.rented') }}</span>
                     <span class="font-medium">30</span>
                   </div>
                   <div class="h-2 w-full rounded-full bg-muted">

@@ -173,8 +173,8 @@
                 v-model="form.locale"
                 required
               >
-                <option value="en">English (US)</option>
-                <option value="it">Italiano</option>
+                <option value="en">{{ t('language.englishUS') }}</option>
+                <option value="it">{{ t('language.italiano') }}</option>
               </Select>
             </div>
 

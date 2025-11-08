@@ -29,7 +29,33 @@
     "clear": "Clear",
     "noData": "No data available",
     "error": "An error occurred",
-    "success": "Operation successful"
+    "success": "Operation successful",
+    "any": "Any",
+    "allTypes": "All Types",
+    "allStatuses": "All Statuses"
+  },
+  "branding": {
+    "appName": "Aviano Housing",
+    "platformName": "Aviano Housing Platform",
+    "copyright": "All rights reserved"
+  },
+  "accessibility": {
+    "switchToLightMode": "Switch to light mode",
+    "switchToDarkMode": "Switch to dark mode",
+    "toggleSidebar": "Toggle sidebar",
+    "userMenu": "User menu"
+  },
+  "language": {
+    "english": "English",
+    "italian": "Italiano",
+    "englishUS": "English (US)",
+    "italiano": "Italiano"
+  },
+  "units": {
+    "squareMeters": "m²",
+    "kilometers": "km",
+    "perMonthShort": "/mo",
+    "bedroomsShort": "bd"
   },
   "home": {
     "heroTitle": "Welcome to Aviano Housing Platform",
@@ -218,6 +244,12 @@
     "typeMessage": "Type a message...",
     "send": "Send",
     "sending": "Sending...",
+    "recipient": "Recipient",
+    "message": "Message",
+    "selectRecipient": "Select recipient...",
+    "landlord": "Landlord",
+    "tenant": "Tenant",
+    "housingOffice": "Housing Office",
     "noConversations": "No conversations yet",
     "noConversationsDesc": "Start a new conversation to communicate with landlords, tenants, or the housing office.",
     "noMessagesSelected": "No conversation selected",
@@ -337,6 +369,10 @@
   },
   "property": {
     "title": "Properties",
+    "subtitle": {
+      "landlord": "Manage your property listings",
+      "tenant": "Find your perfect home near Aviano Air Base"
+    },
     "search": "Search properties",
     "searchPlaceholder": "Search by address, city, or area...",
     "addNew": "Add Property",

@@ -9,7 +9,7 @@
             <!-- Logo -->
             <NuxtLink to="/" class="flex items-center gap-2">
               <div class="text-2xl font-bold text-primary">
-                Aviano Housing
+                {{ t('branding.appName') }}
               </div>
             </NuxtLink>
 
@@ -74,7 +74,7 @@
             <button
               @click="toggleColorMode"
               class="p-2 rounded-md hover:bg-accent transition-colors"
-              :aria-label="colorMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+              :aria-label="colorMode === 'dark' ? t('accessibility.switchToLightMode') : t('accessibility.switchToDarkMode')"
             >
               <!-- Sun Icon (Light Mode) -->
               <svg
@@ -208,7 +208,7 @@
     <footer class="mt-auto border-t border-border bg-card">
       <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div class="text-center text-sm text-muted-foreground">
-          <p>&copy; {{ new Date().getFullYear() }} Aviano Housing Platform. All rights reserved.</p>
+          <p>&copy; {{ new Date().getFullYear() }} {{ t('branding.platformName') }}. {{ t('branding.copyright') }}.</p>
         </div>
       </div>
     </footer>

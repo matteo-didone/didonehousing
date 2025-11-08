@@ -5,7 +5,7 @@
       <div>
         <h1 class="text-3xl font-bold tracking-tight">{{ translations.title }}</h1>
         <p class="mt-2 text-muted-foreground">
-          {{ isLandlord ? 'Manage your property listings' : 'Find your perfect home near Aviano Air Base' }}
+          {{ isLandlord ? translations.subtitle.landlord : translations.subtitle.tenant }}
         </p>
       </div>
       <NuxtLink v-if="isLandlord" to="/properties/create">
@@ -62,7 +62,7 @@
             <div class="space-y-2">
               <Label>{{ translations.filters.propertyType }}</Label>
               <Select v-model="filters.type">
-                <option value="">All Types</option>
+                <option value="">{{ t('common.allTypes') }}</option>
                 <option value="apartment">{{ translations.types.apartment }}</option>
                 <option value="house">{{ translations.types.house }}</option>
                 <option value="villa">{{ translations.types.villa }}</option>
@@ -93,7 +93,7 @@
             <div class="space-y-2">
               <Label>{{ translations.filters.bedroomsMin }}</Label>
               <Select v-model="filters.bedrooms">
-                <option value="">Any</option>
+                <option value="">{{ t('common.any') }}</option>
                 <option value="1">1+</option>
                 <option value="2">2+</option>
                 <option value="3">3+</option>
@@ -105,7 +105,7 @@
             <div class="space-y-2">
               <Label>{{ translations.filters.bathroomsMin }}</Label>
               <Select v-model="filters.bathrooms">
-                <option value="">Any</option>
+                <option value="">{{ t('common.any') }}</option>
                 <option value="1">1+</option>
                 <option value="2">2+</option>
                 <option value="3">3+</option>
@@ -207,7 +207,7 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect width="18" height="18" x="3" y="3" rx="2" />
                   </svg>
-                  <span>{{ property.squareMeters }}m²</span>
+                  <span>{{ property.squareMeters }}{{ t('units.squareMeters') }}</span>
                 </div>
               </div>
 
@@ -251,6 +251,10 @@ const { t } = useI18n()
 // Translations
 const translations = ref({
   title: '',
+  subtitle: {
+    landlord: '',
+    tenant: '',
+  },
   searchPlaceholder: '',
   addNew: '',
   sortBy: '',
@@ -296,6 +300,10 @@ const translations = ref({
 onMounted(() => {
   translations.value = {
     title: t('property.title'),
+    subtitle: {
+      landlord: t('property.subtitle.landlord'),
+      tenant: t('property.subtitle.tenant'),
+    },
     searchPlaceholder: t('property.searchPlaceholder'),
     addNew: t('property.addNew'),
     sortBy: t('property.sortBy'),

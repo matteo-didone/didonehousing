@@ -199,7 +199,7 @@
             <div class="space-y-3">
               <div>
                 <div class="mb-1 flex items-center justify-between text-sm">
-                  <span>Available</span>
+                  <span>{{ t('property.statuses.available') }}</span>
                   <span class="font-medium">2</span>
                 </div>
                 <div class="h-2 w-full rounded-full bg-muted">
@@ -209,7 +209,7 @@
 
               <div>
                 <div class="mb-1 flex items-center justify-between text-sm">
-                  <span>Pending</span>
+                  <span>{{ t('property.statuses.pending') }}</span>
                   <span class="font-medium">1</span>
                 </div>
                 <div class="h-2 w-full rounded-full bg-muted">
@@ -219,7 +219,7 @@
 
               <div>
                 <div class="mb-1 flex items-center justify-between text-sm">
-                  <span>Rented</span>
+                  <span>{{ t('property.statuses.rented') }}</span>
                   <span class="font-medium">1</span>
                 </div>
                 <div class="h-2 w-full rounded-full bg-muted">

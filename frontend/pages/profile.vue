@@ -96,8 +96,8 @@
           <div class="space-y-2">
             <Label for="language">{{ translations.language }}</Label>
             <Select id="language" v-model="profileForm.language">
-              <option value="en">English (US)</option>
-              <option value="it">Italiano</option>
+              <option value="en">{{ t('language.englishUS') }}</option>
+              <option value="it">{{ t('language.italiano') }}</option>
             </Select>
           </div>
 

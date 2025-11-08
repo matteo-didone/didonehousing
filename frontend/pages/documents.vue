@@ -160,11 +160,11 @@
 
             <div class="flex gap-3 justify-end">
               <Button type="button" variant="outline" @click="showUploadModal = false">
-                Cancel
+                {{ t('common.cancel') }}
               </Button>
               <Button type="submit" :disabled="uploading">
                 <span v-if="uploading">{{ translations.uploading }}</span>
-                <span v-else>Upload</span>
+                <span v-else>{{ t('common.upload') }}</span>
               </Button>
             </div>
           </form>
