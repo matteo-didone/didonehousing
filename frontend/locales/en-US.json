@@ -536,7 +536,21 @@
       "furnished": "Furnished",
       "yearBuilt": "Year Built",
       "floor": "Floor",
-      "distanceToBase": "Distance to Aviano Air Base"
+      "distanceToBase": "Distance to Aviano Air Base",
+      "statusPendingReview": "This property is pending review by the Housing Office",
+      "statusApproved": "This property has been approved by the Housing Office",
+      "statusRejected": "This property was rejected during review",
+      "reviewer": "Reviewed by",
+      "rejectionReason": "Rejection Reason",
+      "listingInfo": "Listing Information",
+      "submitForReview": "Submit for Review",
+      "submitting": "Submitting...",
+      "editAndResubmit": "Edit and Resubmit",
+      "rejectProperty": "Reject Property",
+      "rejectionReasonPlaceholder": "Explain why this property is being rejected...",
+      "rejecting": "Rejecting...",
+      "confirmReject": "Confirm Rejection",
+      "confirmDelete": "Are you sure you want to delete this property? This action cannot be undone."
     }
   },
   "lease": {

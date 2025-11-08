@@ -1,436 +1,435 @@
 <template>
-  <div v-if="property" class="space-y-6">
-    <!-- Back Navigation -->
-    <NuxtLink to="/properties" class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-        <path d="m12 19-7-7 7-7" />
-        <path d="M19 12H5" />
-      </svg>
-      {{ translations.backToList }}
-    </NuxtLink>
-
-    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-      <!-- Main Content -->
-      <div class="lg:col-span-2 space-y-6">
-        <!-- Property Image -->
-        <Card class="overflow-hidden">
-          <div class="relative h-96 bg-muted">
-            <img
-              v-if="property.image"
-              :src="property.image"
-              :alt="property.address"
-              class="h-full w-full object-cover"
-            />
-            <div v-else class="flex h-full items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
-                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                <polyline points="9 22 9 12 15 12 15 22" />
-              </svg>
-            </div>
-            <!-- Status Badge -->
-            <div class="absolute top-4 right-4">
-              <Badge :variant="getStatusVariant(property.status)">
-                {{ translations.statuses[property.status] }}
-              </Badge>
-            </div>
-          </div>
-        </Card>
-
-        <!-- Description -->
-        <Card>
-          <CardHeader>
-            <CardTitle>{{ translations.description }}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p class="text-muted-foreground leading-relaxed">
-              {{ property.description || 'No description available.' }}
-            </p>
-          </CardContent>
-        </Card>
-
-        <!-- Amenities -->
-        <Card>
-          <CardHeader>
-            <CardTitle>{{ translations.amenities }}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
-              <!-- Parking -->
-              <div v-if="property.amenities?.parking" class="flex items-center gap-2 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
-                  <rect width="18" height="18" x="3" y="3" rx="2" />
-                  <path d="M7 7h4a4 4 0 0 1 0 8H7" />
-                  <path d="M7 15V7" />
-                </svg>
-                <span>{{ translations.create.parking }}</span>
-              </div>
-
-              <!-- Balcony -->
-              <div v-if="property.amenities?.balcony" class="flex items-center gap-2 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
-                  <rect width="18" height="18" x="3" y="3" rx="2" />
-                </svg>
-                <span>{{ translations.create.balcony }}</span>
-              </div>
-
-              <!-- Garden -->
-              <div v-if="property.amenities?.garden" class="flex items-center gap-2 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
-                  <path d="M12 22v-8" />
-                  <path d="M8 14c0-3.3 2.7-6 6-6s6 2.7 6 6" />
-                  <circle cx="8" cy="10" r="4" />
-                  <circle cx="16" cy="10" r="4" />
-                </svg>
-                <span>{{ translations.create.garden }}</span>
-              </div>
-
-              <!-- Air Conditioning -->
-              <div v-if="property.amenities?.airConditioning" class="flex items-center gap-2 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
-                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                </svg>
-                <span>{{ translations.create.airConditioning }}</span>
-              </div>
-
-              <!-- Heating -->
-              <div v-if="property.amenities?.heating" class="flex items-center gap-2 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
-                  <path d="M12 2v20M2 12h20" />
-                </svg>
-                <span>{{ translations.create.heating }}</span>
-              </div>
-
-              <!-- Elevator -->
-              <div v-if="property.amenities?.elevator" class="flex items-center gap-2 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
-                  <path d="m18 6-6-6-6 6" />
-                  <path d="m18 18 6 6-6 6" />
-                  <path d="M12 3v18" />
-                </svg>
-                <span>{{ translations.create.elevator }}</span>
-              </div>
-
-              <!-- Pets -->
-              <div v-if="property.amenities?.pets" class="flex items-center gap-2 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
-                  <circle cx="11" cy="4" r="2" />
-                  <circle cx="18" cy="8" r="2" />
-                  <circle cx="20" cy="16" r="2" />
-                  <path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q7.16 17.5 7 17.5a3 3 0 0 1 0-6" />
-                </svg>
-                <span>{{ translations.create.pets }}</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <!-- Location -->
-        <Card>
-          <CardHeader>
-            <CardTitle>{{ translations.location }}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div class="space-y-4">
-              <div class="flex items-start gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary mt-0.5">
-                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                  <circle cx="12" cy="10" r="3" />
-                </svg>
-                <div>
-                  <p class="font-medium">{{ property.address }}</p>
-                  <p class="text-sm text-muted-foreground">{{ property.city }}, {{ property.zipCode }}</p>
-                </div>
-              </div>
-              <div class="flex items-center gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
-                  <circle cx="12" cy="12" r="10" />
-                  <polyline points="12 6 12 12 16 14" />
-                </svg>
-                <p class="text-sm">
-                  <span class="font-medium">{{ property.distanceToBase }} km</span>
-                  <span class="text-muted-foreground"> {{ translations.distanceToBase }}</span>
-                </p>
-              </div>
-              <!-- Map Placeholder -->
-              <div class="h-64 bg-muted rounded-lg flex items-center justify-center">
-                <p class="text-sm text-muted-foreground">Map placeholder</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <!-- Sidebar -->
-      <div class="lg:col-span-1 space-y-6">
-        <!-- Property Info Card -->
-        <Card>
-          <CardHeader>
-            <CardTitle class="text-2xl">
-              €{{ property.rent.toLocaleString() }}
-              <span class="text-base font-normal text-muted-foreground">/month</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent class="space-y-4">
-            <!-- Key Details -->
-            <div class="grid grid-cols-3 gap-4 text-center">
-              <div>
-                <div class="text-2xl font-bold text-primary">{{ property.bedrooms }}</div>
-                <div class="text-xs text-muted-foreground">{{ translations.bedrooms }}</div>
-              </div>
-              <div>
-                <div class="text-2xl font-bold text-primary">{{ property.bathrooms }}</div>
-                <div class="text-xs text-muted-foreground">{{ translations.bathrooms }}</div>
-              </div>
-              <div>
-                <div class="text-2xl font-bold text-primary">{{ property.squareMeters }}</div>
-                <div class="text-xs text-muted-foreground">m²</div>
-              </div>
-            </div>
-
-            <div class="border-t border-border pt-4 space-y-3">
-              <!-- Property Type -->
-              <div class="flex justify-between text-sm">
-                <span class="text-muted-foreground">{{ translations.propertyType }}:</span>
-                <span class="font-medium">{{ translations.types[property.type] }}</span>
-              </div>
-
-              <!-- Security Deposit -->
-              <div class="flex justify-between text-sm">
-                <span class="text-muted-foreground">{{ translations.securityDeposit }}:</span>
-                <span class="font-medium">€{{ property.deposit?.toLocaleString() || 'N/A' }}</span>
-              </div>
-
-              <!-- Furnished -->
-              <div class="flex justify-between text-sm">
-                <span class="text-muted-foreground">{{ translations.furnished }}:</span>
-                <span class="font-medium">{{ property.furnished === 'yes' ? translations.create.yes : translations.create.no }}</span>
-              </div>
-
-              <!-- Year Built -->
-              <div v-if="property.yearBuilt" class="flex justify-between text-sm">
-                <span class="text-muted-foreground">{{ translations.yearBuilt }}:</span>
-                <span class="font-medium">{{ property.yearBuilt }}</span>
-              </div>
-
-              <!-- Floor -->
-              <div v-if="property.floor" class="flex justify-between text-sm">
-                <span class="text-muted-foreground">{{ translations.floor }}:</span>
-                <span class="font-medium">{{ property.floor }}{{ property.totalFloors ? ` / ${property.totalFloors}` : '' }}</span>
-              </div>
-
-              <!-- Available From -->
-              <div v-if="property.availableFrom" class="flex justify-between text-sm">
-                <span class="text-muted-foreground">{{ translations.availableFrom }}:</span>
-                <span class="font-medium">{{ property.availableFrom }}</span>
-              </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="border-t border-border pt-4 space-y-2">
-              <!-- Tenant Actions -->
-              <template v-if="isTenant">
-                <Button class="w-full" size="lg">
-                  {{ translations.requestViewing }}
-                </Button>
-                <Button variant="outline" class="w-full">
-                  {{ translations.contactLandlord }}
-                </Button>
-              </template>
-
-              <!-- Landlord Actions -->
-              <template v-if="isLandlord">
-                <Button class="w-full" size="lg">
-                  {{ translations.edit }}
-                </Button>
-                <Button variant="destructive" class="w-full">
-                  {{ translations.delete }}
-                </Button>
-              </template>
-
-              <!-- HO Actions -->
-              <template v-if="isHousingOffice && property.status === 'pending'">
-                <Button class="w-full" size="lg" variant="success">
-                  {{ translations.approve }}
-                </Button>
-                <Button variant="destructive" class="w-full">
-                  {{ translations.reject }}
-                </Button>
-              </template>
-            </div>
-          </CardContent>
-        </Card>
+  <div class="max-w-5xl mx-auto space-y-6">
+    <!-- Loading State -->
+    <div v-if="loading" class="space-y-4">
+      <div class="animate-pulse space-y-4">
+        <div class="h-8 bg-muted rounded w-1/3"></div>
+        <div class="h-64 bg-muted rounded"></div>
+        <div class="h-48 bg-muted rounded"></div>
       </div>
     </div>
-  </div>
 
-  <!-- Loading State -->
-  <div v-else class="flex items-center justify-center py-12">
-    <p class="text-muted-foreground">Loading property...</p>
+    <!-- Error State -->
+    <Card v-else-if="error" class="p-6">
+      <div class="text-center text-destructive">
+        <p class="font-medium">{{ t('common.error') }}</p>
+        <p class="text-sm mt-1">{{ error }}</p>
+        <div class="mt-4 space-x-2">
+          <Button @click="loadProperty" variant="outline">
+            {{ t('common.retry') }}
+          </Button>
+          <NuxtLink to="/properties">
+            <Button variant="outline">
+              {{ t('property.detail.backToList') }}
+            </Button>
+          </NuxtLink>
+        </div>
+      </div>
+    </Card>
+
+    <!-- Property Detail -->
+    <template v-else-if="property">
+      <!-- Header -->
+      <div>
+        <NuxtLink to="/properties" class="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 19-7-7 7-7" />
+            <path d="M19 12H5" />
+          </svg>
+          {{ t('property.detail.backToList') }}
+        </NuxtLink>
+
+        <div class="flex items-start justify-between">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2">
+              <h1 class="text-3xl font-bold tracking-tight">
+                {{ property.street_name }} {{ property.house_number }}{{ property.apt_number ? `, ${property.apt_number}` : '' }}
+              </h1>
+              <Badge :variant="getStatusVariant(property.status)">
+                {{ t(`property.status.${property.status}`) }}
+              </Badge>
+            </div>
+            <p class="text-muted-foreground">
+              {{ property.postal_code }} {{ property.city }}, {{ property.province }} - {{ property.country }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Info (if pending/approved/rejected) -->
+      <Card v-if="property.status !== 'draft'" class="border-l-4" :class="getStatusBorderClass(property.status)">
+        <CardContent class="p-4">
+          <div class="flex items-start gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4" />
+              <path d="M12 8h.01" />
+            </svg>
+            <div class="flex-1">
+              <p class="font-medium">
+                <template v-if="property.status === 'pending_review'">
+                  {{ t('property.detail.statusPendingReview') }}
+                </template>
+                <template v-else-if="property.status === 'approved'">
+                  {{ t('property.detail.statusApproved') }}
+                </template>
+                <template v-else-if="property.status === 'rejected'">
+                  {{ t('property.detail.statusRejected') }}
+                </template>
+              </p>
+              <p v-if="property.ho_reviewer" class="text-sm text-muted-foreground mt-1">
+                {{ t('property.detail.reviewer') }}: {{ property.ho_reviewer.first_name }} {{ property.ho_reviewer.last_name }}
+              </p>
+              <p v-if="property.rejection_reason" class="text-sm mt-2 p-3 bg-destructive/10 rounded border border-destructive/20">
+                <span class="font-medium">{{ t('property.detail.rejectionReason') }}:</span> {{ property.rejection_reason }}
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <!-- Property Info -->
+      <Card>
+        <CardHeader>
+          <CardTitle>{{ t('property.detail.propertyInfo') }}</CardTitle>
+        </CardHeader>
+        <CardContent class="space-y-6">
+          <!-- Rooms Summary -->
+          <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div class="text-center p-4 border border-border rounded-lg">
+              <div class="text-3xl font-bold text-primary">{{ property.bedrooms }}</div>
+              <div class="text-sm text-muted-foreground mt-1">{{ t('property.bedrooms') }}</div>
+            </div>
+            <div class="text-center p-4 border border-border rounded-lg">
+              <div class="text-3xl font-bold text-primary">{{ property.bathrooms }}</div>
+              <div class="text-sm text-muted-foreground mt-1">{{ t('property.bathrooms') }}</div>
+            </div>
+            <div v-if="property.living_rooms" class="text-center p-4 border border-border rounded-lg">
+              <div class="text-3xl font-bold text-primary">{{ property.living_rooms }}</div>
+              <div class="text-sm text-muted-foreground mt-1">{{ t('property.create.livingRooms') }}</div>
+            </div>
+            <div v-if="property.dining_rooms" class="text-center p-4 border border-border rounded-lg">
+              <div class="text-3xl font-bold text-primary">{{ property.dining_rooms }}</div>
+              <div class="text-sm text-muted-foreground mt-1">{{ t('property.create.diningRooms') }}</div>
+            </div>
+          </div>
+
+          <!-- Details Grid -->
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div class="flex items-center justify-between p-3 bg-muted/50 rounded">
+              <span class="text-sm text-muted-foreground">{{ t('property.create.furnished') }}</span>
+              <span class="font-medium">{{ property.furnished ? t('common.yes') : t('common.no') }}</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-muted/50 rounded">
+              <span class="text-sm text-muted-foreground">{{ t('property.create.pets') }}</span>
+              <span class="font-medium">{{ property.pets_allowed ? t('common.yes') : t('common.no') }}</span>
+            </div>
+            <div v-if="property.heating_type" class="flex items-center justify-between p-3 bg-muted/50 rounded">
+              <span class="text-sm text-muted-foreground">{{ t('property.create.heatingType') }}</span>
+              <span class="font-medium">{{ t(`property.heating.${property.heating_type}`) }}</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-muted/50 rounded">
+              <span class="text-sm text-muted-foreground">{{ t('property.create.basement') }}</span>
+              <span class="font-medium">{{ property.basement ? t('common.yes') : t('common.no') }}</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-muted/50 rounded">
+              <span class="text-sm text-muted-foreground">{{ t('property.create.attic') }}</span>
+              <span class="font-medium">{{ property.attic ? t('common.yes') : t('common.no') }}</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-muted/50 rounded">
+              <span class="text-sm text-muted-foreground">{{ t('property.create.garage') }}</span>
+              <span class="font-medium">{{ property.garage ? t('common.yes') : t('common.no') }}</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-muted/50 rounded">
+              <span class="text-sm text-muted-foreground">{{ t('property.create.yard') }}</span>
+              <span class="font-medium">{{ property.yard ? t('common.yes') : t('common.no') }}</span>
+            </div>
+          </div>
+
+          <!-- Listing Info (if exists) -->
+          <div v-if="property.listing" class="p-4 border-2 border-primary/20 bg-primary/5 rounded-lg">
+            <h3 class="font-semibold text-lg mb-3">{{ t('property.detail.listingInfo') }}</h3>
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-muted-foreground">{{ t('property.monthlyRent') }}</span>
+                <span class="text-xl font-bold text-primary">
+                  {{ formatCurrency(property.listing.monthly_rent, property.listing.currency) }}
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-muted-foreground">{{ t('property.availableFrom') }}</span>
+                <span class="font-medium">{{ formatDate(property.listing.available_from) }}</span>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <!-- Actions -->
+      <Card>
+        <CardContent class="p-6">
+          <div class="flex flex-wrap items-center gap-3">
+            <!-- Landlord Actions -->
+            <template v-if="isLandlord">
+              <!-- Draft status: can edit, delete, submit -->
+              <template v-if="property.status === 'draft'">
+                <NuxtLink :to="`/properties/${property.id}/edit`">
+                  <Button variant="outline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                    </svg>
+                    {{ t('property.detail.edit') }}
+                  </Button>
+                </NuxtLink>
+                <Button @click="handleSubmitForReview" :disabled="submitting" variant="default">
+                  <svg v-if="submitting" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 animate-spin">
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                  </svg>
+                  <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                    <path d="m5 12 7 7L22 9" />
+                  </svg>
+                  {{ submitting ? t('property.detail.submitting') : t('property.detail.submitForReview') }}
+                </Button>
+                <Button @click="confirmDelete" variant="destructive">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                    <path d="M3 6h18" />
+                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                  </svg>
+                  {{ t('property.detail.delete') }}
+                </Button>
+              </template>
+
+              <!-- Rejected status: can edit and resubmit -->
+              <template v-else-if="property.status === 'rejected'">
+                <NuxtLink :to="`/properties/${property.id}/edit`">
+                  <Button variant="outline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                    </svg>
+                    {{ t('property.detail.editAndResubmit') }}
+                  </Button>
+                </NuxtLink>
+              </template>
+            </template>
+
+            <!-- HO Actions -->
+            <template v-if="isHousingOffice && property.status === 'pending_review'">
+              <Button @click="handleApprove" :disabled="actioning" variant="default">
+                <svg v-if="actioning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 animate-spin">
+                  <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                </svg>
+                <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                  <path d="m5 12 7 7L22 9" />
+                </svg>
+                {{ t('property.detail.approve') }}
+              </Button>
+              <Button @click="showRejectDialog = true" :disabled="actioning" variant="destructive">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
+                </svg>
+                {{ t('property.detail.reject') }}
+              </Button>
+            </template>
+          </div>
+        </CardContent>
+      </Card>
+
+      <!-- Reject Dialog -->
+      <div v-if="showRejectDialog" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" @click.self="showRejectDialog = false">
+        <Card class="w-full max-w-md m-4">
+          <CardHeader>
+            <CardTitle>{{ t('property.detail.rejectProperty') }}</CardTitle>
+          </CardHeader>
+          <CardContent class="space-y-4">
+            <div class="space-y-2">
+              <Label for="rejection_reason">{{ t('property.detail.rejectionReason') }} *</Label>
+              <textarea
+                id="rejection_reason"
+                v-model="rejectionReason"
+                rows="4"
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                :placeholder="t('property.detail.rejectionReasonPlaceholder')"
+                required
+              ></textarea>
+            </div>
+            <div class="flex justify-end gap-2">
+              <Button @click="showRejectDialog = false" variant="outline">
+                {{ t('common.cancel') }}
+              </Button>
+              <Button @click="handleReject" :disabled="!rejectionReason.trim() || actioning" variant="destructive">
+                <svg v-if="actioning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 animate-spin">
+                  <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                </svg>
+                {{ actioning ? t('property.detail.rejecting') : t('property.detail.confirmReject') }}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import Card from '@/components/ui/Card.vue'
 import CardHeader from '@/components/ui/CardHeader.vue'
 import CardTitle from '@/components/ui/CardTitle.vue'
 import CardContent from '@/components/ui/CardContent.vue'
 import Button from '@/components/ui/Button.vue'
 import Badge from '@/components/ui/Badge.vue'
+import Label from '@/components/ui/Label.vue'
+import type { Property } from '@/composables/useProperty'
 
 definePageMeta({
   layout: 'default',
-  middleware: 'auth',
+  middleware: ['auth'],
 })
 
 const route = useRoute()
-const { isLandlord, isTenant, isHousingOffice } = useAuth()
-const { t, locale } = useI18n()
+const { t } = useI18n()
+const { user, isLandlord, isHousingOffice } = useAuth()
+const { fetchProperty, submitForReview, approveProperty, rejectProperty, deleteProperty } = useProperty()
 
-// Translations
-const translations = ref({
-  backToList: '',
-  edit: '',
-  delete: '',
-  contactLandlord: '',
-  requestViewing: '',
-  approve: '',
-  reject: '',
-  description: '',
-  amenities: '',
-  location: '',
-  bedrooms: '',
-  bathrooms: '',
-  propertyType: '',
-  securityDeposit: '',
-  furnished: '',
-  yearBuilt: '',
-  floor: '',
-  availableFrom: '',
-  distanceToBase: '',
-  types: {
-    apartment: '',
-    house: '',
-    villa: '',
-    studio: '',
-  },
-  statuses: {
-    available: '',
-    pending: '',
-    rented: '',
-    unavailable: '',
-    underReview: '',
-  },
-  create: {
-    yes: '',
-    no: '',
-    parking: '',
-    balcony: '',
-    garden: '',
-    airConditioning: '',
-    heating: '',
-    elevator: '',
-    pets: '',
-  },
-})
+const property = ref<Property | null>(null)
+const loading = ref(false)
+const error = ref<string | null>(null)
+const submitting = ref(false)
+const actioning = ref(false)
+const showRejectDialog = ref(false)
+const rejectionReason = ref('')
 
-const loadTranslations = () => {
-  translations.value = {
-    backToList: t('property.detail.backToList'),
-    edit: t('property.detail.edit'),
-    delete: t('property.detail.delete'),
-    contactLandlord: t('property.detail.contactLandlord'),
-    requestViewing: t('property.detail.requestViewing'),
-    approve: t('property.detail.approve'),
-    reject: t('property.detail.reject'),
-    description: t('property.detail.description'),
-    amenities: t('property.detail.amenities'),
-    location: t('property.detail.location'),
-    bedrooms: t('property.bedrooms'),
-    bathrooms: t('property.bathrooms'),
-    propertyType: t('property.detail.propertyType'),
-    securityDeposit: t('property.detail.securityDeposit'),
-    furnished: t('property.detail.furnished'),
-    yearBuilt: t('property.detail.yearBuilt'),
-    floor: t('property.detail.floor'),
-    availableFrom: t('property.detail.availableFrom'),
-    distanceToBase: t('property.detail.distanceToBase'),
-    types: {
-      apartment: t('property.types.apartment'),
-      house: t('property.types.house'),
-      villa: t('property.types.villa'),
-      studio: t('property.types.studio'),
-    },
-    statuses: {
-      available: t('property.statuses.available'),
-      pending: t('property.statuses.pending'),
-      rented: t('property.statuses.rented'),
-      unavailable: t('property.statuses.unavailable'),
-      underReview: t('property.statuses.underReview'),
-    },
-    create: {
-      yes: t('property.create.yes'),
-      no: t('property.create.no'),
-      parking: t('property.create.parking'),
-      balcony: t('property.create.balcony'),
-      garden: t('property.create.garden'),
-      airConditioning: t('property.create.airConditioning'),
-      heating: t('property.create.heating'),
-      elevator: t('property.create.elevator'),
-      pets: t('property.create.pets'),
-    },
+const loadProperty = async () => {
+  loading.value = true
+  error.value = null
+
+  try {
+    const id = parseInt(route.params.id as string)
+    property.value = await fetchProperty(id)
+  } catch (err: any) {
+    console.error('Failed to load property:', err)
+    error.value = err.data?.message || t('common.errorLoadingData')
+  } finally {
+    loading.value = false
   }
+}
+
+const handleSubmitForReview = async () => {
+  if (!property.value) return
+  
+  submitting.value = true
+  try {
+    const response = await submitForReview(property.value.id)
+    property.value = response.property
+    console.log('Property submitted for review')
+  } catch (err: any) {
+    console.error('Failed to submit property:', err)
+    alert(err.data?.message || t('common.error'))
+  } finally {
+    submitting.value = false
+  }
+}
+
+const handleApprove = async () => {
+  if (!property.value) return
+  
+  actioning.value = true
+  try {
+    const response = await approveProperty(property.value.id)
+    property.value = response.property
+    console.log('Property approved')
+  } catch (err: any) {
+    console.error('Failed to approve property:', err)
+    alert(err.data?.message || t('common.error'))
+  } finally {
+    actioning.value = false
+  }
+}
+
+const handleReject = async () => {
+  if (!property.value || !rejectionReason.value.trim()) return
+  
+  actioning.value = true
+  try {
+    const response = await rejectProperty(property.value.id, rejectionReason.value)
+    property.value = response.property
+    showRejectDialog.value = false
+    rejectionReason.value = ''
+    console.log('Property rejected')
+  } catch (err: any) {
+    console.error('Failed to reject property:', err)
+    alert(err.data?.message || t('common.error'))
+  } finally {
+    actioning.value = false
+  }
+}
+
+const confirmDelete = () => {
+  if (!property.value) return
+  
+  if (confirm(t('property.detail.confirmDelete'))) {
+    handleDelete()
+  }
+}
+
+const handleDelete = async () => {
+  if (!property.value) return
+  
+  try {
+    await deleteProperty(property.value.id)
+    await navigateTo('/properties')
+  } catch (err: any) {
+    console.error('Failed to delete property:', err)
+    alert(err.data?.message || t('common.error'))
+  }
+}
+
+const getStatusVariant = (status: Property['status']) => {
+  switch (status) {
+    case 'draft':
+      return 'secondary'
+    case 'pending_review':
+      return 'warning'
+    case 'approved':
+      return 'success'
+    case 'rejected':
+      return 'destructive'
+    default:
+      return 'default'
+  }
+}
+
+const getStatusBorderClass = (status: Property['status']) => {
+  switch (status) {
+    case 'pending_review':
+      return 'border-l-warning'
+    case 'approved':
+      return 'border-l-success'
+    case 'rejected':
+      return 'border-l-destructive'
+    default:
+      return 'border-l-muted'
+  }
+}
+
+const formatCurrency = (amount: number, currency: string) => {
+  return new Intl.NumberFormat('it-IT', {
+    style: 'currency',
+    currency: currency,
+  }).format(amount)
+}
+
+const formatDate = (date: string) => {
+  return new Date(date).toLocaleDateString('it-IT', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
 }
 
 onMounted(() => {
-  loadTranslations()
+  loadProperty()
 })
-
-watch(locale, () => {
-  loadTranslations()
-})
-
-// Mock property data (replace with API call later)
-const property = ref({
-  id: route.params.id,
-  address: 'Via Roma, 123',
-  city: 'Aviano',
-  zipCode: '33081',
-  rent: 1200,
-  deposit: 2400,
-  bedrooms: 3,
-  bathrooms: 2,
-  squareMeters: 120,
-  distanceToBase: 2.5,
-  status: 'available',
-  type: 'apartment',
-  image: null,
-  floor: 2,
-  totalFloors: 4,
-  yearBuilt: 2015,
-  furnished: 'no',
-  availableFrom: '2025-01-01',
-  description: 'Beautiful 3-bedroom apartment in the heart of Aviano, just 2.5km from Aviano Air Base. The property features modern amenities, spacious rooms, and excellent natural lighting. Located in a quiet residential area with easy access to schools, shops, and public transportation. Perfect for military families looking for comfortable off-base housing.',
-  amenities: {
-    parking: true,
-    balcony: true,
-    garden: false,
-    airConditioning: true,
-    heating: true,
-    elevator: true,
-    pets: false,
-  },
-})
-
-// Methods
-const getStatusVariant = (status: string) => {
-  const variants: Record<string, any> = {
-    available: 'success',
-    pending: 'warning',
-    rented: 'secondary',
-    unavailable: 'destructive',
-    underReview: 'default',
-  }
-  return variants[status] || 'default'
-}
 </script>

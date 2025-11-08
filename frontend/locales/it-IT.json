@@ -536,7 +536,21 @@
       "furnished": "Arredato",
       "yearBuilt": "Anno di Costruzione",
       "floor": "Piano",
-      "distanceToBase": "Distanza da Aviano Air Base"
+      "distanceToBase": "Distanza da Aviano Air Base",
+      "statusPendingReview": "Questa proprietà è in attesa di revisione dall'Housing Office",
+      "statusApproved": "Questa proprietà è stata approvata dall'Housing Office",
+      "statusRejected": "Questa proprietà è stata rifiutata durante la revisione",
+      "reviewer": "Revisionato da",
+      "rejectionReason": "Motivo del Rifiuto",
+      "listingInfo": "Informazioni Annuncio",
+      "submitForReview": "Invia per Revisione",
+      "submitting": "Invio in corso...",
+      "editAndResubmit": "Modifica e Reinvia",
+      "rejectProperty": "Rifiuta Proprietà",
+      "rejectionReasonPlaceholder": "Spiega perché questa proprietà viene rifiutata...",
+      "rejecting": "Rifiuto in corso...",
+      "confirmReject": "Conferma Rifiuto",
+      "confirmDelete": "Sei sicuro di voler eliminare questa proprietà? Questa azione non può essere annullata."
     }
   },
   "lease": {
