@@ -129,9 +129,9 @@
             </button>
 
             <!-- User Menu (Authenticated) -->
-            <div v-if="isAuthenticated" class="relative">
+            <div v-if="isAuthenticated" class="relative" ref="userMenuContainer">
               <button
-                @click="showUserMenu = !showUserMenu"
+                @click="toggleUserMenu"
                 class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-accent transition-colors"
               >
                 <div class="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">
@@ -159,7 +159,6 @@
               <!-- Dropdown Menu -->
               <div
                 v-if="showUserMenu"
-                v-click-away="() => showUserMenu = false"
                 class="absolute right-0 mt-2 w-56 rounded-md border border-border bg-card shadow-lg"
               >
                 <div class="p-2">
@@ -217,7 +216,6 @@
 </template>
 
 <script setup lang="ts">
-import { vClickAway } from '@vueuse/components'
 import Button from '@/components/ui/Button.vue'
 
 const { user, isAuthenticated, isLandlord, isTenant, isHousingOffice, logout, getDefaultRoute } = useAuth()
@@ -225,6 +223,7 @@ const { locale, setLocale, t } = useI18n()
 const colorMode = useColorMode()
 
 const showUserMenu = ref(false)
+const userMenuContainer = ref<HTMLElement | null>(null)
 
 const toggleLocale = () => {
   const newLocale = locale.value === 'en' ? 'it' : 'en'
@@ -235,8 +234,27 @@ const toggleColorMode = () => {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
 }
 
+const toggleUserMenu = () => {
+  showUserMenu.value = !showUserMenu.value
+}
+
 const handleLogout = async () => {
   showUserMenu.value = false
   await logout()
 }
+
+// Close menu when clicking outside
+const handleClickOutside = (event: MouseEvent) => {
+  if (userMenuContainer.value && !userMenuContainer.value.contains(event.target as Node)) {
+    showUserMenu.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
