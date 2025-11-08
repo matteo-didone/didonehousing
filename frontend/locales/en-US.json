@@ -185,6 +185,32 @@
     "filterBy": "Filter by",
     "allStatuses": "All Statuses"
   },
+  "documents": {
+    "title": "Documents",
+    "uploadDocument": "Upload Document",
+    "myDocuments": "My Documents",
+    "fileName": "File Name",
+    "type": "Type",
+    "uploadedBy": "Uploaded By",
+    "uploadedAt": "Uploaded At",
+    "size": "Size",
+    "download": "Download",
+    "delete": "Delete",
+    "noDocuments": "No documents",
+    "noDocumentsDesc": "Upload documents to get started",
+    "dragDrop": "Drag and drop files here, or click to browse",
+    "uploading": "Uploading...",
+    "filterByType": "Filter by type",
+    "allTypes": "All Types",
+    "types": {
+      "lease": "Lease Agreement",
+      "contract": "Contract",
+      "invoice": "Invoice",
+      "receipt": "Receipt",
+      "identity": "Identity Document",
+      "other": "Other"
+    }
+  },
   "navigation": {
     "home": "Home",
     "dashboard": "Dashboard",

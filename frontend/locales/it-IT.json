@@ -185,6 +185,32 @@
     "filterBy": "Filtra per",
     "allStatuses": "Tutti gli Stati"
   },
+  "documents": {
+    "title": "Documenti",
+    "uploadDocument": "Carica Documento",
+    "myDocuments": "I Miei Documenti",
+    "fileName": "Nome File",
+    "type": "Tipo",
+    "uploadedBy": "Caricato Da",
+    "uploadedAt": "Caricato Il",
+    "size": "Dimensione",
+    "download": "Scarica",
+    "delete": "Elimina",
+    "noDocuments": "Nessun documento",
+    "noDocumentsDesc": "Carica documenti per iniziare",
+    "dragDrop": "Trascina e rilascia i file qui, o clicca per sfogliare",
+    "uploading": "Caricamento...",
+    "filterByType": "Filtra per tipo",
+    "allTypes": "Tutti i Tipi",
+    "types": {
+      "lease": "Contratto di Locazione",
+      "contract": "Contratto",
+      "invoice": "Fattura",
+      "receipt": "Ricevuta",
+      "identity": "Documento d'Identità",
+      "other": "Altro"
+    }
+  },
   "navigation": {
     "home": "Home",
     "dashboard": "Pannello",
