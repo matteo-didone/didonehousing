@@ -75,13 +75,19 @@
     "home": "Home",
     "dashboard": "Dashboard",
     "properties": "Properties",
+    "myProperties": "My Properties",
+    "searchProperties": "Search Properties",
     "leases": "Leases",
     "payments": "Payments",
     "maintenance": "Maintenance",
     "documents": "Documents",
     "messages": "Messages",
     "profile": "Profile",
-    "settings": "Settings"
+    "settings": "Settings",
+    "pendingReview": "Pending Review",
+    "approvals": "Approvals",
+    "toggleSidebar": "Toggle sidebar",
+    "userMenu": "User menu"
   },
   "property": {
     "title": "Properties",

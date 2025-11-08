@@ -75,13 +75,19 @@
     "home": "Home",
     "dashboard": "Pannello",
     "properties": "Proprietà",
+    "myProperties": "Le Mie Proprietà",
+    "searchProperties": "Cerca Proprietà",
     "leases": "Contratti",
     "payments": "Pagamenti",
     "maintenance": "Manutenzione",
     "documents": "Documenti",
     "messages": "Messaggi",
     "profile": "Profilo",
-    "settings": "Impostazioni"
+    "settings": "Impostazioni",
+    "pendingReview": "In Attesa di Revisione",
+    "approvals": "Approvazioni",
+    "toggleSidebar": "Attiva/disattiva barra laterale",
+    "userMenu": "Menu utente"
   },
   "property": {
     "title": "Proprietà",
