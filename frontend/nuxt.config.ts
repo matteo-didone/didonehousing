@@ -78,14 +78,12 @@ export default defineNuxtConfig({
       {
         code: "en",
         iso: "en-US",
-        name: "English",
-        file: "en-US.json",
+        name: "English (US)",
       },
       {
         code: "it",
         iso: "it-IT",
         name: "Italiano",
-        file: "it-IT.json",
       },
     ],
     defaultLocale: "en",
@@ -96,8 +94,6 @@ export default defineNuxtConfig({
       redirectOn: "root",
       alwaysRedirect: false,
     },
-    langDir: "locales",
-    lazy: true,
     vueI18n: "./i18n.config.ts",
   },
 
