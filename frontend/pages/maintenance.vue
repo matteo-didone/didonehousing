@@ -214,7 +214,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import Card from '@/components/ui/Card.vue'
 import CardHeader from '@/components/ui/CardHeader.vue'
 import CardTitle from '@/components/ui/CardTitle.vue'
@@ -231,7 +231,7 @@ definePageMeta({
   middleware: 'auth',
 })
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 // Translations
 const translations = ref({
@@ -259,7 +259,7 @@ const translations = ref({
   allStatuses: '',
 })
 
-onMounted(() => {
+const loadTranslations = () => {
   translations.value = {
     title: t('maintenance.title'),
     createTicket: t('maintenance.createTicket'),
@@ -301,6 +301,14 @@ onMounted(() => {
     noTicketsDesc: t('maintenance.noTicketsDesc'),
     allStatuses: t('maintenance.allStatuses'),
   }
+}
+
+onMounted(() => {
+  loadTranslations()
+})
+
+watch(locale, () => {
+  loadTranslations()
 })
 
 // State

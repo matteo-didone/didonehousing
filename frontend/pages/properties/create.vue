@@ -332,7 +332,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import Card from '@/components/ui/Card.vue'
 import CardHeader from '@/components/ui/CardHeader.vue'
 import CardTitle from '@/components/ui/CardTitle.vue'
@@ -349,7 +349,7 @@ definePageMeta({
   middleware: ['auth', 'landlord'],
 })
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 // Translations
 const translations = ref({
@@ -404,7 +404,7 @@ const propertyTypes = ref({
   studio: '',
 })
 
-onMounted(() => {
+const loadTranslations = () => {
   translations.value = {
     title: t('property.create.title'),
     subtitle: t('property.create.subtitle'),
@@ -456,6 +456,14 @@ onMounted(() => {
     villa: t('property.types.villa'),
     studio: t('property.types.studio'),
   }
+}
+
+onMounted(() => {
+  loadTranslations()
+})
+
+watch(locale, () => {
+  loadTranslations()
 })
 
 // Form state

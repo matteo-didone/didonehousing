@@ -146,7 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import Card from '@/components/ui/Card.vue'
 import CardHeader from '@/components/ui/CardHeader.vue'
 import CardTitle from '@/components/ui/CardTitle.vue'
@@ -158,7 +158,7 @@ definePageMeta({
 })
 
 const { isAuthenticated, getDefaultRoute } = useAuth()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const translations = ref({
   heroTitle: '',
@@ -175,7 +175,7 @@ const translations = ref({
   },
 })
 
-onMounted(() => {
+const loadTranslations = () => {
   translations.value = {
     heroTitle: t('home.heroTitle'),
     heroSubtitle: t('home.heroSubtitle'),
@@ -208,5 +208,13 @@ onMounted(() => {
       },
     },
   }
+}
+
+onMounted(() => {
+  loadTranslations()
+})
+
+watch(locale, () => {
+  loadTranslations()
 })
 </script>

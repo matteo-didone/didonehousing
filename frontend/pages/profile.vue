@@ -266,7 +266,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import Card from '@/components/ui/Card.vue'
 import CardHeader from '@/components/ui/CardHeader.vue'
 import CardTitle from '@/components/ui/CardTitle.vue'
@@ -282,7 +282,7 @@ definePageMeta({
 })
 
 const { user } = useAuth()
-const { t, setLocale } = useI18n()
+const { t, setLocale, locale } = useI18n()
 
 // Translations
 const translations = ref({
@@ -320,7 +320,7 @@ const translations = ref({
   settingsSuccess: '',
 })
 
-onMounted(() => {
+const loadTranslations = () => {
   translations.value = {
     title: t('profile.title'),
     personalInfo: t('profile.personalInfo'),
@@ -355,6 +355,10 @@ onMounted(() => {
     passwordSuccess: t('profile.passwordSuccess'),
     settingsSuccess: t('profile.settingsSuccess'),
   }
+}
+
+onMounted(() => {
+  loadTranslations()
 
   // Initialize forms with user data
   if (user.value) {
@@ -366,6 +370,10 @@ onMounted(() => {
       language: user.value.preferred_language || 'en',
     }
   }
+})
+
+watch(locale, () => {
+  loadTranslations()
 })
 
 // State

@@ -228,7 +228,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import Card from '@/components/ui/Card.vue'
 import CardHeader from '@/components/ui/CardHeader.vue'
 import CardTitle from '@/components/ui/CardTitle.vue'
@@ -246,7 +246,7 @@ definePageMeta({
 })
 
 const { isLandlord } = useAuth()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 // Translations
 const translations = ref({
@@ -297,7 +297,8 @@ const translations = ref({
   },
 })
 
-onMounted(() => {
+// Load translations function
+const loadTranslations = () => {
   translations.value = {
     title: t('property.title'),
     subtitle: {
@@ -345,6 +346,16 @@ onMounted(() => {
       studio: t('property.types.studio'),
     },
   }
+}
+
+// Load translations on mount
+onMounted(() => {
+  loadTranslations()
+})
+
+// Watch for locale changes and reload translations
+watch(locale, () => {
+  loadTranslations()
 })
 
 // State

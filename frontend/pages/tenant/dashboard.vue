@@ -245,7 +245,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import Card from '@/components/ui/Card.vue'
 import CardHeader from '@/components/ui/CardHeader.vue'
 import CardTitle from '@/components/ui/CardTitle.vue'
@@ -259,7 +259,7 @@ definePageMeta({
 })
 
 const { user } = useAuth()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 // Translations
 const translations = ref({
@@ -290,7 +290,8 @@ const translations = ref({
   noPayments: '',
 })
 
-onMounted(() => {
+// Load translations function
+const loadTranslations = () => {
   translations.value = {
     title: t('dashboard.tenant.title'),
     welcome: t('dashboard.tenant.welcome'),
@@ -318,6 +319,16 @@ onMounted(() => {
     payNow: t('dashboard.tenant.payNow'),
     noPayments: t('dashboard.tenant.noPayments'),
   }
+}
+
+// Load translations on mount
+onMounted(() => {
+  loadTranslations()
+})
+
+// Watch for locale changes and reload translations
+watch(locale, () => {
+  loadTranslations()
 })
 
 // Mock data
