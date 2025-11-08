@@ -214,6 +214,28 @@
       "dragDrop": "Drag and drop photos here, or click to select",
       "success": "Property submitted successfully!",
       "successDescription": "Your property is now pending review by Housing Office."
+    },
+    "detail": {
+      "backToList": "Back to Properties",
+      "edit": "Edit Property",
+      "delete": "Delete Property",
+      "contactLandlord": "Contact Landlord",
+      "requestViewing": "Request Viewing",
+      "approve": "Approve",
+      "reject": "Reject",
+      "overview": "Overview",
+      "description": "Description",
+      "amenities": "Amenities & Features",
+      "location": "Location",
+      "propertyInfo": "Property Information",
+      "monthlyRent": "Monthly Rent",
+      "securityDeposit": "Security Deposit",
+      "availableFrom": "Available From",
+      "propertyType": "Property Type",
+      "furnished": "Furnished",
+      "yearBuilt": "Year Built",
+      "floor": "Floor",
+      "distanceToBase": "Distance to Aviano Air Base"
     }
   },
   "lease": {

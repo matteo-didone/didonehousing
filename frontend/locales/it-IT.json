@@ -214,6 +214,28 @@
       "dragDrop": "Trascina e rilascia le foto qui, o clicca per selezionare",
       "success": "Proprietà inviata con successo!",
       "successDescription": "La tua proprietà è ora in attesa di revisione dall'Housing Office."
+    },
+    "detail": {
+      "backToList": "Torna alle Proprietà",
+      "edit": "Modifica Proprietà",
+      "delete": "Elimina Proprietà",
+      "contactLandlord": "Contatta Proprietario",
+      "requestViewing": "Richiedi Visita",
+      "approve": "Approva",
+      "reject": "Rifiuta",
+      "overview": "Panoramica",
+      "description": "Descrizione",
+      "amenities": "Servizi e Caratteristiche",
+      "location": "Posizione",
+      "propertyInfo": "Informazioni Proprietà",
+      "monthlyRent": "Affitto Mensile",
+      "securityDeposit": "Deposito Cauzionale",
+      "availableFrom": "Disponibile Dal",
+      "propertyType": "Tipo di Proprietà",
+      "furnished": "Arredato",
+      "yearBuilt": "Anno di Costruzione",
+      "floor": "Piano",
+      "distanceToBase": "Distanza da Aviano Air Base"
     }
   },
   "lease": {
