@@ -180,7 +180,32 @@
     "ho": {
       "title": "Housing Office Dashboard",
       "welcome": "Housing Office",
-      "subtitle": "Manage property approvals and support military personnel"
+      "subtitle": "Manage property approvals and support military personnel",
+      "stats": {
+        "pendingApprovals": "Pending Approvals",
+        "totalProperties": "Total Properties",
+        "activeTenants": "Active Tenants",
+        "openTickets": "Open Tickets"
+      },
+      "quickActions": "Quick Actions",
+      "reviewProperties": "Review Properties",
+      "reviewPropertiesDesc": "Review pending property submissions",
+      "manageTenants": "Manage Tenants",
+      "manageTenantsDesc": "View and support military personnel",
+      "viewReports": "View Reports",
+      "viewReportsDesc": "Access housing statistics and reports",
+      "pendingApprovalsList": "Pending Property Approvals",
+      "viewAll": "View All",
+      "recentApprovals": "Recent Approvals",
+      "noRecentApprovals": "No recent approvals",
+      "approvedBy": "Approved by",
+      "rejectedBy": "Rejected by",
+      "propertyStats": "Property Statistics",
+      "byStatus": "By Status",
+      "byType": "By Type",
+      "approve": "Approve",
+      "reject": "Reject",
+      "viewDetails": "View Details"
     }
   },
   "property": {

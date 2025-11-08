@@ -180,7 +180,32 @@
     "ho": {
       "title": "Pannello Housing Office",
       "welcome": "Housing Office",
-      "subtitle": "Gestisci le approvazioni immobiliari e supporta il personale militare"
+      "subtitle": "Gestisci le approvazioni immobiliari e supporta il personale militare",
+      "stats": {
+        "pendingApprovals": "Approvazioni in Sospeso",
+        "totalProperties": "Proprietà Totali",
+        "activeTenants": "Inquilini Attivi",
+        "openTickets": "Ticket Aperti"
+      },
+      "quickActions": "Azioni Rapide",
+      "reviewProperties": "Rivedi Proprietà",
+      "reviewPropertiesDesc": "Rivedi le proprietà in attesa di approvazione",
+      "manageTenants": "Gestisci Inquilini",
+      "manageTenantsDesc": "Visualizza e supporta il personale militare",
+      "viewReports": "Visualizza Report",
+      "viewReportsDesc": "Accedi a statistiche e report sugli alloggi",
+      "pendingApprovalsList": "Proprietà in Attesa di Approvazione",
+      "viewAll": "Visualizza Tutto",
+      "recentApprovals": "Approvazioni Recenti",
+      "noRecentApprovals": "Nessuna approvazione recente",
+      "approvedBy": "Approvato da",
+      "rejectedBy": "Rifiutato da",
+      "propertyStats": "Statistiche Proprietà",
+      "byStatus": "Per Stato",
+      "byType": "Per Tipo",
+      "approve": "Approva",
+      "reject": "Rifiuta",
+      "viewDetails": "Visualizza Dettagli"
     }
   },
   "property": {
