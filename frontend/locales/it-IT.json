@@ -558,6 +558,11 @@
       "noPendingReview": "Tutto Fatto!",
       "noPendingReviewDesc": "Non ci sono proprietà in attesa di revisione al momento.",
       "submittedOn": "Inviato il"
+    },
+    "tenant": {
+      "availableProperties": "Proprietà Disponibili",
+      "petsOk": "Animali OK",
+      "clickToViewDetails": "Clicca per visualizzare tutti i dettagli"
     }
   },
   "lease": {

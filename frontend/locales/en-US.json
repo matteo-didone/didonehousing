@@ -558,6 +558,11 @@
       "noPendingReview": "All Caught Up!",
       "noPendingReviewDesc": "There are no properties pending review at the moment.",
       "submittedOn": "Submitted on"
+    },
+    "tenant": {
+      "availableProperties": "Available Properties",
+      "petsOk": "Pets OK",
+      "clickToViewDetails": "Click to view full details"
     }
   },
   "lease": {
