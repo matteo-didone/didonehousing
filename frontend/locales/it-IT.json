@@ -151,7 +151,31 @@
     "tenant": {
       "title": "Pannello Inquilino",
       "welcome": "Benvenuto, {name}!",
-      "subtitle": "Trova la tua casa perfetta vicino alla Base di Aviano"
+      "subtitle": "Trova la tua casa perfetta vicino alla Base di Aviano",
+      "stats": {
+        "savedProperties": "Proprietà Salvate",
+        "viewingRequests": "Richieste Visita",
+        "activeLease": "Contratto Attivo",
+        "maintenanceTickets": "Ticket Manutenzione"
+      },
+      "quickActions": "Azioni Rapide",
+      "searchProperties": "Cerca Proprietà",
+      "searchPropertiesDesc": "Sfoglia gli affitti disponibili vicino alla base",
+      "myLease": "Il Mio Contratto",
+      "myLeaseDesc": "Visualizza il contratto di locazione corrente",
+      "submitMaintenance": "Invia Richiesta",
+      "submitMaintenanceDesc": "Segnala problemi di manutenzione",
+      "featuredProperties": "Proprietà in Evidenza Vicino alla Base",
+      "viewAllProperties": "Visualizza Tutte le Proprietà",
+      "recentActivity": "Attività Recenti",
+      "noActivity": "Nessuna attività recente",
+      "myApplications": "Le Mie Candidature",
+      "upcomingPayments": "Pagamenti in Arrivo",
+      "dueDate": "Data di Scadenza",
+      "amount": "Importo",
+      "payNow": "Paga Ora",
+      "noPayments": "Nessun pagamento in arrivo",
+      "viewProperty": "Visualizza Proprietà"
     },
     "ho": {
       "title": "Pannello Housing Office",

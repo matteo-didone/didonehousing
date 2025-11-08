@@ -151,7 +151,31 @@
     "tenant": {
       "title": "Tenant Dashboard",
       "welcome": "Welcome, {name}!",
-      "subtitle": "Find your perfect home near Aviano Air Base"
+      "subtitle": "Find your perfect home near Aviano Air Base",
+      "stats": {
+        "savedProperties": "Saved Properties",
+        "viewingRequests": "Viewing Requests",
+        "activeLease": "Active Lease",
+        "maintenanceTickets": "Maintenance Tickets"
+      },
+      "quickActions": "Quick Actions",
+      "searchProperties": "Search Properties",
+      "searchPropertiesDesc": "Browse available rentals near base",
+      "myLease": "My Lease",
+      "myLeaseDesc": "View current lease agreement",
+      "submitMaintenance": "Submit Request",
+      "submitMaintenanceDesc": "Report maintenance issues",
+      "featuredProperties": "Featured Properties Near Base",
+      "viewAllProperties": "View All Properties",
+      "recentActivity": "Recent Activity",
+      "noActivity": "No recent activity",
+      "myApplications": "My Applications",
+      "upcomingPayments": "Upcoming Payments",
+      "dueDate": "Due Date",
+      "amount": "Amount",
+      "payNow": "Pay Now",
+      "noPayments": "No upcoming payments",
+      "viewProperty": "View Property"
     },
     "ho": {
       "title": "Housing Office Dashboard",
