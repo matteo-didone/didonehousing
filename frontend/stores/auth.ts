@@ -128,7 +128,10 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async fetchUser() {
+      console.log('[AUTH STORE] fetchUser() called. Token:', this.token ? 'EXISTS' : 'NULL')
+
       if (!this.token) {
+        console.log('[AUTH STORE] No token, skipping fetchUser')
         return null
       }
 
@@ -136,6 +139,8 @@ export const useAuthStore = defineStore('auth', {
 
       try {
         const config = useRuntimeConfig()
+        console.log('[AUTH STORE] Fetching user from:', config.public.apiBase + '/auth/me')
+
         const response = await $fetch<{ user: User }>('/auth/me', {
           baseURL: config.public.apiBase,
           method: 'GET',
@@ -144,12 +149,13 @@ export const useAuthStore = defineStore('auth', {
           },
         })
 
+        console.log('[AUTH STORE] User fetched successfully:', response.user.first_name, response.user.last_name)
         this.user = response.user
         this.isAuthenticated = true
 
         return response.user
       } catch (error) {
-        console.error('Fetch user error:', error)
+        console.error('[AUTH STORE] Fetch user error:', error)
         this.clearAuth()
         return null
       } finally {
@@ -158,9 +164,11 @@ export const useAuthStore = defineStore('auth', {
     },
 
     setAuth(user: User, token: string) {
+      console.log('[AUTH STORE] setAuth() called for user:', user.first_name, user.last_name)
       this.user = user
       this.token = token
       this.isAuthenticated = true
+      console.log('[AUTH STORE] Token will be persisted to cookies by pinia-plugin-persistedstate')
       // Note: State is automatically persisted to cookies by pinia-plugin-persistedstate
     },
 
@@ -173,10 +181,16 @@ export const useAuthStore = defineStore('auth', {
 
     // Restore auth from persisted state (cookies) and verify token validity
     async restoreAuth() {
+      console.log('[AUTH STORE] restoreAuth() called')
+      console.log('[AUTH STORE] Current state - token:', this.token ? 'EXISTS' : 'NULL', 'user:', this.user ? 'EXISTS' : 'NULL')
+
       // Note: State (user, token) is automatically restored from cookies by pinia-plugin-persistedstate
       // We just need to verify the token is still valid by fetching fresh user data
       if (this.token) {
+        console.log('[AUTH STORE] Token found, calling fetchUser()')
         await this.fetchUser()
+      } else {
+        console.log('[AUTH STORE] No token found, skipping restore')
       }
     },
   },
