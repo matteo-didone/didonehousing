@@ -31,6 +31,38 @@
     "error": "Si è verificato un errore",
     "success": "Operazione completata con successo"
   },
+  "home": {
+    "heroTitle": "Benvenuto nella Piattaforma Aviano Housing",
+    "heroSubtitle": "Piattaforma all-in-one per la gestione degli alloggi fuori base ad Aviano Air Base",
+    "getStarted": "Inizia",
+    "goToDashboard": "Vai al Pannello",
+    "features": {
+      "propertyManagement": {
+        "title": "Gestione Proprietà",
+        "description": "Ciclo di vita completo degli annunci con workflow di approvazione HO"
+      },
+      "bilingualContracts": {
+        "title": "Contratti Bilingue",
+        "description": "Template IT/EN con firma elettronica eIDAS"
+      },
+      "payments": {
+        "title": "Pagamenti",
+        "description": "SEPA DD/CT, carte (Stripe), deposito cauzionale"
+      },
+      "maintenance": {
+        "title": "Manutenzione",
+        "description": "Sistema di ticketing con SLA, gestione fornitori"
+      },
+      "i18n": {
+        "title": "Completa I18n",
+        "description": "Supporto completo Italiano/Inglese"
+      },
+      "security": {
+        "title": "Sicurezza",
+        "description": "RBAC, 2FA, conforme GDPR, audit trail completo"
+      }
+    }
+  },
   "auth": {
     "login": "Accedi",
     "logout": "Esci",

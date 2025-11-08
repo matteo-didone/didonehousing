@@ -31,6 +31,38 @@
     "error": "An error occurred",
     "success": "Operation successful"
   },
+  "home": {
+    "heroTitle": "Welcome to Aviano Housing Platform",
+    "heroSubtitle": "All-in-one platform for off-base housing management at Aviano Air Base",
+    "getStarted": "Get Started",
+    "goToDashboard": "Go to Dashboard",
+    "features": {
+      "propertyManagement": {
+        "title": "Property Management",
+        "description": "Complete listing lifecycle with HO approval workflows"
+      },
+      "bilingualContracts": {
+        "title": "Bilingual Contracts",
+        "description": "IT/EN templates with eIDAS e-signature"
+      },
+      "payments": {
+        "title": "Payments",
+        "description": "SEPA DD/CT, cards (Stripe), deposit escrow"
+      },
+      "maintenance": {
+        "title": "Maintenance",
+        "description": "Ticketing system with SLA, vendor management"
+      },
+      "i18n": {
+        "title": "Full I18n",
+        "description": "Complete Italian/English support"
+      },
+      "security": {
+        "title": "Security",
+        "description": "RBAC, 2FA, GDPR-compliant, full audit trail"
+      }
+    }
+  },
   "auth": {
     "login": "Log In",
     "logout": "Log Out",
