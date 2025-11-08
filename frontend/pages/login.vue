@@ -4,10 +4,10 @@
       <Card>
         <CardHeader class="space-y-1">
           <CardTitle class="text-2xl font-bold text-center">
-            {{ $t('auth.loginTitle') }}
+            {{ translations.loginTitle }}
           </CardTitle>
           <CardDescription class="text-center">
-            {{ $t('auth.loginSubtitle') }}
+            {{ translations.loginSubtitle }}
           </CardDescription>
         </CardHeader>
 
@@ -26,7 +26,7 @@
             <!-- Email Field -->
             <div class="space-y-2">
               <Label for="email">
-                {{ $t('auth.email') }}
+                {{ translations.email }}
               </Label>
               <Input
                 id="email"
@@ -34,7 +34,7 @@
                 type="email"
                 required
                 autocomplete="email"
-                :placeholder="$t('auth.emailPlaceholder')"
+                :placeholder="translations.emailPlaceholder"
                 :class="{ 'border-destructive': errors.email }"
               />
               <p v-if="errors.email" class="text-sm text-destructive">
@@ -46,13 +46,13 @@
             <div class="space-y-2">
               <div class="flex items-center justify-between">
                 <Label for="password">
-                  {{ $t('auth.password') }}
+                  {{ translations.password }}
                 </Label>
                 <NuxtLink
                   to="/forgot-password"
                   class="text-sm font-medium text-primary hover:underline"
                 >
-                  {{ $t('auth.forgotPassword') }}
+                  {{ translations.forgotPassword }}
                 </NuxtLink>
               </div>
               <Input
@@ -61,7 +61,7 @@
                 type="password"
                 required
                 autocomplete="current-password"
-                :placeholder="$t('auth.passwordPlaceholder')"
+                :placeholder="translations.passwordPlaceholder"
                 :class="{ 'border-destructive': errors.password }"
               />
               <p v-if="errors.password" class="text-sm text-destructive">
@@ -78,7 +78,7 @@
                 class="h-4 w-4 rounded border-input text-primary focus:ring-2 focus:ring-ring focus:ring-offset-2"
               />
               <Label for="remember-me" class="ml-2 cursor-pointer">
-                {{ $t('auth.rememberMe') }}
+                {{ translations.rememberMe }}
               </Label>
             </div>
 
@@ -89,18 +89,18 @@
               class="w-full"
               size="lg"
             >
-              <span v-if="loading">{{ $t('auth.signingIn') }}</span>
-              <span v-else>{{ $t('auth.login') }}</span>
+              <span v-if="loading">{{ translations.signingIn }}</span>
+              <span v-else>{{ translations.login }}</span>
             </Button>
 
             <!-- Register Link -->
             <div class="text-center text-sm">
-              <span class="text-muted-foreground">{{ $t('auth.noAccount') }}</span>
+              <span class="text-muted-foreground">{{ translations.noAccount }}</span>
               <NuxtLink
                 to="/register"
                 class="ml-1 font-medium text-primary hover:underline"
               >
-                {{ $t('auth.createAccount') }}
+                {{ translations.createAccount }}
               </NuxtLink>
             </div>
           </form>
@@ -127,6 +127,22 @@ definePageMeta({
 
 const { login } = useAuth()
 const { t } = useI18n()
+
+// Pre-compute translations to avoid SSR hydration mismatches
+const translations = computed(() => ({
+  loginTitle: t('auth.loginTitle'),
+  loginSubtitle: t('auth.loginSubtitle'),
+  email: t('auth.email'),
+  emailPlaceholder: t('auth.emailPlaceholder'),
+  password: t('auth.password'),
+  passwordPlaceholder: t('auth.passwordPlaceholder'),
+  forgotPassword: t('auth.forgotPassword'),
+  rememberMe: t('auth.rememberMe'),
+  login: t('auth.login'),
+  signingIn: t('auth.signingIn'),
+  noAccount: t('auth.noAccount'),
+  createAccount: t('auth.createAccount'),
+}))
 
 const form = ref({
   email: '',
