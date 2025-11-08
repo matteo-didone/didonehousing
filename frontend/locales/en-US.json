@@ -32,7 +32,12 @@
     "success": "Operation successful",
     "any": "Any",
     "allTypes": "All Types",
-    "allStatuses": "All Statuses"
+    "allStatuses": "All Statuses",
+    "retry": "Retry",
+    "page": "Page",
+    "of": "of",
+    "clickToView": "Click to view details",
+    "errorLoadingData": "Failed to load data. Please try again."
   },
   "branding": {
     "appName": "Aviano Housing",
@@ -392,6 +397,14 @@
     "availableFrom": "Available From",
     "status": "Status",
     "distanceToBase": "Distance to Base",
+    "manageYourProperties": "Manage your properties",
+    "createProperty": "Create Property",
+    "createFirstProperty": "Create Your First Property",
+    "id": "ID",
+    "furnished": "Furnished",
+    "monthlyRent": "Monthly Rent",
+    "noProperties": "No Properties Yet",
+    "noPropertiesDesc": "You haven't created any properties yet. Start by creating your first property listing.",
     "filters": {
       "title": "Filters",
       "priceRange": "Price Range",
@@ -409,7 +422,11 @@
       "pending": "Pending Approval",
       "rented": "Rented",
       "unavailable": "Unavailable",
-      "underReview": "Under Review"
+      "underReview": "Under Review",
+      "draft": "Draft",
+      "pending_review": "Pending Review",
+      "approved": "Approved",
+      "rejected": "Rejected"
     },
     "types": {
       "apartment": "Apartment",

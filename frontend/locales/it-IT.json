@@ -32,7 +32,12 @@
     "success": "Operazione completata con successo",
     "any": "Qualsiasi",
     "allTypes": "Tutti i Tipi",
-    "allStatuses": "Tutti gli Stati"
+    "allStatuses": "Tutti gli Stati",
+    "retry": "Riprova",
+    "page": "Pagina",
+    "of": "di",
+    "clickToView": "Clicca per visualizzare i dettagli",
+    "errorLoadingData": "Errore nel caricamento dei dati. Riprova."
   },
   "branding": {
     "appName": "Aviano Housing",
@@ -392,6 +397,14 @@
     "availableFrom": "Disponibile Dal",
     "status": "Stato",
     "distanceToBase": "Distanza dalla Base",
+    "manageYourProperties": "Gestisci le tue proprietà",
+    "createProperty": "Crea Proprietà",
+    "createFirstProperty": "Crea la Tua Prima Proprietà",
+    "id": "ID",
+    "furnished": "Arredato",
+    "monthlyRent": "Affitto Mensile",
+    "noProperties": "Nessuna Proprietà",
+    "noPropertiesDesc": "Non hai ancora creato nessuna proprietà. Inizia creando il tuo primo annuncio.",
     "filters": {
       "title": "Filtri",
       "priceRange": "Fascia di Prezzo",
@@ -409,7 +422,11 @@
       "pending": "In Attesa di Approvazione",
       "rented": "Affittato",
       "unavailable": "Non Disponibile",
-      "underReview": "In Revisione"
+      "underReview": "In Revisione",
+      "draft": "Bozza",
+      "pending_review": "In Attesa di Revisione",
+      "approved": "Approvato",
+      "rejected": "Rifiutato"
     },
     "types": {
       "apartment": "Appartamento",
