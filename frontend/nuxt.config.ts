@@ -74,7 +74,22 @@ export default defineNuxtConfig({
 
   // I18n Configuration (IT/EN full support)
   i18n: {
-    locales: ["en", "it"],
+    locales: [
+      {
+        code: "en",
+        iso: "en-US",
+        name: "English (US)",
+        file: "en-US.json",
+      },
+      {
+        code: "it",
+        iso: "it-IT",
+        name: "Italiano",
+        file: "it-IT.json",
+      },
+    ],
+    lazy: true,
+    langDir: "locales",
     defaultLocale: "en",
     strategy: "no_prefix",
     detectBrowserLanguage: {
@@ -86,67 +101,6 @@ export default defineNuxtConfig({
     compilation: {
       strictMessage: false,
     },
-    vueI18n: {
-      legacy: false,
-      locale: 'en',
-      fallbackLocale: 'en',
-      messages: {
-        en: {
-          auth: {
-            login: "Log In",
-            logout: "Log Out",
-            register: "Sign Up",
-            loginTitle: "Sign in to your account",
-            loginSubtitle: "Enter your credentials to access Aviano Housing Platform",
-            registerTitle: "Create your account",
-            registerSubtitle: "Join the Aviano Housing community",
-            forgotPassword: "Forgot Password?",
-            resetPassword: "Reset Password",
-            email: "Email address",
-            emailPlaceholder: "Enter your email",
-            password: "Password",
-            passwordPlaceholder: "Enter your password",
-            confirmPassword: "Confirm Password",
-            rememberMe: "Remember me",
-            signingIn: "Signing in...",
-            noAccount: "Don't have an account?",
-            hasAccount: "Already have an account?",
-            createAccount: "Create account",
-            loginSuccess: "Successfully logged in",
-            logoutSuccess: "Successfully logged out",
-            loginError: "Invalid credentials. Please try again.",
-            loginRequired: "Please sign in to continue"
-          }
-        },
-        it: {
-          auth: {
-            login: "Accedi",
-            logout: "Esci",
-            register: "Registrati",
-            loginTitle: "Accedi al tuo account",
-            loginSubtitle: "Inserisci le tue credenziali per accedere alla Piattaforma Aviano Housing",
-            registerTitle: "Crea il tuo account",
-            registerSubtitle: "Unisciti alla community Aviano Housing",
-            forgotPassword: "Password dimenticata?",
-            resetPassword: "Reimposta Password",
-            email: "Indirizzo email",
-            emailPlaceholder: "Inserisci la tua email",
-            password: "Password",
-            passwordPlaceholder: "Inserisci la tua password",
-            confirmPassword: "Conferma Password",
-            rememberMe: "Ricordami",
-            signingIn: "Accesso in corso...",
-            noAccount: "Non hai un account?",
-            hasAccount: "Hai già un account?",
-            createAccount: "Crea account",
-            loginSuccess: "Accesso effettuato con successo",
-            logoutSuccess: "Disconnessione effettuata con successo",
-            loginError: "Credenziali non valide. Riprova.",
-            loginRequired: "Effettua l'accesso per continuare"
-          }
-        }
-      }
-    }
   },
 
   // TailwindCSS Configuration
