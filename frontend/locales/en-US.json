@@ -518,17 +518,6 @@
     "receipt": "Receipt",
     "makePayment": "Make Payment"
   },
-  "maintenance": {
-    "title": "Maintenance Tickets",
-    "createTicket": "Create Ticket",
-    "category": "Category",
-    "priority": "Priority",
-    "description": "Description",
-    "status": "Status",
-    "assignedTo": "Assigned To",
-    "createdAt": "Created At",
-    "resolvedAt": "Resolved At"
-  },
   "user": {
     "profile": "Profile",
     "firstName": "First Name",

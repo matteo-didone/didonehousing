@@ -518,17 +518,6 @@
     "receipt": "Ricevuta",
     "makePayment": "Effettua Pagamento"
   },
-  "maintenance": {
-    "title": "Ticket di Manutenzione",
-    "createTicket": "Crea Ticket",
-    "category": "Categoria",
-    "priority": "Priorità",
-    "description": "Descrizione",
-    "status": "Stato",
-    "assignedTo": "Assegnato A",
-    "createdAt": "Creato Il",
-    "resolvedAt": "Risolto Il"
-  },
   "user": {
     "profile": "Profilo",
     "firstName": "Nome",

@@ -64,10 +64,10 @@
             <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
           </svg>
         </div>
-        <h3 class="text-lg font-semibold">{{ translations.noTickets }}</h3>
-        <p class="mt-2 text-sm text-muted-foreground">{{ translations.noTicketsDesc }}</p>
+        <h3 class="text-lg font-semibold">{{ t('maintenance.noTickets') }}</h3>
+        <p class="mt-2 text-sm text-muted-foreground">{{ t('maintenance.noTicketsDesc') }}</p>
         <Button @click="showCreateModal = true" class="mt-4">
-          {{ translations.createTicket }}
+          {{ t('maintenance.createTicket') }}
         </Button>
       </CardContent>
     </Card>
@@ -80,57 +80,57 @@
     >
       <Card class="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <CardHeader>
-          <CardTitle>{{ translations.createTicket }}</CardTitle>
+          <CardTitle>{{ t('maintenance.createTicket') }}</CardTitle>
         </CardHeader>
         <CardContent>
           <form @submit.prevent="handleCreateTicket" class="space-y-4">
             <div class="space-y-2">
-              <Label for="subject">{{ translations.subject }}</Label>
+              <Label for="subject">{{ t('maintenance.subject') }}</Label>
               <Input
                 id="subject"
                 v-model="ticketForm.subject"
-                :placeholder="translations.subjectPlaceholder"
+                :placeholder="t('maintenance.subjectPlaceholder')"
                 required
               />
             </div>
 
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
               <div class="space-y-2">
-                <Label for="priority">{{ translations.priority }}</Label>
+                <Label for="priority">{{ t('maintenance.priority') }}</Label>
                 <Select id="priority" v-model="ticketForm.priority" required>
-                  <option value="low">{{ translations.priorities.low }}</option>
-                  <option value="medium">{{ translations.priorities.medium }}</option>
-                  <option value="high">{{ translations.priorities.high }}</option>
-                  <option value="urgent">{{ translations.priorities.urgent }}</option>
+                  <option value="low">{{ t('maintenance.priorities.low') }}</option>
+                  <option value="medium">{{ t('maintenance.priorities.medium') }}</option>
+                  <option value="high">{{ t('maintenance.priorities.high') }}</option>
+                  <option value="urgent">{{ t('maintenance.priorities.urgent') }}</option>
                 </Select>
               </div>
 
               <div class="space-y-2">
-                <Label for="category">{{ translations.category }}</Label>
+                <Label for="category">{{ t('maintenance.category') }}</Label>
                 <Select id="category" v-model="ticketForm.category" required>
-                  <option value="plumbing">{{ translations.categories.plumbing }}</option>
-                  <option value="electrical">{{ translations.categories.electrical }}</option>
-                  <option value="hvac">{{ translations.categories.hvac }}</option>
-                  <option value="appliances">{{ translations.categories.appliances }}</option>
-                  <option value="structural">{{ translations.categories.structural }}</option>
-                  <option value="other">{{ translations.categories.other }}</option>
+                  <option value="plumbing">{{ t('maintenance.categories.plumbing') }}</option>
+                  <option value="electrical">{{ t('maintenance.categories.electrical') }}</option>
+                  <option value="hvac">{{ t('maintenance.categories.hvac') }}</option>
+                  <option value="appliances">{{ t('maintenance.categories.appliances') }}</option>
+                  <option value="structural">{{ t('maintenance.categories.structural') }}</option>
+                  <option value="other">{{ t('maintenance.categories.other') }}</option>
                 </Select>
               </div>
 
               <div class="space-y-2">
-                <Label for="status">{{ translations.status }}</Label>
+                <Label for="status">{{ t('maintenance.status') }}</Label>
                 <Select id="status" v-model="ticketForm.status" required>
-                  <option value="open">{{ translations.statuses.open }}</option>
+                  <option value="open">{{ t('maintenance.statuses.open') }}</option>
                 </Select>
               </div>
             </div>
 
             <div class="space-y-2">
-              <Label for="description">{{ translations.description }}</Label>
+              <Label for="description">{{ t('maintenance.description') }}</Label>
               <Textarea
                 id="description"
                 v-model="ticketForm.description"
-                :placeholder="translations.descriptionPlaceholder"
+                :placeholder="t('maintenance.descriptionPlaceholder')"
                 rows="6"
                 required
               />
@@ -138,11 +138,11 @@
 
             <div class="flex gap-3 justify-end">
               <Button type="button" variant="outline" @click="showCreateModal = false">
-                Cancel
+                {{ t('common.cancel') }}
               </Button>
               <Button type="submit" :disabled="submitting">
-                <span v-if="submitting">{{ translations.submitting }}</span>
-                <span v-else>{{ translations.submit }}</span>
+                <span v-if="submitting">{{ t('maintenance.submitting') }}</span>
+                <span v-else>{{ t('maintenance.submit') }}</span>
               </Button>
             </div>
           </form>
@@ -163,10 +163,10 @@
               <CardTitle>{{ selectedTicket.subject }}</CardTitle>
               <div class="mt-2 flex items-center gap-2">
                 <Badge :variant="getStatusVariant(selectedTicket.status)">
-                  {{ translations.statuses[selectedTicket.status] }}
+                  {{ t(`maintenance.statuses.${selectedTicket.status}`) }}
                 </Badge>
                 <Badge :variant="getPriorityVariant(selectedTicket.priority)">
-                  {{ translations.priorities[selectedTicket.priority] }}
+                  {{ t(`maintenance.priorities.${selectedTicket.priority}`) }}
                 </Badge>
               </div>
             </div>
@@ -180,32 +180,32 @@
         </CardHeader>
         <CardContent class="space-y-4">
           <div>
-            <p class="text-sm font-medium text-muted-foreground">{{ translations.category }}</p>
-            <p>{{ translations.categories[selectedTicket.category] }}</p>
+            <p class="text-sm font-medium text-muted-foreground">{{ t('maintenance.category') }}</p>
+            <p>{{ t(`maintenance.categories.${selectedTicket.category}`) }}</p>
           </div>
 
           <div>
-            <p class="text-sm font-medium text-muted-foreground">{{ translations.description }}</p>
+            <p class="text-sm font-medium text-muted-foreground">{{ t('maintenance.description') }}</p>
             <p>{{ selectedTicket.description }}</p>
           </div>
 
           <div class="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <p class="font-medium text-muted-foreground">{{ translations.createdBy }}</p>
+              <p class="font-medium text-muted-foreground">{{ t('maintenance.createdBy') }}</p>
               <p>{{ selectedTicket.createdBy }}</p>
             </div>
             <div>
-              <p class="font-medium text-muted-foreground">{{ translations.createdAt }}</p>
+              <p class="font-medium text-muted-foreground">{{ t('maintenance.createdAt') }}</p>
               <p>{{ selectedTicket.createdAt }}</p>
             </div>
           </div>
 
           <div class="flex gap-2 pt-4">
-            <Button variant="outline">{{ translations.update }}</Button>
+            <Button variant="outline">{{ t('maintenance.update') }}</Button>
             <Button v-if="selectedTicket.status !== 'closed'" variant="destructive">
-              {{ translations.close }}
+              {{ t('maintenance.close') }}
             </Button>
-            <Button v-else variant="outline">{{ translations.reopen }}</Button>
+            <Button v-else variant="outline">{{ t('maintenance.reopen') }}</Button>
           </div>
         </CardContent>
       </Card>
