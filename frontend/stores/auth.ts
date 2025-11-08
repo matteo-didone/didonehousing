@@ -182,10 +182,13 @@ export const useAuthStore = defineStore('auth', {
   },
 
   // Persist state to cookies (SSR-safe)
+  // Only persist token (not user object) to avoid 4KB cookie size limit
+  // User will be fetched from server on app init using the token
   persist: {
     storage: piniaPluginPersistedstate.cookies({
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 7, // 7 days
     }),
+    paths: ['token'], // Only persist token, not user object
   },
 })

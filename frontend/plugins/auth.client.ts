@@ -1,8 +1,9 @@
 export default defineNuxtPlugin(async (nuxtApp) => {
   const authStore = useAuthStore()
 
-  // Restore auth from persisted state (localStorage/cookie)
-  // This ensures user object is available immediately after page load
+  // Token is automatically restored from cookies by pinia-plugin-persistedstate
+  // Now we fetch the full user object from the server using that token
+  // This ensures user data is available after page load
   try {
     await authStore.restoreAuth()
   } catch (error) {
