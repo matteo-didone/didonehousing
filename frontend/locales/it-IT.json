@@ -137,6 +137,54 @@
     "passwordSuccess": "Password aggiornata con successo",
     "settingsSuccess": "Impostazioni salvate con successo"
   },
+  "maintenance": {
+    "title": "Ticket Manutenzione",
+    "createTicket": "Crea Ticket",
+    "myTickets": "I Miei Ticket",
+    "allTickets": "Tutti i Ticket",
+    "ticketDetails": "Dettagli Ticket",
+    "subject": "Oggetto",
+    "subjectPlaceholder": "Breve descrizione del problema",
+    "description": "Descrizione",
+    "descriptionPlaceholder": "Fornisci informazioni dettagliate sul problema di manutenzione",
+    "priority": "Priorità",
+    "category": "Categoria",
+    "status": "Stato",
+    "attachments": "Allegati",
+    "submit": "Invia Ticket",
+    "submitting": "Invio...",
+    "update": "Aggiorna Ticket",
+    "close": "Chiudi Ticket",
+    "reopen": "Riapri Ticket",
+    "assignTo": "Assegna A",
+    "priorities": {
+      "low": "Bassa",
+      "medium": "Media",
+      "high": "Alta",
+      "urgent": "Urgente"
+    },
+    "categories": {
+      "plumbing": "Idraulica",
+      "electrical": "Elettrico",
+      "hvac": "Riscaldamento/Climatizzazione",
+      "appliances": "Elettrodomestici",
+      "structural": "Strutturale",
+      "other": "Altro"
+    },
+    "statuses": {
+      "open": "Aperto",
+      "inProgress": "In Corso",
+      "resolved": "Risolto",
+      "closed": "Chiuso"
+    },
+    "createdBy": "Creato da",
+    "createdAt": "Creato il",
+    "updatedAt": "Ultimo aggiornamento",
+    "noTickets": "Nessun ticket di manutenzione",
+    "noTicketsDesc": "Crea un ticket per segnalare problemi di manutenzione",
+    "filterBy": "Filtra per",
+    "allStatuses": "Tutti gli Stati"
+  },
   "navigation": {
     "home": "Home",
     "dashboard": "Pannello",

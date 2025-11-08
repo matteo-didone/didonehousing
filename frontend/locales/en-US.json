@@ -137,6 +137,54 @@
     "passwordSuccess": "Password updated successfully",
     "settingsSuccess": "Settings saved successfully"
   },
+  "maintenance": {
+    "title": "Maintenance Tickets",
+    "createTicket": "Create Ticket",
+    "myTickets": "My Tickets",
+    "allTickets": "All Tickets",
+    "ticketDetails": "Ticket Details",
+    "subject": "Subject",
+    "subjectPlaceholder": "Brief description of the issue",
+    "description": "Description",
+    "descriptionPlaceholder": "Provide detailed information about the maintenance issue",
+    "priority": "Priority",
+    "category": "Category",
+    "status": "Status",
+    "attachments": "Attachments",
+    "submit": "Submit Ticket",
+    "submitting": "Submitting...",
+    "update": "Update Ticket",
+    "close": "Close Ticket",
+    "reopen": "Reopen Ticket",
+    "assignTo": "Assign To",
+    "priorities": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "urgent": "Urgent"
+    },
+    "categories": {
+      "plumbing": "Plumbing",
+      "electrical": "Electrical",
+      "hvac": "HVAC",
+      "appliances": "Appliances",
+      "structural": "Structural",
+      "other": "Other"
+    },
+    "statuses": {
+      "open": "Open",
+      "inProgress": "In Progress",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    },
+    "createdBy": "Created by",
+    "createdAt": "Created at",
+    "updatedAt": "Last updated",
+    "noTickets": "No maintenance tickets",
+    "noTicketsDesc": "Create a ticket to report maintenance issues",
+    "filterBy": "Filter by",
+    "allStatuses": "All Statuses"
+  },
   "navigation": {
     "home": "Home",
     "dashboard": "Dashboard",
