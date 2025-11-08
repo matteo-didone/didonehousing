@@ -124,6 +124,7 @@
   "property": {
     "title": "Proprietà",
     "search": "Cerca proprietà",
+    "searchPlaceholder": "Cerca per indirizzo, città o zona...",
     "addNew": "Aggiungi Proprietà",
     "viewDetails": "Visualizza Dettagli",
     "address": "Indirizzo",
@@ -133,7 +134,44 @@
     "squareMeters": "Metri Quadrati",
     "availableFrom": "Disponibile Dal",
     "status": "Stato",
-    "distanceToBase": "Distanza dalla Base"
+    "distanceToBase": "Distanza dalla Base",
+    "filters": {
+      "title": "Filtri",
+      "priceRange": "Fascia di Prezzo",
+      "priceMin": "Prezzo Minimo",
+      "priceMax": "Prezzo Massimo",
+      "bedroomsMin": "Camere Minime",
+      "bathroomsMin": "Bagni Minimi",
+      "maxDistance": "Distanza Massima dalla Base",
+      "propertyType": "Tipo di Proprietà",
+      "clearAll": "Cancella Tutti i Filtri",
+      "apply": "Applica Filtri"
+    },
+    "statuses": {
+      "available": "Disponibile",
+      "pending": "In Attesa di Approvazione",
+      "rented": "Affittato",
+      "unavailable": "Non Disponibile",
+      "underReview": "In Revisione"
+    },
+    "types": {
+      "apartment": "Appartamento",
+      "house": "Casa",
+      "villa": "Villa",
+      "studio": "Monolocale"
+    },
+    "noResults": "Nessuna proprietà trovata",
+    "noResultsDescription": "Prova a modificare i filtri o i criteri di ricerca",
+    "loading": "Caricamento proprietà...",
+    "perMonth": "/mese",
+    "kmFromBase": "km dalla base",
+    "sortBy": "Ordina per",
+    "sortOptions": {
+      "priceAsc": "Prezzo: Dal più basso",
+      "priceDesc": "Prezzo: Dal più alto",
+      "newest": "Più recenti prima",
+      "distanceAsc": "Distanza: Più vicini prima"
+    }
   },
   "lease": {
     "title": "Contratti",

@@ -124,6 +124,7 @@
   "property": {
     "title": "Properties",
     "search": "Search properties",
+    "searchPlaceholder": "Search by address, city, or area...",
     "addNew": "Add Property",
     "viewDetails": "View Details",
     "address": "Address",
@@ -133,7 +134,44 @@
     "squareMeters": "Square Meters",
     "availableFrom": "Available From",
     "status": "Status",
-    "distanceToBase": "Distance to Base"
+    "distanceToBase": "Distance to Base",
+    "filters": {
+      "title": "Filters",
+      "priceRange": "Price Range",
+      "priceMin": "Min Price",
+      "priceMax": "Max Price",
+      "bedroomsMin": "Min Bedrooms",
+      "bathroomsMin": "Min Bathrooms",
+      "maxDistance": "Max Distance to Base",
+      "propertyType": "Property Type",
+      "clearAll": "Clear All Filters",
+      "apply": "Apply Filters"
+    },
+    "statuses": {
+      "available": "Available",
+      "pending": "Pending Approval",
+      "rented": "Rented",
+      "unavailable": "Unavailable",
+      "underReview": "Under Review"
+    },
+    "types": {
+      "apartment": "Apartment",
+      "house": "House",
+      "villa": "Villa",
+      "studio": "Studio"
+    },
+    "noResults": "No properties found",
+    "noResultsDescription": "Try adjusting your filters or search criteria",
+    "loading": "Loading properties...",
+    "perMonth": "/month",
+    "kmFromBase": "km from base",
+    "sortBy": "Sort by",
+    "sortOptions": {
+      "priceAsc": "Price: Low to High",
+      "priceDesc": "Price: High to Low",
+      "newest": "Newest First",
+      "distanceAsc": "Distance: Nearest First"
+    }
   },
   "lease": {
     "title": "Leases",
