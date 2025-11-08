@@ -4,7 +4,7 @@
     <div>
       <h1 class="text-3xl font-bold tracking-tight">{{ translations.title }}</h1>
       <p class="mt-2 text-lg text-muted-foreground">
-        {{ translations.welcome.replace('{name}', user?.first_name || '') }}
+        {{ welcomeMessage }}
       </p>
       <p class="text-muted-foreground">{{ translations.subtitle }}</p>
     </div>
@@ -245,7 +245,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import Card from '@/components/ui/Card.vue'
 import CardHeader from '@/components/ui/CardHeader.vue'
 import CardTitle from '@/components/ui/CardTitle.vue'
@@ -260,6 +260,11 @@ definePageMeta({
 
 const { user } = useAuth()
 const { t, locale } = useI18n()
+
+// Welcome message with user name (reactive to user changes)
+const welcomeMessage = computed(() => {
+  return t('dashboard.tenant.welcome', { name: user.value?.first_name || '' })
+})
 
 // Translations
 const translations = ref({
