@@ -162,13 +162,18 @@ export const useAuthStore = defineStore('auth', {
       this.token = token
       this.isAuthenticated = true
 
-      // Store token in cookie (for SSR)
-      const tokenCookie = useCookie('auth_token', {
-        maxAge: 60 * 60 * 24 * 7, // 7 days
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
-      })
-      tokenCookie.value = token
+      // Store token in cookie (for SSR) - only if in valid context
+      try {
+        const tokenCookie = useCookie('auth_token', {
+          maxAge: 60 * 60 * 24 * 7, // 7 days
+          sameSite: 'lax',
+          secure: process.env.NODE_ENV === 'production',
+        })
+        tokenCookie.value = token
+      } catch (error) {
+        // Cookie access not available in this context
+        console.debug('Cookie access not available during setAuth')
+      }
     },
 
     clearAuth() {
@@ -176,18 +181,28 @@ export const useAuthStore = defineStore('auth', {
       this.token = null
       this.isAuthenticated = false
 
-      // Clear token cookie
-      const tokenCookie = useCookie('auth_token')
-      tokenCookie.value = null
+      // Clear token cookie - only if in valid context
+      try {
+        const tokenCookie = useCookie('auth_token')
+        tokenCookie.value = null
+      } catch (error) {
+        // Cookie access not available in this context
+        console.debug('Cookie access not available during clearAuth')
+      }
     },
 
     // Restore auth from cookie (on app init)
     async restoreAuth() {
-      const tokenCookie = useCookie('auth_token')
+      try {
+        const tokenCookie = useCookie('auth_token')
 
-      if (tokenCookie.value) {
-        this.token = tokenCookie.value
-        await this.fetchUser()
+        if (tokenCookie.value) {
+          this.token = tokenCookie.value
+          await this.fetchUser()
+        }
+      } catch (error) {
+        // Cookie access not available in this context
+        console.debug('Cookie access not available during restoreAuth')
       }
     },
   },
