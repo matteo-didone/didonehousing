@@ -79,17 +79,13 @@ export default defineNuxtConfig({
         code: "en",
         iso: "en-US",
         name: "English (US)",
-        file: "en-US.json",
       },
       {
         code: "it",
         iso: "it-IT",
         name: "Italiano",
-        file: "it-IT.json",
       },
     ],
-    lazy: true,
-    langDir: "locales",
     defaultLocale: "en",
     strategy: "no_prefix",
     detectBrowserLanguage: {
