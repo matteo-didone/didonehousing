@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-background">
+  <div class="min-h-screen flex flex-col bg-background">
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 border-b border-border bg-card shadow-sm">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -138,7 +138,7 @@
                   {{ user?.first_name?.[0] }}{{ user?.last_name?.[0] }}
                 </div>
                 <span class="hidden sm:inline text-sm font-medium text-foreground">
-                  {{ user?.full_name }}
+                  {{ user?.first_name }} {{ user?.last_name }}
                 </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -200,7 +200,7 @@
     </nav>
 
     <!-- Page Content -->
-    <main class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+    <main class="flex-1 mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 w-full">
       <slot />
     </main>
 

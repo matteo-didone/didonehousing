@@ -3,25 +3,25 @@
     <!-- Header -->
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h1 class="text-3xl font-bold tracking-tight">{{ translations.title }}</h1>
+        <h1 class="text-3xl font-bold tracking-tight">{{ t('maintenance.title') }}</h1>
       </div>
       <Button @click="showCreateModal = true" size="lg">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <path d="M5 12h14" />
           <path d="M12 5v14" />
         </svg>
-        {{ translations.createTicket }}
+        {{ t('maintenance.createTicket') }}
       </Button>
     </div>
 
     <!-- Filter -->
     <div class="flex gap-3">
       <Select v-model="filterStatus" class="w-[200px]">
-        <option value="">{{ translations.allStatuses }}</option>
-        <option value="open">{{ translations.statuses.open }}</option>
-        <option value="inProgress">{{ translations.statuses.inProgress }}</option>
-        <option value="resolved">{{ translations.statuses.resolved }}</option>
-        <option value="closed">{{ translations.statuses.closed }}</option>
+        <option value="">{{ t('maintenance.allStatuses') }}</option>
+        <option value="open">{{ t('maintenance.statuses.open') }}</option>
+        <option value="inProgress">{{ t('maintenance.statuses.inProgress') }}</option>
+        <option value="resolved">{{ t('maintenance.statuses.resolved') }}</option>
+        <option value="closed">{{ t('maintenance.statuses.closed') }}</option>
       </Select>
     </div>
 
@@ -39,16 +39,16 @@
               <div class="flex items-center gap-3 mb-2">
                 <h3 class="text-lg font-semibold">{{ ticket.subject }}</h3>
                 <Badge :variant="getStatusVariant(ticket.status)">
-                  {{ translations.statuses[ticket.status] }}
+                  {{ t(`maintenance.statuses.${ticket.status}`) }}
                 </Badge>
                 <Badge :variant="getPriorityVariant(ticket.priority)">
-                  {{ translations.priorities[ticket.priority] }}
+                  {{ t(`maintenance.priorities.${ticket.priority}`) }}
                 </Badge>
               </div>
               <p class="text-sm text-muted-foreground line-clamp-2">{{ ticket.description }}</p>
               <div class="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
-                <span>{{ translations.category }}: {{ translations.categories[ticket.category] }}</span>
-                <span>{{ translations.createdAt }}: {{ ticket.createdAt }}</span>
+                <span>{{ t('maintenance.category') }}: {{ t(`maintenance.categories.${ticket.category}`) }}</span>
+                <span>{{ t('maintenance.createdAt') }}: {{ ticket.createdAt }}</span>
               </div>
             </div>
           </div>
@@ -214,7 +214,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed } from 'vue'
 import Card from '@/components/ui/Card.vue'
 import CardHeader from '@/components/ui/CardHeader.vue'
 import CardTitle from '@/components/ui/CardTitle.vue'
@@ -231,85 +231,7 @@ definePageMeta({
   middleware: 'auth',
 })
 
-const { t, locale } = useI18n()
-
-// Translations
-const translations = ref({
-  title: '',
-  createTicket: '',
-  subject: '',
-  subjectPlaceholder: '',
-  description: '',
-  descriptionPlaceholder: '',
-  priority: '',
-  category: '',
-  status: '',
-  submit: '',
-  submitting: '',
-  update: '',
-  close: '',
-  reopen: '',
-  priorities: { low: '', medium: '', high: '', urgent: '' },
-  categories: { plumbing: '', electrical: '', hvac: '', appliances: '', structural: '', other: '' },
-  statuses: { open: '', inProgress: '', resolved: '', closed: '' },
-  createdBy: '',
-  createdAt: '',
-  noTickets: '',
-  noTicketsDesc: '',
-  allStatuses: '',
-})
-
-const loadTranslations = () => {
-  translations.value = {
-    title: t('maintenance.title'),
-    createTicket: t('maintenance.createTicket'),
-    subject: t('maintenance.subject'),
-    subjectPlaceholder: t('maintenance.subjectPlaceholder'),
-    description: t('maintenance.description'),
-    descriptionPlaceholder: t('maintenance.descriptionPlaceholder'),
-    priority: t('maintenance.priority'),
-    category: t('maintenance.category'),
-    status: t('maintenance.status'),
-    submit: t('maintenance.submit'),
-    submitting: t('maintenance.submitting'),
-    update: t('maintenance.update'),
-    close: t('maintenance.close'),
-    reopen: t('maintenance.reopen'),
-    priorities: {
-      low: t('maintenance.priorities.low'),
-      medium: t('maintenance.priorities.medium'),
-      high: t('maintenance.priorities.high'),
-      urgent: t('maintenance.priorities.urgent'),
-    },
-    categories: {
-      plumbing: t('maintenance.categories.plumbing'),
-      electrical: t('maintenance.categories.electrical'),
-      hvac: t('maintenance.categories.hvac'),
-      appliances: t('maintenance.categories.appliances'),
-      structural: t('maintenance.categories.structural'),
-      other: t('maintenance.categories.other'),
-    },
-    statuses: {
-      open: t('maintenance.statuses.open'),
-      inProgress: t('maintenance.statuses.inProgress'),
-      resolved: t('maintenance.statuses.resolved'),
-      closed: t('maintenance.statuses.closed'),
-    },
-    createdBy: t('maintenance.createdBy'),
-    createdAt: t('maintenance.createdAt'),
-    noTickets: t('maintenance.noTickets'),
-    noTicketsDesc: t('maintenance.noTicketsDesc'),
-    allStatuses: t('maintenance.allStatuses'),
-  }
-}
-
-onMounted(() => {
-  loadTranslations()
-})
-
-watch(locale, () => {
-  loadTranslations()
-})
+const { t } = useI18n()
 
 // State
 const showCreateModal = ref(false)
