@@ -161,55 +161,31 @@ export const useAuthStore = defineStore('auth', {
       this.user = user
       this.token = token
       this.isAuthenticated = true
-
-      // Store token in cookie (for SSR) - only if in valid context
-      try {
-        const tokenCookie = useCookie('auth_token', {
-          maxAge: 60 * 60 * 24 * 7, // 7 days
-          sameSite: 'lax',
-          secure: process.env.NODE_ENV === 'production',
-        })
-        tokenCookie.value = token
-      } catch (error) {
-        // Cookie access not available in this context
-        console.debug('Cookie access not available during setAuth')
-      }
+      // Note: State is automatically persisted to cookies by pinia-plugin-persistedstate
     },
 
     clearAuth() {
       this.user = null
       this.token = null
       this.isAuthenticated = false
-
-      // Clear token cookie - only if in valid context
-      try {
-        const tokenCookie = useCookie('auth_token')
-        tokenCookie.value = null
-      } catch (error) {
-        // Cookie access not available in this context
-        console.debug('Cookie access not available during clearAuth')
-      }
+      // Note: State is automatically cleared from cookies by pinia-plugin-persistedstate
     },
 
-    // Restore auth from cookie (on app init)
+    // Restore auth from persisted state (cookies) and verify token validity
     async restoreAuth() {
-      try {
-        const tokenCookie = useCookie('auth_token')
-
-        if (tokenCookie.value) {
-          this.token = tokenCookie.value
-          await this.fetchUser()
-        }
-      } catch (error) {
-        // Cookie access not available in this context
-        console.debug('Cookie access not available during restoreAuth')
+      // Note: State (user, token) is automatically restored from cookies by pinia-plugin-persistedstate
+      // We just need to verify the token is still valid by fetching fresh user data
+      if (this.token) {
+        await this.fetchUser()
       }
     },
   },
 
-  // Persist state to localStorage
+  // Persist state to cookies (SSR-safe)
   persist: {
-    key: 'auth',
-    paths: ['user', 'token', 'isAuthenticated'],
+    storage: piniaPluginPersistedstate.cookies({
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    }),
   },
 })

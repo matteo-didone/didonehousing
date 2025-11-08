@@ -42,6 +42,7 @@ export default defineNuxtConfig({
   // Modules
   modules: [
     "@pinia/nuxt",
+    "pinia-plugin-persistedstate/nuxt",
     "@nuxtjs/i18n",
     "@nuxtjs/tailwindcss",
     "@vueuse/nuxt",
