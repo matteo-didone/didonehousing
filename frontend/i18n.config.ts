@@ -1,14 +1,7 @@
-import en from './locales/en-US.json'
-import it from './locales/it-IT.json'
-
 export default defineI18nConfig(() => ({
   legacy: false,
   locale: 'en',
   fallbackLocale: 'en',
-  messages: {
-    en,
-    it
-  },
   datetimeFormats: {
     en: {
       short: {
