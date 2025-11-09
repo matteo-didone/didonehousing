@@ -65,7 +65,11 @@ class StorePropertyRequest extends FormRequest
             'basement' => ['boolean'],
             'attic' => ['boolean'],
             'garage' => ['boolean'],
+            'garage_type' => ['nullable', Rule::in(['indoor', 'outdoor', 'both'])],
+            'garage_spaces' => ['nullable', 'integer', 'min:1', 'max:10'],
             'yard' => ['boolean'],
+            'yard_type' => ['nullable', Rule::in(['front', 'back', 'both'])],
+            'yard_sqm' => ['nullable', 'numeric', 'min:1', 'max:10000'],
 
             // =========================================================
             // FURNISHING
@@ -125,6 +129,13 @@ class StorePropertyRequest extends FormRequest
                 'A4', 'A3', 'A2', 'A1', 'A', 'B', 'C', 'D', 'E', 'F', 'G'
             ])],
             'year_built' => ['nullable', 'integer', 'min:1800', 'max:' . (date('Y') + 2)],
+
+            // =========================================================
+            // LISTING / FINANCIAL INFO (will be used to create Listing)
+            // =========================================================
+            'monthly_rent' => ['nullable', 'numeric', 'min:0', 'max:100000'],
+            'security_deposit' => ['nullable', 'numeric', 'min:0', 'max:100000'],
+            'condo_fees' => ['nullable', 'numeric', 'min:0', 'max:10000'],
         ];
     }
 

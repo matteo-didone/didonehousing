@@ -55,11 +55,33 @@ class PropertyController extends Controller
     {
         $validated = $request->validated();
 
+        // Extract listing/financial data
+        $listingData = [];
+        if (isset($validated['monthly_rent'])) {
+            $listingData['monthly_rent'] = $validated['monthly_rent'];
+            unset($validated['monthly_rent']);
+        }
+        if (isset($validated['security_deposit'])) {
+            $listingData['security_deposit'] = $validated['security_deposit'];
+            unset($validated['security_deposit']);
+        }
+        if (isset($validated['condo_fees'])) {
+            $listingData['condo_fees'] = $validated['condo_fees'];
+            unset($validated['condo_fees']);
+        }
+
         // Add landlord_id and set initial status
         $validated['landlord_id'] = $request->user()->id;
         $validated['status'] = Property::STATUS_DRAFT;
 
         $property = Property::create($validated);
+
+        // Create listing if financial data provided
+        if (!empty($listingData)) {
+            $listingData['property_id'] = $property->id;
+            $listingData['status'] = \App\Models\Listing::STATUS_DRAFT;
+            $property->listing()->create($listingData);
+        }
 
         return response()->json([
             'message' => 'Property created successfully',

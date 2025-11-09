@@ -65,7 +65,7 @@
                   <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
                   <circle cx="12" cy="10" r="3" />
                 </svg>
-                {{ form.distance_from_base_km }} km from Aviano AB
+                {{ t('property.create.distanceFromBase', { distance: form.distance_from_base_km }) }}
               </span>
             </div>
           </div>
@@ -156,6 +156,7 @@
           <CardTitle>{{ t('property.create.propertyDetails') }}</CardTitle>
         </CardHeader>
         <CardContent class="space-y-4">
+          <!-- Rooms -->
           <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
             <div class="space-y-2">
               <Label for="bedrooms">{{ t('property.bedrooms') }} *</Label>
@@ -169,15 +170,27 @@
               />
             </div>
             <div class="space-y-2">
-              <Label for="bathrooms">{{ t('property.bathrooms') }} *</Label>
+              <Label for="full_bathrooms">{{ t('property.create.fullBathrooms') }} *</Label>
               <Input
-                id="bathrooms"
-                v-model.number="form.bathrooms"
+                id="full_bathrooms"
+                v-model.number="form.full_bathrooms"
                 type="number"
-                min="1"
+                min="0"
                 max="10"
                 required
               />
+              <p class="text-xs text-muted-foreground">{{ t('property.create.fullBathroomsDesc') }}</p>
+            </div>
+            <div class="space-y-2">
+              <Label for="half_bathrooms">{{ t('property.create.halfBathrooms') }}</Label>
+              <Input
+                id="half_bathrooms"
+                v-model.number="form.half_bathrooms"
+                type="number"
+                min="0"
+                max="10"
+              />
+              <p class="text-xs text-muted-foreground">{{ t('property.create.halfBathroomsDesc') }}</p>
             </div>
             <div class="space-y-2">
               <Label for="living_rooms">{{ t('property.create.livingRooms') }}</Label>
@@ -189,6 +202,9 @@
                 max="10"
               />
             </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
             <div class="space-y-2">
               <Label for="dining_rooms">{{ t('property.create.diningRooms') }}</Label>
               <Input
@@ -199,9 +215,6 @@
                 max="10"
               />
             </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <div class="space-y-2">
               <Label for="kitchen">{{ t('property.create.kitchen') }}</Label>
               <Input
@@ -213,16 +226,59 @@
               />
             </div>
             <div class="space-y-2">
-              <Label for="heating_type">{{ t('property.create.heatingType') }}</Label>
-              <Select v-model="form.heating_type">
-                <option value="">{{ t('common.select') }}...</option>
-                <option value="city_gas">{{ t('property.heating.cityGas') }}</option>
-                <option value="lpg_coupons">{{ t('property.heating.lpgCoupons') }}</option>
-                <option value="lpg_no_coupons">{{ t('property.heating.lpgNoCoupons') }}</option>
-                <option value="fuel">{{ t('property.heating.fuel') }}</option>
-                <option value="electric">{{ t('property.heating.electric') }}</option>
-                <option value="separate_system">{{ t('property.heating.separateSystem') }}</option>
-              </Select>
+              <Label for="floor_number">{{ t('property.create.floor') }}</Label>
+              <Input
+                id="floor_number"
+                v-model.number="form.floor_number"
+                type="number"
+                min="0"
+                max="50"
+              />
+            </div>
+            <div class="space-y-2">
+              <Label for="total_floors">{{ t('property.create.totalFloors') }}</Label>
+              <Input
+                id="total_floors"
+                v-model.number="form.total_floors"
+                type="number"
+                min="1"
+                max="50"
+              />
+            </div>
+          </div>
+
+          <!-- Property Size & Age -->
+          <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+            <div class="space-y-2">
+              <Label for="total_sqm">{{ t('property.create.totalSqm') }}</Label>
+              <Input
+                id="total_sqm"
+                v-model.number="form.total_sqm"
+                type="number"
+                min="10"
+                step="0.01"
+                placeholder="85.50"
+              />
+            </div>
+            <div class="space-y-2">
+              <Label for="year_built">{{ t('property.create.yearBuilt') }}</Label>
+              <Input
+                id="year_built"
+                v-model.number="form.year_built"
+                type="number"
+                min="1800"
+                :max="new Date().getFullYear()"
+                placeholder="2000"
+              />
+            </div>
+            <div class="space-y-2">
+              <Label for="energy_class">{{ t('property.create.energyClass') }}</Label>
+              <Input
+                id="energy_class"
+                v-model="form.energy_class"
+                maxlength="5"
+                :placeholder="t('property.create.energyClassPlaceholder')"
+              />
             </div>
           </div>
         </CardContent>
@@ -234,23 +290,19 @@
           <CardTitle>{{ t('property.create.amenities') }}</CardTitle>
         </CardHeader>
         <CardContent class="space-y-6">
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <!-- Furnished -->
-            <div class="flex items-center justify-between p-4 border border-border rounded-lg">
-              <div>
-                <label for="furnished" class="font-medium">{{ t('property.create.furnished') }}</label>
-                <p class="text-sm text-muted-foreground">{{ t('property.create.furnishedDesc') }}</p>
-              </div>
-              <input
-                id="furnished"
-                type="checkbox"
-                v-model="form.furnished"
-                class="h-5 w-5 rounded border-border text-primary focus:ring-primary"
-              />
-            </div>
+          <!-- Furnishing Status -->
+          <div class="space-y-2">
+            <Label for="furnishing_status">{{ t('property.create.furnishingStatus') }} *</Label>
+            <Select v-model="form.furnishing_status" required>
+              <option value="unfurnished">{{ t('property.create.unfurnished') }}</option>
+              <option value="partially_furnished">{{ t('property.create.partiallyFurnished') }}</option>
+              <option value="fully_furnished">{{ t('property.create.fullyFurnished') }}</option>
+            </Select>
+          </div>
 
-            <!-- Pets Allowed -->
-            <div class="flex items-center justify-between p-4 border border-border rounded-lg">
+          <!-- Pets -->
+          <div class="space-y-3 p-4 border border-border rounded-lg">
+            <div class="flex items-center justify-between">
               <div>
                 <label for="pets_allowed" class="font-medium">{{ t('property.create.pets') }}</label>
                 <p class="text-sm text-muted-foreground">{{ t('property.create.petsDesc') }}</p>
@@ -262,7 +314,144 @@
                 class="h-5 w-5 rounded border-border text-primary focus:ring-primary"
               />
             </div>
+            <div v-if="form.pets_allowed" class="pt-2">
+              <Label for="pets_notes">{{ t('property.create.petsNotes') }}</Label>
+              <Input
+                id="pets_notes"
+                v-model="form.pets_notes"
+                :placeholder="t('property.create.petsNotesPlaceholder')"
+                class="mt-1"
+              />
+            </div>
+          </div>
 
+          <!-- Heating -->
+          <div class="space-y-3 p-4 border border-border rounded-lg">
+            <h3 class="font-medium">{{ t('property.create.heating') }}</h3>
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div class="space-y-2">
+                <Label for="heating_type">{{ t('property.create.heatingType') }}</Label>
+                <Select v-model="form.heating_type">
+                  <option value="">{{ t('common.select') }}...</option>
+                  <option value="city_gas">{{ t('property.heating.cityGas') }}</option>
+                  <option value="lpg_with_coupons">{{ t('property.heating.lpgCoupons') }}</option>
+                  <option value="lpg_without_coupons">{{ t('property.heating.lpgNoCoupons') }}</option>
+                  <option value="fuel_oil">{{ t('property.heating.fuel') }}</option>
+                  <option value="electric">{{ t('property.heating.electric') }}</option>
+                  <option value="heat_pump">Heat Pump</option>
+                  <option value="other">Other</option>
+                </Select>
+              </div>
+              <div class="space-y-2">
+                <Label for="heating_system">{{ t('property.create.heatingSystem') }}</Label>
+                <Select v-model="form.heating_system">
+                  <option value="">{{ t('common.select') }}...</option>
+                  <option value="centralized">{{ t('property.create.centralizedHeating') }}</option>
+                  <option value="autonomous">{{ t('property.create.autonomousHeating') }}</option>
+                  <option value="shared_with_us">{{ t('property.create.sharedWithUs') }}</option>
+                  <option value="shared_with_italians">{{ t('property.create.sharedWithItalians') }}</option>
+                </Select>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <input
+                id="has_heat_meter"
+                type="checkbox"
+                v-model="form.has_heat_meter"
+                class="h-5 w-5 rounded border-border text-primary focus:ring-primary"
+              />
+              <div>
+                <label for="has_heat_meter" class="font-medium text-sm">{{ t('property.create.hasHeatMeter') }}</label>
+                <p class="text-xs text-muted-foreground">{{ t('property.create.hasHeatMeterDesc') }}</p>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <Label for="heating_notes">{{ t('property.create.heatingNotes') }}</Label>
+              <Input
+                id="heating_notes"
+                v-model="form.heating_notes"
+                :placeholder="t('property.create.heatingNotesPlaceholder')"
+              />
+            </div>
+          </div>
+
+          <!-- Garage -->
+          <div class="space-y-3 p-4 border border-border rounded-lg">
+            <div class="flex items-center justify-between">
+              <div>
+                <label for="garage" class="font-medium">{{ t('property.create.garage') }}</label>
+                <p class="text-sm text-muted-foreground">{{ t('property.create.garageDesc') }}</p>
+              </div>
+              <input
+                id="garage"
+                type="checkbox"
+                v-model="form.garage"
+                class="h-5 w-5 rounded border-border text-primary focus:ring-primary"
+              />
+            </div>
+            <div v-if="form.garage" class="grid grid-cols-1 gap-4 sm:grid-cols-2 pt-2">
+              <div class="space-y-2">
+                <Label for="garage_type">{{ t('property.create.garageType') }}</Label>
+                <Select v-model="form.garage_type">
+                  <option value="">{{ t('common.select') }}...</option>
+                  <option value="indoor">{{ t('property.create.garageIndoor') }}</option>
+                  <option value="outdoor">{{ t('property.create.garageOutdoor') }}</option>
+                  <option value="both">{{ t('property.create.garageBoth') }}</option>
+                </Select>
+              </div>
+              <div class="space-y-2">
+                <Label for="garage_spaces">{{ t('property.create.garageSpaces') }}</Label>
+                <Input
+                  id="garage_spaces"
+                  v-model.number="form.garage_spaces"
+                  type="number"
+                  min="1"
+                  max="10"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Yard/Garden -->
+          <div class="space-y-3 p-4 border border-border rounded-lg">
+            <div class="flex items-center justify-between">
+              <div>
+                <label for="yard" class="font-medium">{{ t('property.create.yard') }}</label>
+                <p class="text-sm text-muted-foreground">{{ t('property.create.yardDesc') }}</p>
+              </div>
+              <input
+                id="yard"
+                type="checkbox"
+                v-model="form.yard"
+                class="h-5 w-5 rounded border-border text-primary focus:ring-primary"
+              />
+            </div>
+            <div v-if="form.yard" class="grid grid-cols-1 gap-4 sm:grid-cols-2 pt-2">
+              <div class="space-y-2">
+                <Label for="yard_type">{{ t('property.create.yardType') }}</Label>
+                <Select v-model="form.yard_type">
+                  <option value="">{{ t('common.select') }}...</option>
+                  <option value="front">{{ t('property.create.yardFront') }}</option>
+                  <option value="back">{{ t('property.create.yardBack') }}</option>
+                  <option value="both">{{ t('property.create.yardBoth') }}</option>
+                </Select>
+              </div>
+              <div class="space-y-2">
+                <Label for="yard_sqm">{{ t('property.create.yardSqm') }}</Label>
+                <Input
+                  id="yard_sqm"
+                  v-model.number="form.yard_sqm"
+                  type="number"
+                  min="1"
+                  step="0.01"
+                  placeholder="50.00"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Other Amenities -->
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <!-- Basement -->
             <div class="flex items-center justify-between p-4 border border-border rounded-lg">
               <div>
@@ -291,31 +480,144 @@
               />
             </div>
 
-            <!-- Garage -->
+            <!-- Elevator -->
             <div class="flex items-center justify-between p-4 border border-border rounded-lg">
               <div>
-                <label for="garage" class="font-medium">{{ t('property.create.garage') }}</label>
-                <p class="text-sm text-muted-foreground">{{ t('property.create.garageDesc') }}</p>
+                <label for="elevator" class="font-medium">{{ t('property.create.elevator') }}</label>
+                <p class="text-sm text-muted-foreground">{{ t('property.create.elevatorDesc') }}</p>
               </div>
               <input
-                id="garage"
+                id="elevator"
                 type="checkbox"
-                v-model="form.garage"
+                v-model="form.elevator"
                 class="h-5 w-5 rounded border-border text-primary focus:ring-primary"
               />
             </div>
 
-            <!-- Yard -->
+            <!-- Balcony -->
             <div class="flex items-center justify-between p-4 border border-border rounded-lg">
               <div>
-                <label for="yard" class="font-medium">{{ t('property.create.yard') }}</label>
-                <p class="text-sm text-muted-foreground">{{ t('property.create.yardDesc') }}</p>
+                <label for="balcony" class="font-medium">{{ t('property.create.balcony') }}</label>
+                <p class="text-sm text-muted-foreground">{{ t('property.create.balconyDesc') }}</p>
               </div>
               <input
-                id="yard"
+                id="balcony"
                 type="checkbox"
-                v-model="form.yard"
+                v-model="form.balcony"
                 class="h-5 w-5 rounded border-border text-primary focus:ring-primary"
+              />
+            </div>
+
+            <!-- Terrace -->
+            <div class="flex items-center justify-between p-4 border border-border rounded-lg">
+              <div>
+                <label for="terrace" class="font-medium">{{ t('property.create.terrace') }}</label>
+                <p class="text-sm text-muted-foreground">{{ t('property.create.terraceDesc') }}</p>
+              </div>
+              <input
+                id="terrace"
+                type="checkbox"
+                v-model="form.terrace"
+                class="h-5 w-5 rounded border-border text-primary focus:ring-primary"
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <!-- Cadastral Information Section -->
+      <Card>
+        <CardHeader>
+          <CardTitle>{{ t('property.create.cadastralInfo') }}</CardTitle>
+        </CardHeader>
+        <CardContent class="space-y-4">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div class="space-y-2">
+              <Label for="cadastral_sheet_number">{{ t('property.create.cadastralSheetNumber') }}</Label>
+              <Input
+                id="cadastral_sheet_number"
+                v-model="form.cadastral_sheet_number"
+                placeholder="123"
+              />
+            </div>
+            <div class="space-y-2">
+              <Label for="cadastral_plot_number">{{ t('property.create.cadastralPlotNumber') }}</Label>
+              <Input
+                id="cadastral_plot_number"
+                v-model="form.cadastral_plot_number"
+                placeholder="456"
+              />
+            </div>
+            <div class="space-y-2">
+              <Label for="cadastral_unit_number">{{ t('property.create.cadastralUnitNumber') }}</Label>
+              <Input
+                id="cadastral_unit_number"
+                v-model="form.cadastral_unit_number"
+                placeholder="7"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div class="space-y-2">
+              <Label for="cadastral_category">{{ t('property.create.cadastralCategory') }}</Label>
+              <Input
+                id="cadastral_category"
+                v-model="form.cadastral_category"
+                :placeholder="t('property.create.cadastralCategoryPlaceholder')"
+              />
+            </div>
+            <div class="space-y-2">
+              <Label for="cadastral_tax_evaluation">{{ t('property.create.cadastralTaxEvaluation') }}</Label>
+              <Input
+                id="cadastral_tax_evaluation"
+                v-model="form.cadastral_tax_evaluation"
+                placeholder="€ 850.00"
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <!-- Financial Information Section -->
+      <Card>
+        <CardHeader>
+          <CardTitle>{{ t('property.create.financialInfo') }}</CardTitle>
+        </CardHeader>
+        <CardContent class="space-y-4">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div class="space-y-2">
+              <Label for="monthly_rent">{{ t('property.create.monthlyRent') }} *</Label>
+              <Input
+                id="monthly_rent"
+                v-model.number="form.monthly_rent"
+                type="number"
+                min="0"
+                step="0.01"
+                required
+                :placeholder="t('property.create.monthlyRentPlaceholder')"
+              />
+            </div>
+            <div class="space-y-2">
+              <Label for="security_deposit">{{ t('property.create.securityDepositAmount') }}</Label>
+              <Input
+                id="security_deposit"
+                v-model.number="form.security_deposit"
+                type="number"
+                min="0"
+                step="0.01"
+                :placeholder="t('property.create.securityDepositPlaceholder')"
+              />
+            </div>
+            <div class="space-y-2">
+              <Label for="condo_fees">{{ t('property.create.condoFees') }}</Label>
+              <Input
+                id="condo_fees"
+                v-model.number="form.condo_fees"
+                type="number"
+                min="0"
+                step="0.01"
+                :placeholder="t('property.create.condoFeesPlaceholder')"
               />
             </div>
           </div>
@@ -377,7 +679,8 @@ const form = reactive({
   formatted_address: '',
   // Rooms
   bedrooms: 1,
-  bathrooms: 1,
+  full_bathrooms: 1,
+  half_bathrooms: 0,
   living_rooms: null,
   dining_rooms: null,
   kitchen: null,
@@ -385,10 +688,40 @@ const form = reactive({
   basement: false,
   attic: false,
   garage: false,
+  garage_type: '',
+  garage_spaces: null,
   yard: false,
-  furnished: false,
+  yard_type: '',
+  yard_sqm: null,
+  balcony: false,
+  terrace: false,
+  elevator: false,
+  // Furnishing & Pets
+  furnishing_status: 'unfurnished',
   pets_allowed: false,
+  pets_notes: '',
+  // Heating
   heating_type: '',
+  heating_system: '',
+  has_heat_meter: false,
+  heating_notes: '',
+  // Property Details
+  floor_number: null,
+  total_floors: null,
+  total_sqm: null,
+  year_built: null,
+  // Energy
+  energy_class: '',
+  // Cadastral
+  cadastral_sheet_number: '',
+  cadastral_plot_number: '',
+  cadastral_unit_number: '',
+  cadastral_tax_evaluation: '',
+  cadastral_category: '',
+  // Financial (for Listing)
+  monthly_rent: null,
+  security_deposit: null,
+  condo_fees: null,
 })
 
 const submitting = ref(false)

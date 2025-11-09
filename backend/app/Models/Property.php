@@ -48,7 +48,11 @@ class Property extends Model
         'basement',
         'attic',
         'garage',
+        'garage_type',
+        'garage_spaces',
         'yard',
+        'yard_type',
+        'yard_sqm',
         // Property Details
         'furnishing_status',
         'pets_allowed',
@@ -96,6 +100,7 @@ class Property extends Model
         'distance_from_base_km' => 'decimal:2',
         'redecoration_fees_amount' => 'decimal:2',
         'total_sqm' => 'decimal:2',
+        'yard_sqm' => 'decimal:2',
         // Dates
         'redecoration_date' => 'date',
         'ho_reviewed_at' => 'datetime',
@@ -107,6 +112,7 @@ class Property extends Model
         'full_bathrooms' => 'integer',
         'half_bathrooms' => 'integer',
         'kitchen' => 'integer',
+        'garage_spaces' => 'integer',
         'floor_number' => 'integer',
         'total_floors' => 'integer',
         'year_built' => 'integer',
