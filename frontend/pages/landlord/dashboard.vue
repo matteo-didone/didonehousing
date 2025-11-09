@@ -200,30 +200,30 @@
               <div>
                 <div class="mb-1 flex items-center justify-between text-sm">
                   <span>{{ t('property.statuses.available') }}</span>
-                  <span class="font-medium">2</span>
+                  <span class="font-medium">{{ propertyDistribution.available.count }}</span>
                 </div>
                 <div class="h-2 w-full rounded-full bg-muted">
-                  <div class="h-2 rounded-full bg-success" style="width: 50%"></div>
+                  <div class="h-2 rounded-full bg-success" :style="{ width: propertyDistribution.available.percentage + '%' }"></div>
                 </div>
               </div>
 
               <div>
                 <div class="mb-1 flex items-center justify-between text-sm">
                   <span>{{ t('property.statuses.pending') }}</span>
-                  <span class="font-medium">1</span>
+                  <span class="font-medium">{{ propertyDistribution.pending.count }}</span>
                 </div>
                 <div class="h-2 w-full rounded-full bg-muted">
-                  <div class="h-2 rounded-full bg-warning" style="width: 25%"></div>
+                  <div class="h-2 rounded-full bg-warning" :style="{ width: propertyDistribution.pending.percentage + '%' }"></div>
                 </div>
               </div>
 
               <div>
                 <div class="mb-1 flex items-center justify-between text-sm">
                   <span>{{ t('property.statuses.rented') }}</span>
-                  <span class="font-medium">1</span>
+                  <span class="font-medium">{{ propertyDistribution.rented.count }}</span>
                 </div>
                 <div class="h-2 w-full rounded-full bg-muted">
-                  <div class="h-2 rounded-full bg-primary" style="width: 25%"></div>
+                  <div class="h-2 rounded-full bg-primary" :style="{ width: propertyDistribution.rented.percentage + '%' }"></div>
                 </div>
               </div>
             </div>
@@ -239,7 +239,9 @@
             <div>
               <div class="flex items-center justify-between">
                 <span class="text-sm text-muted-foreground">{{ translations.thisMonth }}</span>
-                <span class="text-sm font-medium text-success">+12%</span>
+                <span v-if="stats.revenueComparison.percentageChange !== 0" class="text-sm font-medium" :class="stats.revenueComparison.percentageChange > 0 ? 'text-success' : 'text-destructive'">
+                  {{ stats.revenueComparison.percentageChange > 0 ? '+' : '' }}{{ stats.revenueComparison.percentageChange.toFixed(0) }}%
+                </span>
               </div>
               <p class="mt-1 text-2xl font-bold">€{{ stats.monthlyRevenue.toLocaleString() }}</p>
             </div>
@@ -247,7 +249,7 @@
               <div class="flex items-center justify-between">
                 <span class="text-sm text-muted-foreground">{{ translations.lastMonth }}</span>
               </div>
-              <p class="mt-1 text-xl font-semibold text-muted-foreground">€3,200</p>
+              <p class="mt-1 text-xl font-semibold text-muted-foreground">€{{ stats.revenueComparison.previousMonth.toLocaleString() }}</p>
             </div>
           </CardContent>
         </Card>
@@ -271,6 +273,7 @@ definePageMeta({
 
 const { user } = useAuth()
 const { t, locale } = useI18n()
+const { fetchStats, fetchRecentActivity, loading: dashboardLoading } = useLandlordDashboard()
 
 // Welcome message with user name (reactive to user changes)
 const welcomeMessage = computed(() => {
@@ -333,48 +336,81 @@ const loadTranslations = () => {
   }
 }
 
-// Load translations on mount
-onMounted(() => {
-  loadTranslations()
-})
-
 // Watch for locale changes and reload translations
 watch(locale, () => {
   loadTranslations()
 })
 
-// Mock data
+// Data from API
 const stats = ref({
-  totalProperties: 4,
-  activeListings: 2,
-  pendingReview: 1,
-  monthlyRevenue: 3600,
+  totalProperties: 0,
+  activeListings: 0,
+  pendingReview: 0,
+  monthlyRevenue: 0,
+  propertyStatusDistribution: {
+    available: 0,
+    pending: 0,
+    rented: 0,
+  },
+  revenueComparison: {
+    currentMonth: 0,
+    previousMonth: 0,
+    percentageChange: 0,
+  },
 })
 
-const recentActivity = ref([
-  {
-    id: 1,
-    title: 'New property approved',
-    description: 'Via Roma, 123 - Aviano',
-    time: '2 hours ago',
-    status: 'success',
-    statusText: 'Approved',
-  },
-  {
-    id: 2,
-    title: 'Property inquiry',
-    description: 'Tenant requested viewing for Via Giuseppe Verdi, 45',
-    time: '5 hours ago',
-    status: 'warning',
-    statusText: 'Pending',
-  },
-  {
-    id: 3,
-    title: 'Rent payment received',
-    description: 'Corso Italia, 67 - €900',
-    time: '1 day ago',
-    status: 'success',
-    statusText: 'Completed',
-  },
-])
+const recentActivity = ref<any[]>([])
+
+// Load dashboard data
+const loadDashboardData = async () => {
+  try {
+    const [statsData, activityData] = await Promise.all([
+      fetchStats(),
+      fetchRecentActivity(),
+    ])
+
+    stats.value = {
+      ...statsData,
+      propertyStatusDistribution: statsData.propertyStatusDistribution || {
+        available: 0,
+        pending: 0,
+        rented: 0,
+      },
+      revenueComparison: statsData.revenueComparison || {
+        currentMonth: statsData.monthlyRevenue || 0,
+        previousMonth: 0,
+        percentageChange: 0,
+      },
+    }
+    recentActivity.value = activityData
+  } catch (err: any) {
+    console.error('Error loading dashboard data:', err)
+  }
+}
+
+// Computed values for property distribution
+const propertyDistribution = computed(() => {
+  const dist = stats.value.propertyStatusDistribution
+  const total = dist.available + dist.pending + dist.rented || 1
+  return {
+    available: {
+      count: dist.available,
+      percentage: (dist.available / total) * 100,
+    },
+    pending: {
+      count: dist.pending,
+      percentage: (dist.pending / total) * 100,
+    },
+    rented: {
+      count: dist.rented,
+      percentage: (dist.rented / total) * 100,
+    },
+  }
+})
+
+// Load translations and data on mount
+onMounted(() => {
+  loadTranslations()
+  loadDashboardData()
+})
 </script>
