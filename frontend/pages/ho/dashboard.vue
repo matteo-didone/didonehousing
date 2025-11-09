@@ -278,6 +278,7 @@ definePageMeta({
 })
 
 const { t, locale } = useI18n()
+const { fetchStats, loading: dashboardLoading } = useHODashboard()
 
 // Translations
 const translations = ref({
@@ -339,72 +340,36 @@ const loadTranslations = () => {
   }
 }
 
-// Load translations on mount
-onMounted(() => {
-  loadTranslations()
-})
-
 // Watch for locale changes and reload translations
 watch(locale, () => {
   loadTranslations()
 })
 
-// Mock data
+// Data from API
 const stats = ref({
-  pendingApprovals: 5,
-  totalProperties: 75,
-  activeTenants: 58,
-  openTickets: 12,
+  pendingApprovals: 0,
+  totalProperties: 0,
+  activeTenants: 0,
+  openTickets: 0,
 })
 
-const pendingApprovals = ref([
-  {
-    id: 1,
-    address: 'Via Roma, 123',
-    city: 'Aviano',
-    landlord: 'Mario Rossi',
-    submittedDate: '2 days ago',
-  },
-  {
-    id: 2,
-    address: 'Via Giuseppe Verdi, 45',
-    city: 'Pordenone',
-    landlord: 'Laura Bianchi',
-    submittedDate: '3 days ago',
-  },
-  {
-    id: 3,
-    address: 'Corso Italia, 67',
-    city: 'Roveredo in Piano',
-    landlord: 'Giovanni Neri',
-    submittedDate: '5 days ago',
-  },
-])
+const pendingApprovals = ref<any[]>([])
+const recentApprovals = ref<any[]>([])
 
-const recentApprovals = ref([
-  {
-    id: 1,
-    property: 'Via Dante, 89',
-    status: 'approved',
-    statusText: t('dashboard.ho.approvedBy'),
-    by: 'John Smith',
-    date: '1 hour ago',
-  },
-  {
-    id: 2,
-    property: 'Via Mazzini, 12',
-    status: 'rejected',
-    statusText: t('dashboard.ho.rejectedBy'),
-    by: 'Sarah Johnson',
-    date: '3 hours ago',
-  },
-  {
-    id: 3,
-    property: 'Piazza Libertà, 34',
-    status: 'approved',
-    statusText: t('dashboard.ho.approvedBy'),
-    by: 'Michael Brown',
-    date: '5 hours ago',
-  },
-])
+// Load dashboard data
+const loadDashboardData = async () => {
+  try {
+    const statsData = await fetchStats()
+    stats.value = statsData
+    // TODO: Add endpoints for pending approvals and recent approvals when backend is ready
+  } catch (err: any) {
+    console.error('Error loading HO dashboard data:', err)
+  }
+}
+
+// Load data on mount
+onMounted(() => {
+  loadTranslations()
+  loadDashboardData()
+})
 </script>

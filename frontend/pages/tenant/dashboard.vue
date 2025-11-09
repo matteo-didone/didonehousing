@@ -260,6 +260,7 @@ definePageMeta({
 
 const { user } = useAuth()
 const { t, locale } = useI18n()
+const { fetchStats, loading: dashboardLoading } = useTenantDashboard()
 
 // Welcome message with user name (reactive to user changes)
 const welcomeMessage = computed(() => {
@@ -326,66 +327,37 @@ const loadTranslations = () => {
   }
 }
 
-// Load translations on mount
-onMounted(() => {
-  loadTranslations()
-})
-
 // Watch for locale changes and reload translations
 watch(locale, () => {
   loadTranslations()
 })
 
-// Mock data
+// Data from API
 const stats = ref({
-  savedProperties: 3,
-  viewingRequests: 2,
-  activeLease: true,
-  maintenanceTickets: 1,
+  savedProperties: 0,
+  viewingRequests: 0,
+  activeLease: false,
+  maintenanceTickets: 0,
 })
 
-const featuredProperties = ref([
-  {
-    id: 1,
-    address: 'Via Roma, 123',
-    city: 'Aviano',
-    rent: 1200,
-    bedrooms: 3,
-  },
-  {
-    id: 2,
-    address: 'Via Giuseppe Verdi, 45',
-    city: 'Pordenone',
-    rent: 1500,
-    bedrooms: 4,
-  },
-])
+const featuredProperties = ref<any[]>([])
+const upcomingPayments = ref<any[]>([])
+const recentActivity = ref<any[]>([])
 
-const upcomingPayments = ref([
-  {
-    id: 1,
-    description: 'Monthly Rent',
-    amount: 1200,
-    dueDate: 'Nov 1, 2025',
-    urgent: true,
-  },
-])
+// Load dashboard data
+const loadDashboardData = async () => {
+  try {
+    const statsData = await fetchStats()
+    stats.value = statsData
+    // TODO: Add endpoints for featured properties, payments, and activity when backend is ready
+  } catch (err: any) {
+    console.error('Error loading tenant dashboard data:', err)
+  }
+}
 
-const recentActivity = ref([
-  {
-    id: 1,
-    title: 'Viewing request confirmed',
-    time: '2 hours ago',
-  },
-  {
-    id: 2,
-    title: 'Property saved to favorites',
-    time: '1 day ago',
-  },
-  {
-    id: 3,
-    title: 'Maintenance request submitted',
-    time: '3 days ago',
-  },
-])
+// Load data on mount
+onMounted(() => {
+  loadTranslations()
+  loadDashboardData()
+})
 </script>
