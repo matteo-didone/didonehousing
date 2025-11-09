@@ -221,7 +221,7 @@ const loadPendingProperties = async (page = 1) => {
       status: 'pending_review',
       page,
       per_page: 20,
-      sort: 'submitted_at'
+      sort: '-created_at'
     })
     properties.value = response.data
     pagination.value = {
