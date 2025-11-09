@@ -19,7 +19,7 @@ export const useHODashboard = () => {
     error.value = null
 
     try {
-      const response = await fetch(`${config.public.apiBase}/api/ho/dashboard/stats`, {
+      const response = await fetch(`${config.public.apiBase}/ho/dashboard/stats`, {
         headers: {
           Authorization: `Bearer ${token.value}`,
           Accept: 'application/json',
