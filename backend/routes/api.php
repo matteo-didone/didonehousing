@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\PropertyController;
 use App\Http\Controllers\Api\ListingController;
 use App\Http\Controllers\Api\DocumentController;
+use App\Http\Controllers\Api\HoDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/documents/{document}', [DocumentController::class, 'update']);
     Route::delete('/documents/{document}', [DocumentController::class, 'destroy']);
     Route::get('/documents/{document}/download', [DocumentController::class, 'download']);
+
+    // Housing Office Dashboard
+    Route::get('/ho/dashboard/stats', [HoDashboardController::class, 'stats']);
 });
 
 // Health check

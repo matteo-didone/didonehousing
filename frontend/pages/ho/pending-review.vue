@@ -217,9 +217,9 @@ const loadPendingProperties = async (page = 1) => {
   error.value = null
 
   try {
-    const response = await fetchProperties({ 
-      pending_review: true,
-      page, 
+    const response = await fetchProperties({
+      status: 'pending_review',
+      page,
       per_page: 20,
       sort: 'submitted_at'
     })
