@@ -23,6 +23,7 @@ export interface PlaceResult {
 
 export const useGoogleMaps = () => {
   const config = useRuntimeConfig()
+  const { locale } = useI18n()
   const isLoaded = ref(false)
   const isLoading = ref(false)
   const error = ref<string | null>(null)
@@ -51,10 +52,13 @@ export const useGoogleMaps = () => {
         return
       }
 
+      // Get current locale (default to 'it' for Italy-focused app)
+      const language = locale.value || 'it'
+
       // Load the script
       await new Promise<void>((resolve, reject) => {
         const script = document.createElement('script')
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&language=it`
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&language=${language}`
         script.async = true
         script.defer = true
 

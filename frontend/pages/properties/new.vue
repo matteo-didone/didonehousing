@@ -37,24 +37,56 @@
           <CardTitle>{{ t('property.create.location') }}</CardTitle>
         </CardHeader>
         <CardContent class="space-y-4">
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div class="sm:col-span-2 space-y-2">
-              <Label for="street_name">{{ t('property.address') }} *</Label>
-              <Input
-                id="street_name"
-                v-model="form.street_name"
-                required
-                :placeholder="t('property.create.addressPlaceholder')"
-              />
+          <!-- Google Maps Autocomplete -->
+          <div class="space-y-2">
+            <Label for="address_search">
+              {{ t('property.create.searchAddress') || 'Search Address' }}
+              <span v-if="isLoading" class="ml-2 text-xs text-muted-foreground">(Loading...)</span>
+            </Label>
+            <Input
+              id="address_search"
+              ref="addressInput"
+              v-model="autocompleteSearch"
+              :placeholder="t('property.create.searchAddressPlaceholder') || 'Start typing an address in Italy...'"
+              :disabled="!isLoaded"
+              class="text-base"
+            />
+            <p class="text-xs text-muted-foreground">
+              {{ t('property.create.searchAddressHint') || 'Use autocomplete to fill address fields automatically' }}
+            </p>
+            <!-- Distance Badge -->
+            <div v-if="form.distance_from_base_km" class="flex items-center gap-2 mt-2">
+              <span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                {{ form.distance_from_base_km }} km from Aviano AB
+              </span>
             </div>
-            <div class="space-y-2">
-              <Label for="house_number">{{ t('property.create.houseNumber') }} *</Label>
-              <Input
-                id="house_number"
-                v-model="form.house_number"
-                required
-                placeholder="12"
-              />
+          </div>
+
+          <div class="border-t border-border pt-4">
+            <p class="text-sm font-medium text-muted-foreground mb-3">{{ t('property.create.manualEntry') || 'Or enter manually:' }}</p>
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div class="sm:col-span-2 space-y-2">
+                <Label for="street_name">{{ t('property.address') }} *</Label>
+                <Input
+                  id="street_name"
+                  v-model="form.street_name"
+                  required
+                  :placeholder="t('property.create.addressPlaceholder')"
+                />
+              </div>
+              <div class="space-y-2">
+                <Label for="house_number">{{ t('property.create.houseNumber') }} *</Label>
+                <Input
+                  id="house_number"
+                  v-model="form.house_number"
+                  required
+                  placeholder="12"
+                />
+              </div>
             </div>
           </div>
 
@@ -305,7 +337,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import Card from '@/components/ui/Card.vue'
 import CardHeader from '@/components/ui/CardHeader.vue'
 import CardTitle from '@/components/ui/CardTitle.vue'
@@ -322,6 +354,7 @@ definePageMeta({
 
 const { t } = useI18n()
 const { createProperty } = useProperty()
+const { loadGoogleMaps, initAutocomplete, isLoaded, isLoading } = useGoogleMaps()
 
 const form = reactive({
   // Address
@@ -332,6 +365,12 @@ const form = reactive({
   province: '',
   postal_code: '',
   country: 'IT',
+  // Google Maps data
+  google_place_id: '',
+  latitude: null as number | null,
+  longitude: null as number | null,
+  distance_from_base_km: null as number | null,
+  formatted_address: '',
   // Rooms
   bedrooms: 1,
   bathrooms: 1,
@@ -350,6 +389,39 @@ const form = reactive({
 
 const submitting = ref(false)
 const error = ref<string | null>(null)
+const addressInput = ref<HTMLInputElement | null>(null)
+const autocompleteSearch = ref('')
+
+// Load Google Maps on mount
+onMounted(async () => {
+  try {
+    await loadGoogleMaps()
+
+    // Initialize autocomplete after Google Maps is loaded
+    if (addressInput.value && isLoaded.value) {
+      initAutocomplete(addressInput.value, (place) => {
+        // Populate form with selected place
+        form.google_place_id = place.place_id
+        form.formatted_address = place.formatted_address
+        form.street_name = place.street_name
+        form.house_number = place.house_number
+        form.city = place.city
+        form.province = place.province
+        form.postal_code = place.postal_code
+        form.country = place.country
+        form.latitude = place.latitude
+        form.longitude = place.longitude
+        form.distance_from_base_km = place.distance_from_base_km || null
+
+        // Update the search field to show the selected address
+        autocompleteSearch.value = place.formatted_address
+      })
+    }
+  } catch (err) {
+    console.error('Failed to load Google Maps:', err)
+    // Not critical - user can still enter address manually
+  }
+})
 
 const handleSubmit = async () => {
   submitting.value = true
