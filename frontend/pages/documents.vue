@@ -67,30 +67,30 @@
                       </svg>
                     </div>
                     <div>
-                      <p class="font-medium">{{ doc.fileName }}</p>
-                      <p class="text-xs text-muted-foreground">{{ doc.uploadedBy }}</p>
+                      <p class="font-medium">{{ doc.file_name }}</p>
+                      <p class="text-xs text-muted-foreground">{{ doc.uploaded_by }}</p>
                     </div>
                   </div>
                 </td>
                 <td class="px-6 py-4">
-                  <Badge variant="outline">{{ translations.types[doc.type] }}</Badge>
+                  <Badge variant="outline">{{ translations.types[doc.document_type] }}</Badge>
                 </td>
                 <td class="px-6 py-4 text-sm text-muted-foreground">
-                  {{ doc.size }}
+                  {{ formatFileSize(doc.file_size) }}
                 </td>
                 <td class="px-6 py-4 text-sm text-muted-foreground">
-                  {{ doc.uploadedAt }}
+                  {{ formatDate(doc.created_at) }}
                 </td>
                 <td class="px-6 py-4">
                   <div class="flex items-center justify-end gap-2">
-                    <Button size="sm" variant="ghost">
+                    <Button size="sm" variant="ghost" @click="handleDownload(doc.id)">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                         <polyline points="7 10 12 15 17 10" />
                         <line x1="12" x2="12" y1="15" y2="3" />
                       </svg>
                     </Button>
-                    <Button size="sm" variant="ghost" class="text-destructive hover:text-destructive">
+                    <Button size="sm" variant="ghost" class="text-destructive hover:text-destructive" @click="handleDelete(doc.id)">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 6h18" />
                         <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
@@ -136,13 +136,21 @@
         <CardContent>
           <form @submit.prevent="handleUpload" class="space-y-4">
             <!-- File Upload Area -->
-            <div class="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer">
+            <div class="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto text-muted-foreground mb-4">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                 <polyline points="17 8 12 3 7 8" />
                 <line x1="12" x2="12" y1="3" y2="15" />
               </svg>
-              <p class="text-sm text-muted-foreground">{{ translations.dragDrop }}</p>
+              <p class="text-sm text-muted-foreground mb-2">{{ translations.dragDrop }}</p>
+              <input
+                type="file"
+                @change="handleFileSelect"
+                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                class="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                required
+              />
+              <p v-if="selectedFile" class="mt-2 text-sm font-medium">{{ selectedFile.name }}</p>
             </div>
 
             <!-- Document Type -->
@@ -191,6 +199,7 @@ definePageMeta({
 })
 
 const { t, locale } = useI18n()
+const { fetchDocuments, uploadDocument, deleteDocument, downloadDocument, loading: apiLoading } = useDocuments()
 
 // Translations
 const translations = ref({
@@ -237,11 +246,6 @@ const loadTranslations = () => {
   }
 }
 
-// Load translations on mount
-onMounted(() => {
-  loadTranslations()
-})
-
 // Watch for locale changes and reload translations
 watch(locale, () => {
   loadTranslations()
@@ -251,68 +255,125 @@ watch(locale, () => {
 const showUploadModal = ref(false)
 const uploading = ref(false)
 const filterType = ref('')
+const documents = ref<any[]>([])
+const loadingDocs = ref(false)
+const errorMsg = ref<string | null>(null)
+const selectedFile = ref<File | null>(null)
 
 const uploadForm = ref({
   type: 'other',
 })
 
-// Mock data
-const documents = ref([
-  {
-    id: 1,
-    fileName: 'Lease_Agreement_2024.pdf',
-    type: 'lease',
-    size: '2.4 MB',
-    uploadedBy: 'John Doe',
-    uploadedAt: '2024-01-15',
-  },
-  {
-    id: 2,
-    fileName: 'Rent_Receipt_January.pdf',
-    type: 'receipt',
-    size: '156 KB',
-    uploadedBy: 'System',
-    uploadedAt: '2024-01-01',
-  },
-  {
-    id: 3,
-    fileName: 'Passport_Copy.pdf',
-    type: 'identity',
-    size: '1.2 MB',
-    uploadedBy: 'John Doe',
-    uploadedAt: '2023-12-10',
-  },
-])
+// Load documents from API
+const loadDocuments = async () => {
+  loadingDocs.value = true
+  errorMsg.value = null
+  try {
+    const response = await fetchDocuments({
+      document_type: filterType.value || undefined,
+      per_page: 50,
+    })
+    documents.value = response.data || response.documents || []
+  } catch (err: any) {
+    errorMsg.value = err.message
+    console.error('Error loading documents:', err)
+  } finally {
+    loadingDocs.value = false
+  }
+}
 
 // Computed
 const filteredDocuments = computed(() => {
-  if (!filterType.value) return documents.value
-  return documents.value.filter(d => d.type === filterType.value)
+  return documents.value
+})
+
+// Watch filter changes
+watch(filterType, () => {
+  loadDocuments()
 })
 
 // Methods
 const handleUpload = async () => {
+  if (!selectedFile.value) {
+    alert('Please select a file to upload')
+    return
+  }
+
   uploading.value = true
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    const formData = new FormData()
+    formData.append('file', selectedFile.value)
+    formData.append('document_type', uploadForm.value.type)
 
-    // Add new document
-    documents.value.unshift({
-      id: documents.value.length + 1,
-      fileName: 'New_Document.pdf',
-      type: uploadForm.value.type,
-      size: '500 KB',
-      uploadedBy: 'Current User',
-      uploadedAt: new Date().toISOString().split('T')[0],
-    })
+    await uploadDocument(formData)
+
+    // Reload documents
+    await loadDocuments()
 
     showUploadModal.value = false
     uploadForm.value.type = 'other'
+    selectedFile.value = null
     alert('Document uploaded successfully')
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error uploading document:', error)
+    alert(error.message || 'Error uploading document')
   } finally {
     uploading.value = false
   }
 }
+
+const handleFileSelect = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  if (target.files && target.files.length > 0) {
+    selectedFile.value = target.files[0]
+  }
+}
+
+const handleDelete = async (id: number) => {
+  if (!confirm('Are you sure you want to delete this document?')) return
+
+  try {
+    await deleteDocument(id)
+    // Remove from local list
+    documents.value = documents.value.filter(d => d.id !== id)
+    alert('Document deleted successfully')
+  } catch (error: any) {
+    console.error('Error deleting document:', error)
+    alert(error.message || 'Error deleting document')
+  }
+}
+
+const handleDownload = async (id: number) => {
+  try {
+    await downloadDocument(id)
+  } catch (error: any) {
+    console.error('Error downloading document:', error)
+    alert(error.message || 'Error downloading document')
+  }
+}
+
+// Helper functions
+const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return '0 Bytes'
+  const k = 1024
+  const sizes = ['Bytes', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i]
+}
+
+const formatDate = (dateString: string): string => {
+  if (!dateString) return 'N/A'
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
+}
+
+// Load documents on mount
+onMounted(() => {
+  loadTranslations()
+  loadDocuments()
+})
 </script>

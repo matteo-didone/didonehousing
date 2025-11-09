@@ -44,24 +44,24 @@
           >
             <!-- Avatar -->
             <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold">
-              {{ conversation.name.charAt(0) }}
+              {{ conversation.participant_name.charAt(0) }}
             </div>
 
             <!-- Content -->
             <div class="flex-1 min-w-0">
               <div class="flex items-start justify-between mb-1">
-                <h3 class="font-semibold truncate">{{ conversation.name }}</h3>
+                <h3 class="font-semibold truncate">{{ conversation.participant_name }}</h3>
                 <span class="text-xs text-muted-foreground whitespace-nowrap ml-2">
-                  {{ conversation.time }}
+                  {{ formatTime(conversation.last_message_at) }}
                 </span>
               </div>
-              <p class="text-sm text-muted-foreground line-clamp-1">{{ conversation.lastMessage }}</p>
+              <p class="text-sm text-muted-foreground line-clamp-1">{{ conversation.last_message }}</p>
               <div class="flex items-center gap-2 mt-1">
-                <Badge v-if="conversation.unread" variant="destructive" class="text-xs px-1.5 py-0">
-                  {{ conversation.unread }}
+                <Badge v-if="conversation.unread_count > 0" variant="destructive" class="text-xs px-1.5 py-0">
+                  {{ conversation.unread_count }}
                 </Badge>
                 <span
-                  v-if="conversation.online"
+                  v-if="conversation.is_online"
                   class="text-xs text-success flex items-center gap-1"
                 >
                   <span class="h-2 w-2 rounded-full bg-success"></span>
@@ -93,12 +93,12 @@
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold">
-                {{ selectedConversation.name.charAt(0) }}
+                {{ selectedConversation.participant_name.charAt(0) }}
               </div>
               <div>
-                <h3 class="font-semibold">{{ selectedConversation.name }}</h3>
+                <h3 class="font-semibold">{{ selectedConversation.participant_name }}</h3>
                 <p class="text-xs text-muted-foreground">
-                  {{ selectedConversation.online ? translations.online : translations.offline }}
+                  {{ selectedConversation.is_online ? translations.online : translations.offline }}
                 </p>
               </div>
             </div>
@@ -121,25 +121,25 @@
             :key="message.id"
             :class="[
               'flex',
-              message.sender === 'me' ? 'justify-end' : 'justify-start'
+              message.sender_id === user?.id ? 'justify-end' : 'justify-start'
             ]"
           >
             <div
               :class="[
                 'max-w-[70%] rounded-lg p-3',
-                message.sender === 'me'
+                message.sender_id === user?.id
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-muted'
               ]"
             >
-              <p class="text-sm">{{ message.text }}</p>
+              <p class="text-sm">{{ message.content }}</p>
               <p
                 :class="[
                   'text-xs mt-1',
-                  message.sender === 'me' ? 'text-primary-foreground/70' : 'text-muted-foreground'
+                  message.sender_id === user?.id ? 'text-primary-foreground/70' : 'text-muted-foreground'
                 ]"
               >
-                {{ message.time }}
+                {{ formatTime(message.created_at) }}
               </p>
             </div>
           </div>
@@ -246,6 +246,7 @@ definePageMeta({
 })
 
 const { t, locale } = useI18n()
+const { fetchConversations, fetchConversationMessages, sendMessage, createConversation, markAsRead, loading: apiLoading } = useMessages()
 
 // Translations
 const translations = ref({
@@ -297,11 +298,6 @@ const loadTranslations = () => {
   }
 }
 
-// Load translations on mount
-onMounted(() => {
-  loadTranslations()
-})
-
 // Watch for locale changes and reload translations
 watch(locale, () => {
   loadTranslations()
@@ -313,93 +309,48 @@ const selectedConversation = ref<any>(null)
 const messageText = ref('')
 const sending = ref(false)
 const showNewMessageModal = ref(false)
+const conversations = ref<any[]>([])
+const loadingConversations = ref(false)
+const { user } = useAuth()
 
 const newMessageForm = ref({
   recipient: '',
   message: '',
 })
 
-// Mock conversations
-const conversations = ref([
-  {
-    id: 1,
-    name: 'Maria Rossi',
-    lastMessage: 'The property is available for viewing next week.',
-    time: '10:30 AM',
-    unread: 2,
-    online: true,
-    messages: [
-      {
-        id: 1,
-        sender: 'them',
-        text: 'Hello, I saw your viewing request for Via Roma 123.',
-        time: '10:15 AM',
-      },
-      {
-        id: 2,
-        sender: 'me',
-        text: 'Yes, I\'m very interested! When can I schedule a viewing?',
-        time: '10:20 AM',
-      },
-      {
-        id: 3,
-        sender: 'them',
-        text: 'The property is available for viewing next week.',
-        time: '10:30 AM',
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Housing Office',
-    lastMessage: 'Your lease renewal documents are ready.',
-    time: 'Yesterday',
-    unread: 0,
-    online: false,
-    messages: [
-      {
-        id: 1,
-        sender: 'them',
-        text: 'Your lease renewal documents are ready.',
-        time: 'Yesterday 3:00 PM',
-      },
-      {
-        id: 2,
-        sender: 'me',
-        text: 'Thank you! I\'ll review them today.',
-        time: 'Yesterday 3:15 PM',
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: 'John Smith',
-    lastMessage: 'Thanks for fixing the heating issue!',
-    time: '2 days ago',
-    unread: 0,
-    online: false,
-    messages: [
-      {
-        id: 1,
-        sender: 'them',
-        text: 'The heating in my apartment is not working.',
-        time: '3 days ago',
-      },
-      {
-        id: 2,
-        sender: 'me',
-        text: 'I\'ll send a technician tomorrow morning.',
-        time: '3 days ago',
-      },
-      {
-        id: 3,
-        sender: 'them',
-        text: 'Thanks for fixing the heating issue!',
-        time: '2 days ago',
-      },
-    ],
-  },
-])
+// Load conversations
+const loadConversations = async () => {
+  loadingConversations.value = true
+  try {
+    const response = await fetchConversations({ per_page: 50 })
+    conversations.value = response.data || response.conversations || []
+  } catch (err: any) {
+    console.error('Error loading conversations:', err)
+  } finally {
+    loadingConversations.value = false
+  }
+}
+
+// Load messages for a conversation
+const loadConversationMessages = async (conversationId: number) => {
+  try {
+    const response = await fetchConversationMessages(conversationId)
+    if (selectedConversation.value && selectedConversation.value.id === conversationId) {
+      selectedConversation.value.messages = response.data || response.messages || []
+    }
+    // Mark as read
+    await markAsRead(conversationId)
+  } catch (err: any) {
+    console.error('Error loading messages:', err)
+  }
+}
+
+// Watch for conversation selection
+watch(selectedConversation, (newVal) => {
+  if (newVal && newVal.id) {
+    loadConversationMessages(newVal.id)
+  }
+})
 
 // Computed
 const filteredConversations = computed(() => {
@@ -407,8 +358,8 @@ const filteredConversations = computed(() => {
 
   const query = searchQuery.value.toLowerCase()
   return conversations.value.filter(c =>
-    c.name.toLowerCase().includes(query) ||
-    c.lastMessage.toLowerCase().includes(query)
+    c.participant_name.toLowerCase().includes(query) ||
+    c.last_message.toLowerCase().includes(query)
   )
 })
 
@@ -418,58 +369,47 @@ const handleSendMessage = async () => {
 
   sending.value = true
   try {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    const response = await sendMessage(selectedConversation.value.id, messageText.value)
 
-    // Add message to conversation
-    selectedConversation.value.messages.push({
-      id: selectedConversation.value.messages.length + 1,
-      sender: 'me',
-      text: messageText.value,
-      time: 'Just now',
-    })
+    // Add message to local array
+    if (selectedConversation.value.messages) {
+      selectedConversation.value.messages.push(response.message)
+    } else {
+      selectedConversation.value.messages = [response.message]
+    }
 
     // Update last message in conversation list
     const conversation = conversations.value.find(c => c.id === selectedConversation.value.id)
     if (conversation) {
-      conversation.lastMessage = messageText.value
-      conversation.time = 'Just now'
+      conversation.last_message = messageText.value
+      conversation.last_message_at = response.message.created_at
     }
 
     messageText.value = ''
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error sending message:', error)
+    alert(error.message || 'Error sending message')
   } finally {
     sending.value = false
   }
 }
 
 const handleNewMessage = async () => {
+  if (!newMessageForm.value.recipient || !newMessageForm.value.message.trim()) {
+    alert('Please select a recipient and enter a message')
+    return
+  }
+
   sending.value = true
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    const participantId = parseInt(newMessageForm.value.recipient)
+    const response = await createConversation(participantId, newMessageForm.value.message)
 
-    // Create new conversation
-    const newConversation = {
-      id: conversations.value.length + 1,
-      name: newMessageForm.value.recipient === 'landlord' ? 'Maria Rossi'
-        : newMessageForm.value.recipient === 'tenant' ? 'John Doe'
-        : 'Housing Office',
-      lastMessage: newMessageForm.value.message,
-      time: 'Just now',
-      unread: 0,
-      online: false,
-      messages: [
-        {
-          id: 1,
-          sender: 'me',
-          text: newMessageForm.value.message,
-          time: 'Just now',
-        },
-      ],
-    }
+    // Reload conversations
+    await loadConversations()
 
-    conversations.value.unshift(newConversation)
-    selectedConversation.value = newConversation
+    // Select the new conversation
+    selectedConversation.value = response.conversation
 
     // Reset form
     newMessageForm.value = {
@@ -479,10 +419,33 @@ const handleNewMessage = async () => {
 
     showNewMessageModal.value = false
     alert('Message sent successfully')
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error sending new message:', error)
+    alert(error.message || 'Error sending new message')
   } finally {
     sending.value = false
   }
 }
+
+// Helper function to format time
+const formatTime = (dateString: string): string => {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  const now = new Date()
+  const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60)
+
+  if (diffInHours < 24) {
+    return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  } else if (diffInHours < 48) {
+    return 'Yesterday'
+  } else {
+    return Math.floor(diffInHours / 24) + ' days ago'
+  }
+}
+
+// Load conversations on mount
+onMounted(() => {
+  loadTranslations()
+  loadConversations()
+})
 </script>

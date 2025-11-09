@@ -283,6 +283,7 @@ definePageMeta({
 
 const { user } = useAuth()
 const { t, setLocale, locale } = useI18n()
+const { updateProfile, updatePassword, updateNotificationSettings, loading: apiLoading } = useProfile()
 
 // Translations
 const translations = ref({
@@ -416,8 +417,13 @@ const formatDate = (date: string | undefined) => {
 const handleUpdateProfile = async () => {
   updatingProfile.value = true
   try {
-    // TODO: API call to update profile
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await updateProfile({
+      first_name: profileForm.value.firstName,
+      last_name: profileForm.value.lastName,
+      email: profileForm.value.email,
+      phone: profileForm.value.phone,
+      preferred_language: profileForm.value.language,
+    })
 
     // Update language if changed
     if (profileForm.value.language !== user.value?.preferred_language) {
@@ -425,9 +431,9 @@ const handleUpdateProfile = async () => {
     }
 
     alert(translations.value.success)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating profile:', error)
-    alert('Error updating profile')
+    alert(error.message || 'Error updating profile')
   } finally {
     updatingProfile.value = false
   }
@@ -441,8 +447,11 @@ const handleUpdatePassword = async () => {
 
   updatingPassword.value = true
   try {
-    // TODO: API call to update password
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await updatePassword({
+      current_password: passwordForm.value.current,
+      new_password: passwordForm.value.new,
+      new_password_confirmation: passwordForm.value.confirm,
+    })
 
     // Clear form
     passwordForm.value = {
@@ -452,9 +461,9 @@ const handleUpdatePassword = async () => {
     }
 
     alert(translations.value.passwordSuccess)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating password:', error)
-    alert('Error updating password')
+    alert(error.message || 'Error updating password')
   } finally {
     updatingPassword.value = false
   }
@@ -463,12 +472,16 @@ const handleUpdatePassword = async () => {
 const handleSaveSettings = async () => {
   savingSettings.value = true
   try {
-    // TODO: API call to save notification settings
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await updateNotificationSettings({
+      property_updates: notificationsForm.value.propertyUpdates,
+      maintenance_alerts: notificationsForm.value.maintenanceAlerts,
+      payment_reminders: notificationsForm.value.paymentReminders,
+      message_notifications: notificationsForm.value.messageNotifications,
+    })
     alert(translations.value.settingsSuccess)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error saving settings:', error)
-    alert('Error saving settings')
+    alert(error.message || 'Error saving settings')
   } finally {
     savingSettings.value = false
   }

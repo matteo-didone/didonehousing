@@ -48,7 +48,7 @@
               <p class="text-sm text-muted-foreground line-clamp-2">{{ ticket.description }}</p>
               <div class="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
                 <span>{{ t('maintenance.category') }}: {{ t(`maintenance.categories.${ticket.category}`) }}</span>
-                <span>{{ t('maintenance.createdAt') }}: {{ ticket.createdAt }}</span>
+                <span>{{ t('maintenance.createdAt') }}: {{ formatDate(ticket.created_at) }}</span>
               </div>
             </div>
           </div>
@@ -192,20 +192,20 @@
           <div class="grid grid-cols-2 gap-4 text-sm">
             <div>
               <p class="font-medium text-muted-foreground">{{ t('maintenance.createdBy') }}</p>
-              <p>{{ selectedTicket.createdBy }}</p>
+              <p>{{ selectedTicket.created_by }}</p>
             </div>
             <div>
               <p class="font-medium text-muted-foreground">{{ t('maintenance.createdAt') }}</p>
-              <p>{{ selectedTicket.createdAt }}</p>
+              <p>{{ formatDate(selectedTicket.created_at) }}</p>
             </div>
           </div>
 
           <div class="flex gap-2 pt-4">
             <Button variant="outline">{{ t('maintenance.update') }}</Button>
-            <Button v-if="selectedTicket.status !== 'closed'" variant="destructive">
+            <Button v-if="selectedTicket.status !== 'closed'" variant="destructive" @click="handleCloseTicket(selectedTicket.id)">
               {{ t('maintenance.close') }}
             </Button>
-            <Button v-else variant="outline">{{ t('maintenance.reopen') }}</Button>
+            <Button v-else variant="outline" @click="handleReopenTicket(selectedTicket.id)">{{ t('maintenance.reopen') }}</Button>
           </div>
         </CardContent>
       </Card>
@@ -232,6 +232,7 @@ definePageMeta({
 })
 
 const { t } = useI18n()
+const { fetchTickets, createTicket, updateTicket, closeTicket, reopenTicket, loading: apiLoading } = useMaintenance()
 
 // State
 const showCreateModal = ref(false)
@@ -247,59 +248,43 @@ const ticketForm = ref({
   status: 'open',
 })
 
-// Mock data
-const tickets = ref([
-  {
-    id: 1,
-    subject: 'Leaking faucet in kitchen',
-    description: 'The kitchen faucet has been leaking for 2 days. Water drips constantly.',
-    priority: 'high',
-    category: 'plumbing',
-    status: 'open',
-    createdBy: 'John Doe',
-    createdAt: '2 days ago',
-  },
-  {
-    id: 2,
-    subject: 'Heating not working',
-    description: 'The heating system is not turning on. Temperature is very low.',
-    priority: 'urgent',
-    category: 'hvac',
-    status: 'inProgress',
-    createdBy: 'Jane Smith',
-    createdAt: '1 day ago',
-  },
-  {
-    id: 3,
-    subject: 'Light fixture broken',
-    description: 'Living room light fixture fell from ceiling. Needs replacement.',
-    priority: 'medium',
-    category: 'electrical',
-    status: 'resolved',
-    createdBy: 'John Doe',
-    createdAt: '1 week ago',
-  },
-])
+const tickets = ref<any[]>([])
+const loadingTickets = ref(false)
+
+// Load tickets from API
+const loadTickets = async () => {
+  loadingTickets.value = true
+  try {
+    const response = await fetchTickets({
+      status: filterStatus.value || undefined,
+      per_page: 50,
+    })
+    tickets.value = response.data || response.tickets || []
+  } catch (err: any) {
+    console.error('Error loading tickets:', err)
+  } finally {
+    loadingTickets.value = false
+  }
+}
+
+// Watch filter changes
+watch(filterStatus, () => {
+  loadTickets()
+})
 
 // Computed
 const filteredTickets = computed(() => {
-  if (!filterStatus.value) return tickets.value
-  return tickets.value.filter(t => t.status === filterStatus.value)
+  return tickets.value
 })
 
 // Methods
 const handleCreateTicket = async () => {
   submitting.value = true
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await createTicket(ticketForm.value)
 
-    // Add new ticket
-    tickets.value.unshift({
-      id: tickets.value.length + 1,
-      ...ticketForm.value,
-      createdBy: 'Current User',
-      createdAt: 'Just now',
-    })
+    // Reload tickets
+    await loadTickets()
 
     // Reset form
     ticketForm.value = {
@@ -312,12 +297,44 @@ const handleCreateTicket = async () => {
 
     showCreateModal.value = false
     alert('Ticket created successfully')
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating ticket:', error)
+    alert(error.message || 'Error creating ticket')
   } finally {
     submitting.value = false
   }
 }
+
+const handleCloseTicket = async (id: number) => {
+  if (!confirm('Are you sure you want to close this ticket?')) return
+
+  try {
+    await closeTicket(id)
+    selectedTicket.value = null
+    await loadTickets()
+    alert('Ticket closed successfully')
+  } catch (error: any) {
+    console.error('Error closing ticket:', error)
+    alert(error.message || 'Error closing ticket')
+  }
+}
+
+const handleReopenTicket = async (id: number) => {
+  try {
+    await reopenTicket(id)
+    selectedTicket.value = null
+    await loadTickets()
+    alert('Ticket reopened successfully')
+  } catch (error: any) {
+    console.error('Error reopening ticket:', error)
+    alert(error.message || 'Error reopening ticket')
+  }
+}
+
+// Load tickets on mount
+onMounted(() => {
+  loadTickets()
+})
 
 const getStatusVariant = (status: string) => {
   const variants: Record<string, any> = {
@@ -337,5 +354,28 @@ const getPriorityVariant = (priority: string) => {
     urgent: 'destructive',
   }
   return variants[priority] || 'default'
+}
+
+const formatDate = (dateString: string): string => {
+  if (!dateString) return 'N/A'
+  const date = new Date(dateString)
+  const now = new Date()
+  const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24))
+
+  if (diffInDays === 0) {
+    return 'Today'
+  } else if (diffInDays === 1) {
+    return 'Yesterday'
+  } else if (diffInDays < 7) {
+    return `${diffInDays} days ago`
+  } else if (diffInDays < 30) {
+    return `${Math.floor(diffInDays / 7)} weeks ago`
+  } else {
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  }
 }
 </script>
