@@ -42,18 +42,21 @@
             <Label for="address_search">
               {{ t('property.create.searchAddress') || 'Search Address' }}
               <span v-if="isLoading" class="ml-2 text-xs text-muted-foreground">(Loading...)</span>
+              <span v-else-if="isLoaded" class="ml-2 text-xs text-success">✓ Ready</span>
             </Label>
             <input
               id="address_search"
               ref="addressInput"
               v-model="autocompleteSearch"
               :placeholder="t('property.create.searchAddressPlaceholder') || 'Start typing an address in Italy...'"
-              :disabled="!isLoaded"
               type="text"
               class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             />
-            <p class="text-xs text-muted-foreground">
+            <p v-if="isLoaded" class="text-xs text-success">
               {{ t('property.create.searchAddressHint') || 'Use autocomplete to fill address fields automatically' }}
+            </p>
+            <p v-else class="text-xs text-muted-foreground">
+              Type manually or wait for autocomplete to load...
             </p>
             <!-- Distance Badge -->
             <div v-if="form.distance_from_base_km" class="flex items-center gap-2 mt-2">
@@ -338,7 +341,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, nextTick } from 'vue'
 import Card from '@/components/ui/Card.vue'
 import CardHeader from '@/components/ui/CardHeader.vue'
 import CardTitle from '@/components/ui/CardTitle.vue'
@@ -395,12 +398,21 @@ const autocompleteSearch = ref('')
 
 // Load Google Maps on mount
 onMounted(async () => {
+  console.log('[Google Maps] Starting initialization...')
+
   try {
     await loadGoogleMaps()
+    console.log('[Google Maps] Loaded successfully, isLoaded:', isLoaded.value)
+
+    // Wait for next tick to ensure DOM is ready
+    await nextTick()
 
     // Initialize autocomplete after Google Maps is loaded
     if (addressInput.value && isLoaded.value) {
-      initAutocomplete(addressInput.value, (place) => {
+      console.log('[Google Maps] Initializing autocomplete on input element')
+      const autocomplete = initAutocomplete(addressInput.value, (place) => {
+        console.log('[Google Maps] Place selected:', place)
+
         // Populate form with selected place
         form.google_place_id = place.place_id
         form.formatted_address = place.formatted_address
@@ -417,9 +429,17 @@ onMounted(async () => {
         // Update the search field to show the selected address
         autocompleteSearch.value = place.formatted_address
       })
+
+      if (autocomplete) {
+        console.log('[Google Maps] Autocomplete initialized successfully')
+      } else {
+        console.warn('[Google Maps] Autocomplete initialization returned null')
+      }
+    } else {
+      console.warn('[Google Maps] Cannot initialize autocomplete - input:', addressInput.value, 'isLoaded:', isLoaded.value)
     }
   } catch (err) {
-    console.error('Failed to load Google Maps:', err)
+    console.error('[Google Maps] Failed to load:', err)
     // Not critical - user can still enter address manually
   }
 })
