@@ -46,7 +46,7 @@ export const useMaintenance = () => {
       if (filters.per_page) params.append('per_page', filters.per_page.toString())
 
       const response = await fetch(
-        `${config.public.apiBaseUrl}/api/maintenance-tickets?${params.toString()}`,
+        `${config.public.apiBase}/maintenance-tickets?${params.toString()}`,
         {
           headers: {
             Authorization: `Bearer ${token.value}`,
@@ -75,7 +75,7 @@ export const useMaintenance = () => {
     error.value = null
 
     try {
-      const response = await fetch(`${config.public.apiBaseUrl}/api/maintenance-tickets/${id}`, {
+      const response = await fetch(`${config.public.apiBase}/maintenance-tickets/${id}`, {
         headers: {
           Authorization: `Bearer ${token.value}`,
           Accept: 'application/json',
@@ -102,7 +102,7 @@ export const useMaintenance = () => {
     error.value = null
 
     try {
-      const response = await fetch(`${config.public.apiBaseUrl}/api/maintenance-tickets`, {
+      const response = await fetch(`${config.public.apiBase}/maintenance-tickets`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token.value}`,
@@ -132,7 +132,7 @@ export const useMaintenance = () => {
     error.value = null
 
     try {
-      const response = await fetch(`${config.public.apiBaseUrl}/api/maintenance-tickets/${id}`, {
+      const response = await fetch(`${config.public.apiBase}/maintenance-tickets/${id}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token.value}`,
@@ -173,7 +173,7 @@ export const useMaintenance = () => {
     error.value = null
 
     try {
-      const response = await fetch(`${config.public.apiBaseUrl}/api/maintenance-tickets/${id}`, {
+      const response = await fetch(`${config.public.apiBase}/maintenance-tickets/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token.value}`,

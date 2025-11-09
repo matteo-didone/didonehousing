@@ -47,7 +47,7 @@ export const useMessages = () => {
       if (filters.per_page) params.append('per_page', filters.per_page.toString())
 
       const response = await fetch(
-        `${config.public.apiBaseUrl}/api/conversations?${params.toString()}`,
+        `${config.public.apiBase}/conversations?${params.toString()}`,
         {
           headers: {
             Authorization: `Bearer ${token.value}`,
@@ -77,7 +77,7 @@ export const useMessages = () => {
 
     try {
       const response = await fetch(
-        `${config.public.apiBaseUrl}/api/conversations/${conversationId}/messages`,
+        `${config.public.apiBase}/conversations/${conversationId}/messages`,
         {
           headers: {
             Authorization: `Bearer ${token.value}`,
@@ -107,7 +107,7 @@ export const useMessages = () => {
 
     try {
       const response = await fetch(
-        `${config.public.apiBaseUrl}/api/conversations/${conversationId}/messages`,
+        `${config.public.apiBase}/conversations/${conversationId}/messages`,
         {
           method: 'POST',
           headers: {
@@ -139,7 +139,7 @@ export const useMessages = () => {
     error.value = null
 
     try {
-      const response = await fetch(`${config.public.apiBaseUrl}/api/conversations`, {
+      const response = await fetch(`${config.public.apiBase}/conversations`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token.value}`,
@@ -170,7 +170,7 @@ export const useMessages = () => {
   const markAsRead = async (conversationId: number) => {
     try {
       const response = await fetch(
-        `${config.public.apiBaseUrl}/api/conversations/${conversationId}/mark-read`,
+        `${config.public.apiBase}/conversations/${conversationId}/mark-read`,
         {
           method: 'POST',
           headers: {

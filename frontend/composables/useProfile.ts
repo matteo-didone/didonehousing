@@ -33,7 +33,7 @@ export const useProfile = () => {
     error.value = null
 
     try {
-      const response = await fetch(`${config.public.apiBaseUrl}/api/profile`, {
+      const response = await fetch(`${config.public.apiBase}/profile`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token.value}`,
@@ -63,7 +63,7 @@ export const useProfile = () => {
     error.value = null
 
     try {
-      const response = await fetch(`${config.public.apiBaseUrl}/api/profile/password`, {
+      const response = await fetch(`${config.public.apiBase}/profile/password`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token.value}`,
@@ -93,7 +93,7 @@ export const useProfile = () => {
     error.value = null
 
     try {
-      const response = await fetch(`${config.public.apiBaseUrl}/api/profile/notification-settings`, {
+      const response = await fetch(`${config.public.apiBase}/profile/notification-settings`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token.value}`,

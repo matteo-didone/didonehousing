@@ -40,7 +40,7 @@ export const useDocuments = () => {
       if (filters.per_page) params.append('per_page', filters.per_page.toString())
 
       const response = await fetch(
-        `${config.public.apiBaseUrl}/api/documents?${params.toString()}`,
+        `${config.public.apiBase}/documents?${params.toString()}`,
         {
           headers: {
             Authorization: `Bearer ${token.value}`,
@@ -69,7 +69,7 @@ export const useDocuments = () => {
     error.value = null
 
     try {
-      const response = await fetch(`${config.public.apiBaseUrl}/api/documents`, {
+      const response = await fetch(`${config.public.apiBase}/documents`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token.value}`,
@@ -98,7 +98,7 @@ export const useDocuments = () => {
     error.value = null
 
     try {
-      const response = await fetch(`${config.public.apiBaseUrl}/api/documents/${id}`, {
+      const response = await fetch(`${config.public.apiBase}/documents/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token.value}`,
@@ -122,7 +122,7 @@ export const useDocuments = () => {
 
   const downloadDocument = async (id: number) => {
     try {
-      const response = await fetch(`${config.public.apiBaseUrl}/api/documents/${id}/download`, {
+      const response = await fetch(`${config.public.apiBase}/documents/${id}/download`, {
         headers: {
           Authorization: `Bearer ${token.value}`,
         },

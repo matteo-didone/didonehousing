@@ -518,7 +518,7 @@ const handleSubmit = async () => {
   submitting.value = true
   try {
     // 1. Create the property first
-    const response = await fetch(`${config.public.apiBaseUrl}/api/properties`, {
+    const response = await fetch(`${config.public.apiBase}/properties`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token.value}`,

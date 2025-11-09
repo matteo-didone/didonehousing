@@ -39,7 +39,7 @@ export const useLandlordDashboard = () => {
     error.value = null
 
     try {
-      const response = await fetch(`${config.public.apiBaseUrl}/api/landlord/dashboard/stats`, {
+      const response = await fetch(`${config.public.apiBase}/landlord/dashboard/stats`, {
         headers: {
           Authorization: `Bearer ${token.value}`,
           Accept: 'application/json',
@@ -67,7 +67,7 @@ export const useLandlordDashboard = () => {
 
     try {
       const response = await fetch(
-        `${config.public.apiBaseUrl}/api/landlord/dashboard/recent-activity`,
+        `${config.public.apiBase}/landlord/dashboard/recent-activity`,
         {
           headers: {
             Authorization: `Bearer ${token.value}`,

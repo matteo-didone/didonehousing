@@ -19,7 +19,7 @@ export const useTenantDashboard = () => {
     error.value = null
 
     try {
-      const response = await fetch(`${config.public.apiBaseUrl}/api/tenant/dashboard/stats`, {
+      const response = await fetch(`${config.public.apiBase}/tenant/dashboard/stats`, {
         headers: {
           Authorization: `Bearer ${token.value}`,
           Accept: 'application/json',
