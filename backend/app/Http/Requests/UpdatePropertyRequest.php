@@ -71,7 +71,11 @@ class UpdatePropertyRequest extends FormRequest
             'basement' => ['sometimes', 'boolean'],
             'attic' => ['sometimes', 'boolean'],
             'garage' => ['sometimes', 'boolean'],
+            'garage_type' => ['nullable', Rule::in(['indoor', 'outdoor', 'both'])],
+            'garage_spaces' => ['nullable', 'integer', 'min:1', 'max:10'],
             'yard' => ['sometimes', 'boolean'],
+            'yard_type' => ['nullable', Rule::in(['front', 'back', 'both'])],
+            'yard_sqm' => ['nullable', 'numeric', 'min:1', 'max:10000'],
 
             // =========================================================
             // FURNISHING
