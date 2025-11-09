@@ -579,7 +579,14 @@
       "lpgNoCoupons": "GPL senza Buoni",
       "fuel": "Gasolio",
       "electric": "Elettrico",
-      "separateSystem": "Sistema Autonomo"
+      "separateSystem": "Sistema Autonomo",
+      "city_gas": "Gas Metano",
+      "lpg_with_coupons": "GPL con Buoni",
+      "lpg_without_coupons": "GPL senza Buoni",
+      "fuel_oil": "Gasolio",
+      "heat_pump": "Pompa di Calore",
+      "wood": "Legna",
+      "other": "Altro"
     },
     "detail": {
       "backToList": "Torna alle Proprietà",

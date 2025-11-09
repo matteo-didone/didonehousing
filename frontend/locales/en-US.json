@@ -579,7 +579,14 @@
       "lpgNoCoupons": "LPG without Coupons",
       "fuel": "Fuel Oil",
       "electric": "Electric",
-      "separateSystem": "Separate System"
+      "separateSystem": "Separate System",
+      "city_gas": "City Gas (Methane)",
+      "lpg_with_coupons": "LPG with Coupons",
+      "lpg_without_coupons": "LPG without Coupons",
+      "fuel_oil": "Fuel Oil",
+      "heat_pump": "Heat Pump",
+      "wood": "Wood",
+      "other": "Other"
     },
     "detail": {
       "backToList": "Back to Properties",

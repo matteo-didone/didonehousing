@@ -147,7 +147,7 @@
           </div>
 
           <!-- Listing Info (if exists) -->
-          <div v-if="property.listing" class="p-4 border-2 border-primary/20 bg-primary/5 rounded-lg">
+          <div v-if="property.listing && property.listing.monthly_rent && property.listing.currency" class="p-4 border-2 border-primary/20 bg-primary/5 rounded-lg">
             <h3 class="font-semibold text-lg mb-3">{{ t('property.detail.listingInfo') }}</h3>
             <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div class="flex items-center justify-between">
@@ -156,7 +156,7 @@
                   {{ formatCurrency(property.listing.monthly_rent, property.listing.currency) }}
                 </span>
               </div>
-              <div class="flex items-center justify-between">
+              <div v-if="property.listing.available_from" class="flex items-center justify-between">
                 <span class="text-sm text-muted-foreground">{{ t('property.availableFrom') }}</span>
                 <span class="font-medium">{{ formatDate(property.listing.available_from) }}</span>
               </div>
