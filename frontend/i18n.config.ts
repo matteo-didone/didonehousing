@@ -85,7 +85,44 @@ export default defineI18nConfig(() => ({
         "squareMeters": "Square Meters",
         "availableFrom": "Available From",
         "status": "Status",
-        "distanceToBase": "Distance to Base"
+        "distanceToBase": "Distance to Base",
+        "photos": {
+          "title": "Property Photos",
+          "subtitle": "Upload photos of your property to attract more tenants",
+          "dragDrop": "Click or drag photos here to upload",
+          "uploadHint": "Supported formats: JPEG, PNG, WebP (max 5MB per photo)",
+          "description": "Photo Description",
+          "descriptionPlaceholder": "Describe this photo (e.g., Living room, Kitchen, etc.)",
+          "uploaded": "Uploaded successfully"
+        },
+        "documents": {
+          "title": "Property Documents",
+          "subtitle": "Upload required documents for your property listing",
+          "dragDrop": "Click or drag documents here to upload",
+          "uploadHint": "Supported formats: PDF, DOC, DOCX, JPEG, PNG (max 10MB per file)",
+          "type": "Document Type",
+          "description": "Document Description",
+          "descriptionPlaceholder": "Add notes about this document (optional)",
+          "uploaded": "Uploaded successfully",
+          "types": {
+            "cadastralSurvey": "Cadastral Survey (Visura Catastale)",
+            "energyCertificate": "Energy Performance Certificate (APE)",
+            "proofOfOwnership": "Proof of Ownership",
+            "other": "Other"
+          }
+        },
+        "create": {
+          "title": "Create New Property",
+          "subtitle": "Fill in the details about your property",
+          "success": "Property created successfully!",
+          "successDescription": "Your property has been added to the platform."
+        },
+        "types": {
+          "apartment": "Apartment",
+          "house": "House",
+          "villa": "Villa",
+          "studio": "Studio"
+        }
       },
       "validation": {
         "required": "This field is required",
@@ -178,7 +215,44 @@ export default defineI18nConfig(() => ({
         "squareMeters": "Metri Quadrati",
         "availableFrom": "Disponibile Dal",
         "status": "Stato",
-        "distanceToBase": "Distanza dalla Base"
+        "distanceToBase": "Distanza dalla Base",
+        "photos": {
+          "title": "Foto della Proprietà",
+          "subtitle": "Carica foto della tua proprietà per attirare più inquilini",
+          "dragDrop": "Clicca o trascina le foto qui per caricare",
+          "uploadHint": "Formati supportati: JPEG, PNG, WebP (max 5MB per foto)",
+          "description": "Descrizione Foto",
+          "descriptionPlaceholder": "Descrivi questa foto (es. Soggiorno, Cucina, ecc.)",
+          "uploaded": "Caricato con successo"
+        },
+        "documents": {
+          "title": "Documenti della Proprietà",
+          "subtitle": "Carica i documenti richiesti per il tuo annuncio",
+          "dragDrop": "Clicca o trascina i documenti qui per caricare",
+          "uploadHint": "Formati supportati: PDF, DOC, DOCX, JPEG, PNG (max 10MB per file)",
+          "type": "Tipo di Documento",
+          "description": "Descrizione Documento",
+          "descriptionPlaceholder": "Aggiungi note su questo documento (facoltativo)",
+          "uploaded": "Caricato con successo",
+          "types": {
+            "cadastralSurvey": "Visura Catastale",
+            "energyCertificate": "Attestato di Prestazione Energetica (APE)",
+            "proofOfOwnership": "Prova di Proprietà",
+            "other": "Altro"
+          }
+        },
+        "create": {
+          "title": "Crea Nuova Proprietà",
+          "subtitle": "Compila i dettagli della tua proprietà",
+          "success": "Proprietà creata con successo!",
+          "successDescription": "La tua proprietà è stata aggiunta alla piattaforma."
+        },
+        "types": {
+          "apartment": "Appartamento",
+          "house": "Casa",
+          "villa": "Villa",
+          "studio": "Monolocale"
+        }
       },
       "validation": {
         "required": "Questo campo è obbligatorio",

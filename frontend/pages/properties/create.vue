@@ -304,14 +304,14 @@
           <CardDescription>{{ translations.uploadHint }}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div class="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto text-muted-foreground mb-4">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="17 8 12 3 7 8" />
-              <line x1="12" x2="12" y1="3" y2="15" />
-            </svg>
-            <p class="text-sm text-muted-foreground">{{ translations.dragDrop }}</p>
-          </div>
+          <PhotoUpload v-model="photos" :max-photos="20" />
+        </CardContent>
+      </Card>
+
+      <!-- Documents -->
+      <Card>
+        <CardContent>
+          <DocumentUpload v-model="documents" :max-documents="10" />
         </CardContent>
       </Card>
 
@@ -343,6 +343,8 @@ import Input from '@/components/ui/Input.vue'
 import Label from '@/components/ui/Label.vue'
 import Select from '@/components/ui/Select.vue'
 import Textarea from '@/components/ui/Textarea.vue'
+import PhotoUpload from '@/components/PhotoUpload.vue'
+import DocumentUpload from '@/components/DocumentUpload.vue'
 
 definePageMeta({
   layout: 'default',
@@ -468,6 +470,8 @@ watch(locale, () => {
 
 // Form state
 const submitting = ref(false)
+const photos = ref([])
+const documents = ref([])
 const form = ref({
   type: '',
   address: '',
@@ -496,20 +500,100 @@ const form = ref({
   },
 })
 
+// Composables
+const config = useRuntimeConfig()
+const { token } = useAuth()
+const { uploadDocument } = useDocuments()
+
 // Methods
 const handleSubmit = async () => {
   submitting.value = true
   try {
-    // TODO: Replace with actual API call
-    console.log('Submitting property:', form.value)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    // 1. Create the property first
+    const response = await fetch(`${config.public.apiBaseUrl}/api/properties`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(form.value),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.message || 'Failed to create property')
+    }
+
+    const { data: property } = await response.json()
+    console.log('Property created:', property)
+
+    // 2. Upload photos
+    if (photos.value.length > 0) {
+      console.log('Uploading photos...')
+      for (let i = 0; i < photos.value.length; i++) {
+        const photo = photos.value[i]
+        photo.uploading = true
+
+        try {
+          const formData = new FormData()
+          formData.append('file', photo.file)
+          formData.append('documentable_type', 'Property')
+          formData.append('documentable_id', property.id.toString())
+          formData.append('type', 'photo')
+          if (photo.description) {
+            formData.append('description', photo.description)
+          }
+
+          await uploadDocument(formData)
+
+          photo.uploaded = true
+          photo.uploading = false
+          photo.progress = 100
+        } catch (err) {
+          console.error('Error uploading photo:', err)
+          photo.error = err.message || 'Upload failed'
+          photo.uploading = false
+        }
+      }
+    }
+
+    // 3. Upload documents
+    if (documents.value.length > 0) {
+      console.log('Uploading documents...')
+      for (let i = 0; i < documents.value.length; i++) {
+        const doc = documents.value[i]
+        doc.uploading = true
+
+        try {
+          const formData = new FormData()
+          formData.append('file', doc.file)
+          formData.append('documentable_type', 'Property')
+          formData.append('documentable_id', property.id.toString())
+          formData.append('type', doc.type)
+          if (doc.description) {
+            formData.append('description', doc.description)
+          }
+
+          await uploadDocument(formData)
+
+          doc.uploaded = true
+          doc.uploading = false
+          doc.progress = 100
+        } catch (err) {
+          console.error('Error uploading document:', err)
+          doc.error = err.message || 'Upload failed'
+          doc.uploading = false
+        }
+      }
+    }
 
     // Show success message and redirect
     alert(t('property.create.success') + '\n' + t('property.create.successDescription'))
     navigateTo('/properties')
   } catch (error) {
     console.error('Error submitting property:', error)
-    alert('Error submitting property')
+    alert('Error creating property: ' + (error.message || 'Unknown error'))
   } finally {
     submitting.value = false
   }

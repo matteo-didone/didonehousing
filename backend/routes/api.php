@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\PropertyController;
 use App\Http\Controllers\Api\ListingController;
+use App\Http\Controllers\Api\DocumentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/listings/{listing}/reject', [ListingController::class, 'reject']);
     Route::post('/listings/{listing}/publish', [ListingController::class, 'publish']);
     Route::post('/listings/{listing}/unpublish', [ListingController::class, 'unpublish']);
+
+    // Documents
+    Route::get('/documents', [DocumentController::class, 'index']);
+    Route::post('/documents', [DocumentController::class, 'store']);
+    Route::get('/documents/{document}', [DocumentController::class, 'show']);
+    Route::patch('/documents/{document}', [DocumentController::class, 'update']);
+    Route::delete('/documents/{document}', [DocumentController::class, 'destroy']);
+    Route::get('/documents/{document}/download', [DocumentController::class, 'download']);
 });
 
 // Health check
