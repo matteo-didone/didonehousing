@@ -108,10 +108,10 @@ return new class extends Migration
             $table->dropColumn('furnished');
         });
 
-        // Rename heating_type to be more specific and add enum constraint
-        DB::statement("
-            ALTER TABLE properties
-            MODIFY COLUMN heating_type ENUM(
+        // Convert heating_type from string to enum (PostgreSQL compatible)
+        // Step 1: Create new enum column
+        Schema::table('properties', function (Blueprint $table) {
+            $table->enum('heating_type_new', [
                 'city_gas',
                 'lpg_with_coupons',
                 'lpg_without_coupons',
@@ -120,8 +120,21 @@ return new class extends Migration
                 'heat_pump',
                 'wood',
                 'other'
-            ) NULL
-        ");
+            ])->nullable()->after('heating_type');
+        });
+
+        // Step 2: Copy data from old column to new column
+        DB::statement("UPDATE properties SET heating_type_new = heating_type WHERE heating_type IS NOT NULL");
+
+        // Step 3: Drop old column
+        Schema::table('properties', function (Blueprint $table) {
+            $table->dropColumn('heating_type');
+        });
+
+        // Step 4: Rename new column to original name
+        Schema::table('properties', function (Blueprint $table) {
+            $table->renameColumn('heating_type_new', 'heating_type');
+        });
     }
 
     /**
@@ -138,13 +151,25 @@ return new class extends Migration
         DB::statement("
             UPDATE properties
             SET furnished = CASE
-                WHEN furnishing_status IN ('partially_furnished', 'fully_furnished') THEN 1
-                ELSE 0
+                WHEN furnishing_status IN ('partially_furnished', 'fully_furnished') THEN TRUE
+                ELSE FALSE
             END
         ");
 
-        // Reset heating_type to string
-        DB::statement("ALTER TABLE properties MODIFY COLUMN heating_type VARCHAR(255) NULL");
+        // Reset heating_type to string (PostgreSQL compatible)
+        Schema::table('properties', function (Blueprint $table) {
+            $table->string('heating_type_temp')->nullable()->after('heating_type');
+        });
+
+        DB::statement("UPDATE properties SET heating_type_temp = heating_type::text WHERE heating_type IS NOT NULL");
+
+        Schema::table('properties', function (Blueprint $table) {
+            $table->dropColumn('heating_type');
+        });
+
+        Schema::table('properties', function (Blueprint $table) {
+            $table->renameColumn('heating_type_temp', 'heating_type');
+        });
 
         // Drop all new columns
         Schema::table('properties', function (Blueprint $table) {
