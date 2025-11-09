@@ -127,7 +127,7 @@
               </div>
 
               <!-- Listing Info (if exists) -->
-              <div v-if="property.listing" class="pt-3 border-t border-border">
+              <div v-if="property.listing && property.listing.monthly_rent && property.listing.currency" class="pt-3 border-t border-border">
                 <div class="flex items-center justify-between">
                   <span class="text-sm text-muted-foreground">{{ t('property.monthlyRent') }}</span>
                   <span class="font-semibold text-lg">
