@@ -98,7 +98,7 @@ return new class extends Migration
         DB::statement("
             UPDATE properties
             SET furnishing_status = CASE
-                WHEN furnished = 1 THEN 'fully_furnished'
+                WHEN furnished = TRUE THEN 'fully_furnished'
                 ELSE 'unfurnished'
             END
         ");
