@@ -310,6 +310,10 @@
 
       <!-- Documents -->
       <Card>
+        <CardHeader>
+          <CardTitle>{{ translations.uploadDocuments }}</CardTitle>
+          <CardDescription>{{ translations.uploadDocumentsHint }}</CardDescription>
+        </CardHeader>
         <CardContent>
           <DocumentUpload v-model="documents" :max-documents="10" />
         </CardContent>
@@ -362,6 +366,8 @@ const translations = ref({
   amenities: '',
   uploadPhotos: '',
   uploadHint: '',
+  uploadDocuments: '',
+  uploadDocumentsHint: '',
   submit: '',
   cancel: '',
   submitting: '',
@@ -415,6 +421,8 @@ const loadTranslations = () => {
     amenities: t('property.create.amenities'),
     uploadPhotos: t('property.create.uploadPhotos'),
     uploadHint: t('property.create.uploadHint'),
+    uploadDocuments: t('property.documents.title'),
+    uploadDocumentsHint: t('property.documents.subtitle'),
     submit: t('property.create.submit'),
     cancel: t('property.create.cancel'),
     submitting: t('property.create.submitting'),
