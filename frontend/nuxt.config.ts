@@ -30,6 +30,7 @@ export default defineNuxtConfig({
       appUrl: process.env.NUXT_PUBLIC_APP_URL || "http://localhost:3000",
       mapboxToken: process.env.NUXT_PUBLIC_MAPBOX_TOKEN || "",
       openRouteServiceKey: process.env.NUXT_PUBLIC_OPENROUTESERVICE_KEY || "",
+      googleMapsApiKey: process.env.NUXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
     },
   },
 

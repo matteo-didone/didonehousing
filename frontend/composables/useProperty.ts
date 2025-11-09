@@ -4,6 +4,7 @@ export interface Property {
   id: number
   landlord_id: number
   status: 'draft' | 'pending_review' | 'approved' | 'rejected'
+
   // Address
   street_name: string
   house_number: string
@@ -12,20 +13,63 @@ export interface Property {
   province: string
   postal_code: string
   country: string
+
+  // Google Maps Integration
+  google_place_id?: string
+  latitude?: number
+  longitude?: number
+  distance_from_base_km?: number
+  formatted_address?: string
+
+  // Cadastral Data
+  cadastral_sheet_number?: string
+  cadastral_plot_number?: string
+  cadastral_unit_number?: string
+  cadastral_tax_evaluation?: number
+  cadastral_category?: string
+
   // Rooms
   living_rooms?: number
   dining_rooms?: number
   bedrooms: number
-  bathrooms: number
+  bathrooms: number // Computed from full + half
+  full_bathrooms: number
+  half_bathrooms: number
   kitchen?: number
   basement: boolean
   attic: boolean
   garage: boolean
   yard: boolean
-  // Details
-  furnished: boolean
+
+  // Furnishing
+  furnishing_status: 'unfurnished' | 'partially_furnished' | 'fully_furnished'
+
+  // Pets
   pets_allowed: boolean
-  heating_type?: string
+  pets_notes?: string
+
+  // Heating & Cooling
+  heating_type?: 'city_gas' | 'lpg_with_coupons' | 'lpg_without_coupons' | 'fuel_oil' | 'electric' | 'heat_pump' | 'wood' | 'other'
+  heating_system?: 'centralized' | 'autonomous' | 'shared_with_us' | 'shared_with_italians'
+  has_heat_meter: boolean
+  heating_notes?: string
+  cooling_type?: string
+
+  // Redecoration
+  redecoration_fees_required: boolean
+  redecoration_fees_amount?: number
+  redecoration_date?: string
+
+  // Additional Details
+  floor_number?: number
+  total_floors?: number
+  elevator: boolean
+  balcony: boolean
+  terrace: boolean
+  total_sqm?: number
+  energy_class?: 'A4' | 'A3' | 'A2' | 'A1' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G'
+  year_built?: number
+
   // Listing info (if has active listing)
   listing?: {
     id: number
@@ -34,11 +78,13 @@ export interface Property {
     available_from: string
     is_active: boolean
   }
+
   // Timestamps
   created_at: string
   updated_at: string
   submitted_at?: string
   reviewed_at?: string
+
   // Reviewer info
   ho_reviewer?: {
     id: number
