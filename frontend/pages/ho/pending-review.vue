@@ -107,7 +107,7 @@
                   </svg>
                   <span>{{ property.bathrooms }} {{ t('property.bathrooms') }}</span>
                 </div>
-                <div v-if="property.furnished" class="flex items-center gap-2">
+                <div v-if="property.furnishing_status === 'partially_furnished' || property.furnishing_status === 'fully_furnished'" class="flex items-center gap-2">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z" />
                     <path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9" />
@@ -200,7 +200,7 @@ import type { Property, PaginatedResponse } from '@/composables/useProperty'
 
 definePageMeta({
   layout: 'default',
-  middleware: ['auth', 'ho'],
+  middleware: ['auth', 'housing-office'],
 })
 
 const { t } = useI18n()
