@@ -400,6 +400,12 @@
     "status": "Stato",
     "distanceToBase": "Distanza dalla Base",
     "manageYourProperties": "Gestisci le tue proprietà",
+    "status": {
+      "draft": "Bozza",
+      "pending_review": "In Attesa di Revisione",
+      "approved": "Approvato",
+      "rejected": "Rifiutato"
+    },
     "createProperty": "Crea Proprietà",
     "createFirstProperty": "Crea la Tua Prima Proprietà",
     "id": "ID",

@@ -155,7 +155,7 @@ export const useProperty = () => {
    * Fetch single property by ID
    */
   const fetchProperty = async (id: number): Promise<Property> => {
-    const response = await $fetch<Property>(`/properties/${id}`, {
+    const response = await $fetch<{ property: Property }>(`/properties/${id}`, {
       baseURL: config.public.apiBase,
       method: 'GET',
       headers: {
@@ -163,7 +163,7 @@ export const useProperty = () => {
       },
     })
 
-    return response
+    return response.property
   }
 
   /**

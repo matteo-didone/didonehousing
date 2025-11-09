@@ -400,6 +400,12 @@
     "status": "Status",
     "distanceToBase": "Distance to Base",
     "manageYourProperties": "Manage your properties",
+    "status": {
+      "draft": "Draft",
+      "pending_review": "Pending Review",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
     "createProperty": "Create Property",
     "createFirstProperty": "Create Your First Property",
     "id": "ID",
