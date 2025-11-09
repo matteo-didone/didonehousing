@@ -223,6 +223,8 @@ const loadPendingProperties = async (page = 1) => {
       per_page: 20,
       sort: '-created_at'
     })
+    console.log('API Response:', response)
+    console.log('Properties data:', response.data)
     properties.value = response.data
     pagination.value = {
       current_page: response.current_page,
@@ -232,6 +234,7 @@ const loadPendingProperties = async (page = 1) => {
       from: response.from,
       to: response.to,
     }
+    console.log('Properties array length:', properties.value.length)
   } catch (err: any) {
     console.error('Failed to load pending properties:', err)
     error.value = err.data?.message || t('common.errorLoadingData')
