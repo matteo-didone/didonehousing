@@ -317,8 +317,8 @@ class PropertyController extends Controller
             ], 403);
         }
 
-        // Can only delete draft properties
-        if ($property->status !== Property::STATUS_DRAFT) {
+        // Can only delete draft properties (or corrupted properties with null status)
+        if ($property->status !== Property::STATUS_DRAFT && $property->status !== null) {
             return response()->json([
                 'message' => 'Only draft properties can be deleted',
             ], 422);
