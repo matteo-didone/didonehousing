@@ -117,8 +117,8 @@
           <!-- Details Grid -->
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div class="flex items-center justify-between p-3 bg-muted/50 rounded">
-              <span class="text-sm text-muted-foreground">{{ t('property.create.furnished') }}</span>
-              <span class="font-medium">{{ property.furnished ? t('common.yes') : t('common.no') }}</span>
+              <span class="text-sm text-muted-foreground">{{ t('property.create.furnishingStatus') }}</span>
+              <span class="font-medium">{{ t(`property.create.${property.furnishing_status}`) }}</span>
             </div>
             <div class="flex items-center justify-between p-3 bg-muted/50 rounded">
               <span class="text-sm text-muted-foreground">{{ t('property.create.pets') }}</span>

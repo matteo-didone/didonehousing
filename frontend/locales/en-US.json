@@ -526,6 +526,8 @@
       "unfurnished": "Unfurnished",
       "partiallyFurnished": "Partially Furnished",
       "fullyFurnished": "Fully Furnished",
+      "partially_furnished": "Partially Furnished",
+      "fully_furnished": "Fully Furnished",
       "heatingSystem": "Heating System",
       "centralizedHeating": "Centralized",
       "autonomousHeating": "Autonomous",
