@@ -43,13 +43,14 @@
               {{ t('property.create.searchAddress') || 'Search Address' }}
               <span v-if="isLoading" class="ml-2 text-xs text-muted-foreground">(Loading...)</span>
             </Label>
-            <Input
+            <input
               id="address_search"
               ref="addressInput"
               v-model="autocompleteSearch"
               :placeholder="t('property.create.searchAddressPlaceholder') || 'Start typing an address in Italy...'"
               :disabled="!isLoaded"
-              class="text-base"
+              type="text"
+              class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             />
             <p class="text-xs text-muted-foreground">
               {{ t('property.create.searchAddressHint') || 'Use autocomplete to fill address fields automatically' }}
